@@ -63,14 +63,14 @@ export default function Home() {
                 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight"
                 variants={fadeIn}
               >
-                AI-Powered <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">Career Tools</span> For Your Success
+                Getting Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">Shouldn't Require</span> Work
               </motion.h1>
               
               <motion.p 
                 className="text-xl text-indigo-100 mb-8 max-w-lg"
                 variants={fadeIn}
               >
-                Create tailored CVs, generate professional headshots, craft compelling cover letters, and find perfect job matches - all powered by advanced AI.
+                Our AI-powered platform handles the heavy lifting—creating perfect CVs, generating headshots, writing cover letters, and finding your ideal job matches.
               </motion.p>
               
               <motion.div 
@@ -232,7 +232,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Feature Card 1 - AI CV Builder */}
             <motion.div 
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -246,7 +246,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6 z-10 relative">
                 Create professional, ATS-optimized CVs tailored to specific job descriptions for maximum interview potential.
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-grow">
                 <li className="flex items-start">
                   <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
                   <span className="text-gray-600">Job-specific keyword optimization</span>
@@ -260,18 +260,20 @@ export default function Home() {
                   <span className="text-gray-600">One-click tailoring to job ads</span>
                 </li>
               </ul>
-              <Link 
-                href="/resume-builder" 
-                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
-              >
-                Build Your CV
-                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="mt-auto">
+                <Link 
+                  href="/resume-builder" 
+                  className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+                >
+                  Build Your CV
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
             
             {/* Feature Card 2 - AI Cover Letter */}
             <motion.div 
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -285,7 +287,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6 z-10 relative">
                 Generate personalized cover letters that match job requirements and highlight your most relevant experience.
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-grow">
                 <li className="flex items-start">
                   <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
                   <span className="text-gray-600">Job description analysis</span>
@@ -299,18 +301,20 @@ export default function Home() {
                   <span className="text-gray-600">Multiple format options</span>
                 </li>
               </ul>
-              <Link 
-                href="/cover-letter" 
-                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
-              >
-                Create Cover Letter
-                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="mt-auto">
+                <Link 
+                  href="/cover-letter" 
+                  className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+                >
+                  Create Cover Letter
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
             
             {/* Feature Card 3 - AI Headshot */}
             <motion.div 
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -327,7 +331,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6 z-10 relative">
                 Create studio-quality professional headshots for your CV, LinkedIn, and other professional profiles.
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-grow">
                 <li className="flex items-start">
                   <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
                   <span className="text-gray-600">Professional lighting and backgrounds</span>
@@ -341,13 +345,15 @@ export default function Home() {
                   <span className="text-gray-600">Multiple variations to choose from</span>
                 </li>
               </ul>
-              <Link 
-                href="/ai-headshot" 
-                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
-              >
-                Generate Headshot
-                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="mt-auto">
+                <Link 
+                  href="/ai-headshot" 
+                  className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+                >
+                  Generate Headshot
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
           </div>
 
@@ -355,7 +361,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8 mt-8">
             {/* Feature Card 4 - AI Job Search */}
             <motion.div 
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -369,7 +375,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6 z-10 relative">
                 Find the perfect job matches based on your skills, experience, and preferences with our AI-powered job search.
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-grow">
                 <li className="flex items-start">
                   <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
                   <span className="text-gray-600">Personalized job recommendations</span>
@@ -383,18 +389,20 @@ export default function Home() {
                   <span className="text-gray-600">Automated application tracking</span>
                 </li>
               </ul>
-              <Link 
-                href="/job-search" 
-                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
-              >
-                Find Jobs
-                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="mt-auto">
+                <Link 
+                  href="/job-search" 
+                  className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+                >
+                  Find Jobs
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
             
             {/* Feature Card 5 - AI Interview Prep */}
             <motion.div 
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -410,7 +418,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6 z-10 relative">
                 Practice interviews with our AI coach to get personalized feedback and improve your interview performance.
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-grow">
                 <li className="flex items-start">
                   <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
                   <span className="text-gray-600">Job-specific interview questions</span>
@@ -424,18 +432,20 @@ export default function Home() {
                   <span className="text-gray-600">Answer improvement suggestions</span>
                 </li>
               </ul>
-              <Link 
-                href="/interview-prep" 
-                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
-              >
-                Practice Interviews
-                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="mt-auto">
+                <Link 
+                  href="/interview-prep" 
+                  className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+                >
+                  Practice Interviews
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
             
             {/* Feature Card 6 - Career Resources */}
             <motion.div 
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -449,7 +459,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6 z-10 relative">
                 Access our comprehensive library of career tips, networking events, and job opportunities all in one place.
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-grow">
                 <li className="flex items-start">
                   <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
                   <span className="text-gray-600">Expert career advice articles</span>
@@ -463,13 +473,15 @@ export default function Home() {
                   <span className="text-gray-600">Curated job opportunities</span>
                 </li>
               </ul>
-              <Link 
-                href="/career-resources" 
-                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
-              >
-                Explore Resources
-                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="mt-auto">
+                <Link 
+                  href="/career-resources" 
+                  className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+                >
+                  Explore Resources
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
           </div>
         </div>
