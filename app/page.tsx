@@ -109,7 +109,7 @@ export default function Home() {
                     <div className="bg-white rounded-lg shadow-2xl w-[90%] h-[90%] p-3 sm:p-5 transform transition-all duration-500 hover:scale-105">
                       {/* Resume header */}
                       <div className="border-b border-gray-200 pb-3 mb-3">
-                        <div className="h-6 bg-indigo-600 w-1/3 rounded mb-2"></div>
+                      <div className="h-6 bg-indigo-600 w-1/3 rounded mb-2"></div>
                         <div className="h-4 bg-gray-200 w-1/2 rounded"></div>
                       </div>
                       
@@ -155,15 +155,15 @@ export default function Home() {
                   {/* Floating elements - make more responsive */}
                   <div className="absolute top-5 sm:top-10 right-3 sm:right-5 animate-float-slow">
                     <div className="bg-indigo-500 bg-opacity-20 backdrop-blur-sm rounded-md p-1 sm:p-2 shadow-md flex items-center">
-                      <BsBriefcase className="text-indigo-600 mr-1 sm:mr-2 text-xs sm:text-sm" />
-                      <span className="text-xs font-medium text-indigo-900 hidden xs:inline">ATS Optimized</span>
+                      <BsBriefcase className="text-gray-200text-xs sm:text-sm sm:mr-2" />
+                      <span className="text-xs font-medium font-semibold hidden sm:inline text-gray-200">ATS Optimized</span>
                     </div>
                   </div>
                   
                   <div className="absolute bottom-5 sm:bottom-10 left-3 sm:left-5 animate-float">
                     <div className="bg-purple-500 bg-opacity-20 backdrop-blur-sm rounded-md p-1 sm:p-2 shadow-md flex items-center">
-                      <BsGraphUp className="text-purple-600 mr-1 sm:mr-2 text-xs sm:text-sm" />
-                      <span className="text-xs font-medium text-purple-900 hidden xs:inline">80% Interview Rate</span>
+                      <BsGraphUp className="text-purple-200  text-xs sm:text-sm" />
+                      
                     </div>
                   </div>
                 </div>
@@ -208,6 +208,7 @@ export default function Home() {
             <Image src="/logos/logo-amazon.svg" alt="Amazon" width={48} height={48} className="opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200" />
             <Image src="/logos/logo-apple.svg" alt="Apple" width={48} height={48} className="opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200" />
             <Image src="/logos/logo-netflix.svg" alt="Netflix" width={48} height={48} className="opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200" />
+            <Image src="/logos/logo-urent.svg" alt="Netflix" width={48} height={48} className="opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200" />
           </div>
         </div>
       </section>
@@ -351,7 +352,7 @@ export default function Home() {
           </div>
 
           {/* Second row of features */}
-          <div className="grid md:grid-cols-2 gap-8 mt-8">
+          <div className="grid md:grid-cols-3 gap-8 mt-8">
             {/* Feature Card 4 - AI Job Search */}
             <motion.div 
               className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
@@ -428,6 +429,45 @@ export default function Home() {
                 className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
               >
                 Practice Interviews
+                <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+            
+            {/* Feature Card 6 - Career Resources */}
+            <motion.div 
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-8 border border-gray-100 relative overflow-hidden group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <div className="absolute top-0 right-0 h-24 w-24 bg-indigo-100 rounded-bl-full opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 relative z-10">
+                <HiOutlineChartBar className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Career Resources Hub</h3>
+              <p className="text-gray-600 mb-6 z-10 relative">
+                Access our comprehensive library of career tips, networking events, and job opportunities all in one place.
+              </p>
+              <ul className="space-y-2 mb-8">
+                <li className="flex items-start">
+                  <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
+                  <span className="text-gray-600">Expert career advice articles</span>
+                </li>
+                <li className="flex items-start">
+                  <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
+                  <span className="text-gray-600">Industry networking events</span>
+                </li>
+                <li className="flex items-start">
+                  <FiCheckCircle className="text-indigo-600 mt-1 mr-2" />
+                  <span className="text-gray-600">Curated job opportunities</span>
+                </li>
+              </ul>
+              <Link 
+                href="/career-resources" 
+                className="text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center group"
+              >
+                Explore Resources
                 <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
