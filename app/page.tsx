@@ -22,8 +22,8 @@ export default function Home() {
   const [isAnnual, setIsAnnual] = useState(false);
   
   // Calculate discounted annual prices (2 months free)
-  const premiumAnnual = Math.floor(9.99 * 10);
-  const premiumPlusAnnual = Math.floor(19.99 * 10);
+  const premiumAnnual = Math.floor(49.99 * 10);
+  const premiumPlusAnnual = Math.floor(89.99 * 10);
   
   // Toggle FAQs
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -63,7 +63,7 @@ export default function Home() {
                 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight"
                 variants={fadeIn}
               >
-                Getting Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">Shouldn't Require</span> Work
+                Getting hired <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">shouldn't feel</span> like a job.
               </motion.h1>
               
               <motion.p 
@@ -863,7 +863,7 @@ export default function Home() {
               <div className="mb-auto">
                 <h3 className="text-xl sm:text-2xl font-bold mb-2 text-indigo-600">Premium</h3>
                 <p className="text-gray-600 mb-4 sm:mb-6">Everything you need</p>
-                <p className="text-4xl sm:text-5xl font-bold mb-2 text-gray-900">${isAnnual ? premiumAnnual : '9.99'}</p>
+                <p className="text-4xl sm:text-5xl font-bold mb-2 text-gray-900">${isAnnual ? premiumAnnual : '49.99'}</p>
                 <p className="text-gray-700 mb-4 sm:mb-6">per {isAnnual ? 'year' : 'month'}</p>
                 <ul className="text-left space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                   <li className="flex items-center">
@@ -913,7 +913,7 @@ export default function Home() {
               <div className="mb-auto">
                 <h3 className="text-xl sm:text-2xl font-bold mb-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">Professional</h3>
                 <p className="text-gray-600 mb-4 sm:mb-6">For serious job seekers</p>
-                <p className="text-4xl sm:text-5xl font-bold mb-2 text-gray-900">${isAnnual ? premiumPlusAnnual : '19.99'}</p>
+                <p className="text-4xl sm:text-5xl font-bold mb-2 text-gray-900">${isAnnual ? premiumPlusAnnual : '89.99'}</p>
                 <p className="text-gray-700 mb-4 sm:mb-6">per {isAnnual ? 'year' : 'month'}</p>
                 <ul className="text-left space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                   <li className="flex items-center">
