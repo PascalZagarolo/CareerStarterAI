@@ -4,6 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { register } from '@/actions/auth/register';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export default function SignUp() {
   const router = useRouter();
@@ -47,28 +50,31 @@ export default function SignUp() {
     setLoading(true);
     
     try {
-      // This would be replaced with actual Supabase auth code
-      // const { data, error } = await supabase.auth.signUp({
-      //   email: formData.email,
-      //   password: formData.password,
-      //   options: {
-      //     data: {
-      //       full_name: formData.fullName,
-      //     }
-      //   }
-      // });
+      // Create FormData object
+      const formDataObj = new FormData();
+      formDataObj.append('fullName', formData.fullName);
+      formDataObj.append('email', formData.email);
+      formDataObj.append('password', formData.password);
+      formDataObj.append('confirmPassword', formData.confirmPassword);
+      formDataObj.append('acceptTerms', formData.acceptTerms ? 'on' : 'off');
       
-      // if (error) throw error;
+      // Call the server action
+      const result = await register(formDataObj);
       
-      // Simulate successful auth for now
-      setTimeout(() => {
+      if (result?.error) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+      
+      if (result?.success) {
         // If user signed up with a plan selection, redirect to checkout
         if (plan === 'pro' || plan === 'annual') {
           router.push(`/api/stripe/checkout?plan=${plan}`);
         } else {
           router.push('/dashboard');
         }
-      }, 1500);
+      }
       
     } catch (error: any) {
       console.error('Error signing up:', error);
@@ -82,7 +88,11 @@ export default function SignUp() {
     setLoading(true);
     
     try {
-      // This would be replaced with actual Supabase Google auth code
+      // TODO: Implement Google OAuth integration
+      setError('Google sign up is not yet implemented. Please use email registration.');
+      setLoading(false);
+      
+      // This would be replaced with actual OAuth implementation
       // const { data, error } = await supabase.auth.signInWithOAuth({
       //   provider: 'google',
       //   options: {
@@ -92,14 +102,11 @@ export default function SignUp() {
       
       // if (error) throw error;
       
-      // Simulate successful auth for now
-      setTimeout(() => {
-        if (plan === 'pro' || plan === 'annual') {
-          router.push(`/api/stripe/checkout?plan=${plan}`);
-        } else {
-          router.push('/dashboard');
-        }
-      }, 1500);
+      // if (plan === 'pro' || plan === 'annual') {
+      //   router.push(`/api/stripe/checkout?plan=${plan}`);
+      // } else {
+      //   router.push('/dashboard');
+      // }
       
     } catch (error: any) {
       console.error('Error signing up with Google:', error);
@@ -130,70 +137,70 @@ export default function SignUp() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-5">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="fullName" className="text-gray-700 mb-1">
                 Full Name
-              </label>
-              <input
+              </Label>
+              <Input
                 id="fullName"
                 name="fullName"
                 type="text"
                 required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder="John Doe"
                 value={formData.fullName}
                 onChange={handleChange}
+                className="h-12 px-4 rounded-xl text-gray-900"
               />
             </div>
             
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="email" className="text-gray-700 mb-1">
                 Email address
-              </label>
-              <input
+              </Label>
+              <Input
                 id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
+                className="h-12 px-4 rounded-xl text-gray-900"
               />
             </div>
             
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <div> 
+              <Label htmlFor="password" className="text-gray-700 mb-1">
                 Password
-              </label>
-              <input
+              </Label>
+              <Input
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="new-password"
                 required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
+                className="h-12 px-4 rounded-xl text-gray-900"
               />
               <p className="mt-1 text-xs text-gray-500">Must be at least 8 characters</p>
             </div>
             
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="confirmPassword" className="text-gray-700 mb-1">
                 Confirm Password
-              </label>
-              <input
+              </Label>
+              <Input
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
                 autoComplete="new-password"
                 required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder="••••••••"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                className="h-12 px-4 rounded-xl text-gray-900"
               />
             </div>
             

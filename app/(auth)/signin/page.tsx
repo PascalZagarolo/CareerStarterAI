@@ -4,6 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { loginUser } from '@/actions/auth/login';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export default function SignIn() {
   const router = useRouter();
@@ -27,18 +30,23 @@ export default function SignIn() {
     setLoading(true);
     
     try {
-      // This would be replaced with actual Supabase auth code
-      // const { data, error } = await supabase.auth.signInWithPassword({
-      //   email: formData.email,
-      //   password: formData.password,
-      // });
+      // Create FormData object
+      const formDataObj = new FormData();
+      formDataObj.append('email', formData.email);
+      formDataObj.append('password', formData.password);
       
-      // if (error) throw error;
+      // Call the server action
+      const result = await loginUser(formDataObj);
       
-      // Simulate successful auth for now
-      setTimeout(() => {
+      if (result?.error) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+      
+      if (result?.success) {
         router.push('/dashboard');
-      }, 1500);
+      }
       
     } catch (error: any) {
       console.error('Error signing in:', error);
@@ -52,7 +60,11 @@ export default function SignIn() {
     setLoading(true);
     
     try {
-      // This would be replaced with actual Supabase Google auth code
+      // TODO: Implement Google OAuth integration
+      setError('Google sign in is not yet implemented. Please use email login.');
+      setLoading(false);
+      
+      // This would be replaced with actual OAuth implementation
       // const { data, error } = await supabase.auth.signInWithOAuth({
       //   provider: 'google',
       //   options: {
@@ -62,10 +74,7 @@ export default function SignIn() {
       
       // if (error) throw error;
       
-      // Simulate successful auth for now
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 1500);
+      // router.push('/dashboard');
       
     } catch (error: any) {
       console.error('Error signing in with Google:', error);
@@ -96,36 +105,36 @@ export default function SignIn() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="email" className="text-gray-700 mb-1">
                 Email address
-              </label>
-              <input
+              </Label>
+              <Input
                 id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
+                className="h-12 px-4 rounded-xl"
               />
             </div>
             
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="password" className="text-gray-700 mb-1">
                 Password
-              </label>
-              <input
+              </Label>
+              <Input
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
+                className="h-12 px-4 rounded-xl"
               />
             </div>
           </div>

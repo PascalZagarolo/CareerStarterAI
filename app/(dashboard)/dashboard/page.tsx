@@ -1,33 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useAuth } from '@/components/auth-wrapper';
 
 export default function Dashboard() {
-  // In a real app, this would come from Supabase
-  const [userData, setUserData] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    subscriptionStatus: 'free', // 'free', 'pro', or 'annual'
+  const { user, loading, logout } = useAuth();
+  
+  // Add additional user data for dashboard
+  const userData = user ? {
+    ...user,
+    subscriptionStatus: 'free', // Default to free for now
     documents: {
-      resumes: 1,
+      resumes: 0,
       coverLetters: 0,
-      careerPaths: 1,
-    },
-    createdAt: new Date().toISOString(),
-  });
+      careerPaths: 0,
+    }
+  } : null;
   
-  const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+  const handleLogout = async () => {
+    await logout();
+  };
   
   // Calculate the time since account creation
   const accountAge = () => {
+    if (!userData?.createdAt) return 'Unknown';
+    
     const created = new Date(userData.createdAt);
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - created.getTime());
@@ -38,7 +35,7 @@ export default function Dashboard() {
     return `${diffDays} days ago`;
   };
   
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="animate-pulse">
@@ -57,10 +54,35 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  if (!user || !userData) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 rounded-lg">
+          <p className="font-medium">Error loading dashboard</p>
+          <p>User data not found</p>
+          <button
+            onClick={handleLogout}
+            className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <h1 className="text-2xl font-bold mb-6">Welcome back, {userData.name}</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Welcome back, {userData.name}</h1>
+        <button
+          onClick={handleLogout}
+          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Logout
+        </button>
+      </div>
       
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
