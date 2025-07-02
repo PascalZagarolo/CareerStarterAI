@@ -28,6 +28,20 @@ export interface Education {
   gpa?: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  technologies: string[];
+}
+
+export interface Certification {
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+}
+
 export interface ResumeData {
   personalInfo: {
     fullName: string;
@@ -46,13 +60,26 @@ export interface ResumeData {
   };
 }
 
+export interface ColorScheme {
+  id: string;
+  name: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  background: string;
+  text: string;
+  border: string;
+}
+
 export interface Template {
   id: string;
   name: string;
-  thumbnail: string;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
+  description: string;
+  category: 'professional' | 'creative' | 'modern' | 'classic' | 'minimal';
+  layout: 'single-column' | 'two-column' | 'sidebar' | 'header-focused';
+  colorSchemes: ColorScheme[];
   fontFamily: string;
+  fontSize: string;
+  spacing: 'compact' | 'standard' | 'spacious';
+  thumbnail: string;
 } 

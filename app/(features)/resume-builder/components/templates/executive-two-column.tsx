@@ -1,0 +1,254 @@
+'use client';
+
+import { ResumeData, ColorScheme } from '../types';
+
+interface ExecutiveTwoColumnProps {
+  data: ResumeData;
+  colorScheme: ColorScheme;
+}
+
+export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoColumnProps) {
+  const { personalInfo, sections } = data;
+
+  return (
+    <div 
+      className="w-full h-full bg-white"
+      style={{ 
+        fontFamily: 'Merriweather, serif',
+        fontSize: '10px',
+        color: colorScheme.text,
+        backgroundColor: colorScheme.background,
+        padding: '20mm'
+      }}
+    >
+      {/* Header */}
+      <div 
+        className="mb-6 pb-3 border-b-2"
+        style={{ borderColor: colorScheme.primary }}
+      >
+        <h1 
+          className="text-2xl font-bold mb-2"
+          style={{ color: colorScheme.primary }}
+        >
+          {personalInfo.fullName}
+        </h1>
+        <p className="text-sm mb-3" style={{ color: colorScheme.secondary }}>
+          {sections.find(s => s.type === 'summary')?.content?.title || 'Executive Summary'}
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div className="flex items-center">
+            <span className="font-semibold mr-2">Email:</span>
+            <span>{personalInfo.email}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold mr-2">Phone:</span>
+            <span>{personalInfo.phone}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold mr-2">Location:</span>
+            <span>{personalInfo.location}</span>
+          </div>
+          <div className="flex items-center">
+            {personalInfo.linkedin && (
+              <>
+                <span className="font-semibold mr-2">LinkedIn:</span>
+                <span>{personalInfo.linkedin}</span>
+              </>
+            )}
+          </div>
+        </div>
+        {personalInfo.portfolio && (
+          <div className="mt-2 text-xs">
+            <span className="font-semibold mr-2">Portfolio:</span>
+            <span>{personalInfo.portfolio}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Two Column Layout */}
+      <div className="flex h-full">
+        {/* Left Column */}
+        <div className="w-1/2 pr-4 border-r" style={{ borderColor: colorScheme.border }}>
+          {/* Experience */}
+          {sections.find(s => s.type === 'experience') && (
+            <div className="mb-6">
+              <h2 
+                className="text-lg font-bold mb-3 pb-1 border-b"
+                style={{ 
+                  color: colorScheme.primary,
+                  borderColor: colorScheme.border
+                }}
+              >
+                Professional Experience
+              </h2>
+              <div className="space-y-3">
+                {sections.find(s => s.type === 'experience')?.content?.map((exp: any, index: number) => (
+                  <div key={index} className="mb-3">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="font-bold text-sm" style={{ color: colorScheme.secondary }}>
+                        {exp.position}
+                      </h3>
+                      <span className="text-xs" style={{ color: colorScheme.accent }}>
+                        {exp.startDate} - {exp.endDate}
+                      </span>
+                    </div>
+                    <h4 className="font-semibold mb-1 text-xs" style={{ color: colorScheme.primary }}>
+                      {exp.company}
+                    </h4>
+                    <p className="text-xs mb-1 leading-relaxed">{exp.description}</p>
+                    {exp.achievements && exp.achievements.length > 0 && (
+                      <ul className="text-xs space-y-1 ml-3">
+                        {exp.achievements.map((achievement: string, idx: number) => (
+                          <li key={idx} className="list-disc">{achievement}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Projects */}
+          {sections.find(s => s.type === 'projects') && (
+            <div>
+              <h2 
+                className="text-lg font-bold mb-3 pb-1 border-b"
+                style={{ 
+                  color: colorScheme.primary,
+                  borderColor: colorScheme.border
+                }}
+              >
+                Key Projects
+              </h2>
+              <div className="space-y-3">
+                {sections.find(s => s.type === 'projects')?.content?.map((project: any, index: number) => (
+                  <div key={index} className="mb-3">
+                    <h3 className="font-bold text-sm mb-1" style={{ color: colorScheme.secondary }}>
+                      {project.name}
+                    </h3>
+                    <p className="text-xs mb-1 leading-relaxed">{project.description}</p>
+                    {project.technologies && (
+                      <div className="flex flex-wrap gap-1">
+                        {project.technologies.map((tech: string, idx: number) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-1 rounded text-xs"
+                            style={{
+                              backgroundColor: colorScheme.accent + '20',
+                              color: colorScheme.primary
+                            }}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column */}
+        <div className="w-1/2 pl-4">
+          {/* Skills */}
+          {sections.find(s => s.type === 'skills') && (
+            <div className="mb-6">
+              <h2 
+                className="text-lg font-bold mb-3 pb-1 border-b"
+                style={{ 
+                  color: colorScheme.primary,
+                  borderColor: colorScheme.border
+                }}
+              >
+                Core Competencies
+              </h2>
+              <div className="grid grid-cols-2 gap-2">
+                {sections.find(s => s.type === 'skills')?.content?.map((skill: string, index: number) => (
+                  <div
+                    key={index}
+                    className="p-2 text-center text-xs font-medium"
+                    style={{
+                      backgroundColor: colorScheme.background,
+                      border: `1px solid ${colorScheme.border}`,
+                      borderRadius: '3px'
+                    }}
+                  >
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Education */}
+          {sections.find(s => s.type === 'education') && (
+            <div className="mb-6">
+              <h2 
+                className="text-lg font-bold mb-3 pb-1 border-b"
+                style={{ 
+                  color: colorScheme.primary,
+                  borderColor: colorScheme.border
+                }}
+              >
+                Education
+              </h2>
+              <div className="space-y-3">
+                {sections.find(s => s.type === 'education')?.content?.map((edu: any, index: number) => (
+                  <div key={index} className="mb-3">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="font-bold text-sm" style={{ color: colorScheme.secondary }}>
+                        {edu.degree} in {edu.field}
+                      </h3>
+                      <span className="text-xs" style={{ color: colorScheme.accent }}>
+                        {edu.startDate} - {edu.endDate}
+                      </span>
+                    </div>
+                    <p className="font-semibold text-xs" style={{ color: colorScheme.primary }}>
+                      {edu.institution}
+                    </p>
+                    {edu.gpa && (
+                      <p className="text-xs mt-1">GPA: {edu.gpa}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Certifications */}
+          {sections.find(s => s.type === 'certifications') && (
+            <div>
+              <h2 
+                className="text-lg font-bold mb-3 pb-1 border-b"
+                style={{ 
+                  color: colorScheme.primary,
+                  borderColor: colorScheme.border
+                }}
+              >
+                Certifications
+              </h2>
+              <div className="space-y-2">
+                {sections.find(s => s.type === 'certifications')?.content?.map((cert: any, index: number) => (
+                  <div key={index} className="flex justify-between items-center p-2 rounded" style={{ backgroundColor: colorScheme.background, border: `1px solid ${colorScheme.border}` }}>
+                    <div>
+                      <h3 className="font-bold text-xs" style={{ color: colorScheme.secondary }}>
+                        {cert.name}
+                      </h3>
+                      <p className="text-xs">{cert.issuer}</p>
+                    </div>
+                    <span className="text-xs" style={{ color: colorScheme.accent }}>
+                      {cert.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+} 

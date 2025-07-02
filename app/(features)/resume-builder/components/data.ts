@@ -1,4 +1,4 @@
-import { ResumeData, Template } from './types';
+import { ResumeData } from './types';
 
 // Default resume data
 export const defaultResumeData: ResumeData = {
@@ -76,57 +76,57 @@ export const defaultResumeData: ResumeData = {
       id: 'skills',
       type: 'skills',
       title: 'Skills',
-      content: {
-        technical: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker'],
-        soft: ['Leadership', 'Problem Solving', 'Communication', 'Team Collaboration']
-      },
+      content: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker', 'Leadership', 'Problem Solving', 'Communication', 'Team Collaboration'],
       isVisible: true,
       order: 3
+    },
+    {
+      id: 'projects',
+      type: 'projects',
+      title: 'Projects',
+      content: [
+        {
+          id: 'proj1',
+          name: 'E-commerce Platform',
+          description: 'Built a full-stack e-commerce platform using React, Node.js, and MongoDB',
+          technologies: ['React', 'Node.js', 'MongoDB', 'Stripe']
+        },
+        {
+          id: 'proj2',
+          name: 'Task Management App',
+          description: 'Developed a collaborative task management application with real-time updates',
+          technologies: ['React', 'Socket.io', 'Express', 'PostgreSQL']
+        }
+      ],
+      isVisible: true,
+      order: 4
+    },
+    {
+      id: 'certifications',
+      type: 'certifications',
+      title: 'Certifications',
+      content: [
+        {
+          id: 'cert1',
+          name: 'AWS Certified Developer',
+          issuer: 'Amazon Web Services',
+          date: '2023-06'
+        },
+        {
+          id: 'cert2',
+          name: 'React Developer Certification',
+          issuer: 'Meta',
+          date: '2022-12'
+        }
+      ],
+      isVisible: true,
+      order: 5
     }
   ],
-  template: 'modern',
+  template: 'professional-classic',
   theme: {
-    primaryColor: '#3B82F6',
-    secondaryColor: '#1F2937',
+    primaryColor: '#1e3a8a',
+    secondaryColor: '#3b82f6',
     fontFamily: 'Inter'
   }
-};
-
-// Available templates
-export const templates: Template[] = [
-  {
-    id: 'modern',
-    name: 'Modern',
-    thumbnail: '/api/placeholder/200/150',
-    colors: { primary: '#3B82F6', secondary: '#1F2937' },
-    fontFamily: 'Inter'
-  },
-  {
-    id: 'classic',
-    name: 'Classic',
-    thumbnail: '/api/placeholder/200/150',
-    colors: { primary: '#374151', secondary: '#6B7280' },
-    fontFamily: 'Georgia'
-  },
-  {
-    id: 'creative',
-    name: 'Creative',
-    thumbnail: '/api/placeholder/200/150',
-    colors: { primary: '#8B5CF6', secondary: '#4C1D95' },
-    fontFamily: 'Poppins'
-  },
-  {
-    id: 'minimal',
-    name: 'Minimal',
-    thumbnail: '/api/placeholder/200/150',
-    colors: { primary: '#000000', secondary: '#6B7280' },
-    fontFamily: 'Helvetica'
-  },
-  {
-    id: 'professional',
-    name: 'Professional',
-    thumbnail: '/api/placeholder/200/150',
-    colors: { primary: '#059669', secondary: '#065F46' },
-    fontFamily: 'Roboto'
-  }
-]; 
+}; 

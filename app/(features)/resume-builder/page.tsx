@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { ResumeData, ResumeSection } from './components/types';
-import { defaultResumeData, templates } from './components/data';
+import { defaultResumeData } from './components/data';
+import { templates } from './components/templates/template-data';
 import Header from './components/header';
 import PersonalInfoEditor from './components/personal-info-editor';
 import SectionManager from './components/section-manager';
@@ -14,6 +15,8 @@ export default function ResumeBuilder() {
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
   const [activeSection, setActiveSection] = useState<string>('summary');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('professional-classic');
+  const [selectedColorScheme, setSelectedColorScheme] = useState<string>('navy-blue');
 
   // Handlers
   const updateSection = (sectionId: string, updates: Partial<ResumeSection>) => {
@@ -37,7 +40,7 @@ export default function ResumeBuilder() {
       id: `${type}-${Date.now()}`,
       type,
       title: type.charAt(0).toUpperCase() + type.slice(1),
-      content: type === 'experience' ? [] : type === 'education' ? [] : type === 'skills' ? { technical: [], soft: [] } : '',
+      content: type === 'experience' ? [] : type === 'education' ? [] : type === 'skills' ? [] : '',
       isVisible: true,
       order: resumeData.sections.length
     };
@@ -98,18 +101,16 @@ export default function ResumeBuilder() {
   };
 
   const changeTemplate = (templateId: string) => {
+    setSelectedTemplate(templateId);
+    // Set the first color scheme of the new template as default
     const template = templates.find(t => t.id === templateId);
-    if (template) {
-      setResumeData(prev => ({
-        ...prev,
-        template: templateId,
-        theme: {
-          primaryColor: template.colors.primary,
-          secondaryColor: template.colors.secondary,
-          fontFamily: template.fontFamily
-        }
-      }));
+    if (template && template.colorSchemes.length > 0) {
+      setSelectedColorScheme(template.colorSchemes[0].id);
     }
+  };
+
+  const changeColorScheme = (colorSchemeId: string) => {
+    setSelectedColorScheme(colorSchemeId);
   };
 
   const downloadPDF = () => {
@@ -157,7 +158,11 @@ export default function ResumeBuilder() {
 
           {/* Right Panel - Resume Preview */}
           <div className="lg:col-span-2">
-            <ResumePreview resumeData={resumeData} />
+            <ResumePreview 
+              resumeData={resumeData} 
+              selectedTemplate={selectedTemplate}
+              selectedColorScheme={selectedColorScheme}
+            />
           </div>
         </div>
 
@@ -165,8 +170,10 @@ export default function ResumeBuilder() {
         <div className="mt-8">
           <TemplateSelector
             templates={templates}
-            selectedTemplate={resumeData.template}
+            selectedTemplate={selectedTemplate}
+            selectedColorScheme={selectedColorScheme}
             onTemplateChange={changeTemplate}
+            onColorSchemeChange={changeColorScheme}
           />
         </div>
       </div>
