@@ -23,8 +23,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthWrapper>
           <Header />
-          
-          <main>{children}</main>
+        
+        <main>{children}</main>
         </AuthWrapper>
         
         <footer className="bg-gray-800 text-white py-12">

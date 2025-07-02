@@ -56,8 +56,8 @@ export async function register(formData: FormData) {
 
         return { success: true, user: result.user };
 
-    } catch (error) {
+     } catch (error) {
         console.error('Registration error:', error);
         return { error: "Failed to register. Please try again." };
-    }
+     }
 }

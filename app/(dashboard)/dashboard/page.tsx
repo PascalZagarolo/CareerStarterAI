@@ -2,6 +2,19 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/components/auth-wrapper';
+import { 
+  FileText, 
+  Briefcase, 
+  CreditCard, 
+  Calendar, 
+  TrendingUp,
+  Plus,
+  Edit3,
+  Eye,
+  Settings,
+  LogOut,
+  User
+} from 'lucide-react';
 
 export default function Dashboard() {
   const { user, loading, logout } = useAuth();
@@ -37,18 +50,18 @@ export default function Dashboard() {
   
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="animate-pulse">
           <div className="h-10 bg-gray-200 rounded w-1/4 mb-6"></div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="h-32 bg-gray-200 rounded"></div>
-            <div className="h-32 bg-gray-200 rounded"></div>
-            <div className="h-32 bg-gray-200 rounded"></div>
+            <div className="h-32 bg-gray-200 rounded-lg"></div>
+            <div className="h-32 bg-gray-200 rounded-lg"></div>
+            <div className="h-32 bg-gray-200 rounded-lg"></div>
           </div>
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="h-48 bg-gray-200 rounded"></div>
-            <div className="h-48 bg-gray-200 rounded"></div>
+            <div className="h-48 bg-gray-200 rounded-lg"></div>
+            <div className="h-48 bg-gray-200 rounded-lg"></div>
           </div>
         </div>
       </div>
@@ -57,10 +70,10 @@ export default function Dashboard() {
 
   if (!user || !userData) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 rounded-lg">
-          <p className="font-medium">Error loading dashboard</p>
-          <p>User data not found</p>
+          <p className="font-medium text-gray-900">Error loading dashboard</p>
+          <p className="text-gray-700">User data not found</p>
           <button
             onClick={handleLogout}
             className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
@@ -73,146 +86,172 @@ export default function Dashboard() {
   }
   
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Welcome back, {userData.name}</h1>
-        <button
-          onClick={handleLogout}
-          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Logout
-        </button>
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {userData.name}</h1>
+        <p className="text-gray-600">Here's what's happening with your career journey today.</p>
       </div>
       
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-gray-500 text-sm font-medium mb-2">Account Status</h2>
-          <div className="flex items-center">
-            <div className={`h-8 w-8 rounded-full flex items-center justify-center mr-2 ${
-              userData.subscriptionStatus === 'free' 
-                ? 'bg-gray-100 text-gray-600' 
-                : 'bg-indigo-100 text-indigo-600'
-            }`}>
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-medium">{userData.subscriptionStatus === 'free' ? 'Free Plan' : userData.subscriptionStatus === 'pro' ? 'Pro Plan' : 'Annual Plan'}</h3>
+              <p className="text-sm font-medium text-gray-600 mb-1">Account Status</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {userData.subscriptionStatus === 'free' ? 'Free Plan' : userData.subscriptionStatus === 'pro' ? 'Pro Plan' : 'Annual Plan'}
+              </p>
               {userData.subscriptionStatus === 'free' && (
-                <Link href="/pricing" className="text-xs text-indigo-600 hover:text-indigo-500">
-                  Upgrade now
+                <Link href="/pricing" className="text-sm text-indigo-600 hover:text-indigo-500 font-medium">
+                  Upgrade now →
                 </Link>
               )}
             </div>
+            <div className="h-12 w-12 bg-gradient-to-r from-indigo-100 to-indigo-200 rounded-lg flex items-center justify-center">
+              <CreditCard className="h-6 w-6 text-indigo-600" />
+            </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-gray-500 text-sm font-medium mb-2">Documents</h2>
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-2">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-medium">
-                {userData.documents.resumes + userData.documents.coverLetters} Documents
-              </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-sm font-medium text-gray-600 mb-1">Documents Created</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {userData.documents.resumes + userData.documents.coverLetters}
+              </p>
+              <p className="text-sm text-gray-500">
                 {userData.documents.resumes} Resumes, {userData.documents.coverLetters} Cover Letters
               </p>
             </div>
+            <div className="h-12 w-12 bg-gradient-to-r from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+              <FileText className="h-6 w-6 text-green-600" />
+            </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-gray-500 text-sm font-medium mb-2">Account Created</h2>
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-2">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-medium">{accountAge()}</h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-sm font-medium text-gray-600 mb-1">Account Created</p>
+              <p className="text-2xl font-bold text-gray-900">{accountAge()}</p>
+              <p className="text-sm text-gray-500">
                 {new Date(userData.createdAt).toLocaleDateString()}
               </p>
+            </div>
+            <div className="h-12 w-12 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+              <Calendar className="h-6 w-6 text-blue-600" />
             </div>
           </div>
         </div>
       </div>
       
       {/* Quick Actions */}
-      <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center mb-4">
-            <div className="h-12 w-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-4">
-              <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-start mb-4">
+              <div className="h-12 w-12 bg-gradient-to-r from-indigo-100 to-indigo-200 rounded-lg flex items-center justify-center mr-4">
+                <FileText className="h-6 w-6 text-indigo-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Resume Builder</h3>
+                <p className="text-gray-600 text-sm">Create or edit your professional resume with AI assistance</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-medium">Resume Builder</h3>
-              <p className="text-gray-600">Create or edit your professional resume</p>
+            <div className="flex space-x-3">
+              <Link
+                href="/resume-builder"
+                className="flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create New
+              </Link>
+              {userData.documents.resumes > 0 && (
+                <Link
+                  href="/resume-builder?edit=latest"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                >
+                  <Edit3 className="h-4 w-4 mr-2" />
+                  Edit Latest
+                </Link>
+              )}
             </div>
           </div>
-          <p className="text-gray-600 mb-4">
-            Our AI-powered resume builder helps you create professional resumes tailored to your target roles.
-          </p>
-          <div className="flex justify-between">
-            <Link
-              href="/resume-builder"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Create New Resume
-            </Link>
-            {userData.documents.resumes > 0 && (
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-start mb-4">
+              <div className="h-12 w-12 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg flex items-center justify-center mr-4">
+                <TrendingUp className="h-6 w-6 text-purple-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Career Path Finder</h3>
+                <p className="text-gray-600 text-sm">Discover your ideal career path with personalized AI recommendations</p>
+              </div>
+            </div>
+            <div className="flex space-x-3">
               <Link
-                href="/resume-builder?edit=latest"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                href="/career-path"
+                className="flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
               >
-                Edit Latest
+                <Plus className="h-4 w-4 mr-2" />
+                Find Paths
               </Link>
-            )}
+              {userData.documents.careerPaths > 0 && (
+                <Link
+                  href="/career-path?view=latest"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  View Latest
+                </Link>
+              )}
+            </div>
           </div>
         </div>
-        
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center mb-4">
-            <div className="h-12 w-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-4">
-              <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
+      </div>
+
+      {/* Additional Features Grid */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">More Tools</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Link href="/cover-letter" className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow group">
+            <div className="flex items-center">
+              <div className="h-10 w-10 bg-gradient-to-r from-green-100 to-green-200 rounded-lg flex items-center justify-center mr-3">
+                <FileText className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">Cover Letters</h3>
+                <p className="text-sm text-gray-500">Create compelling cover letters</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-medium">Career Path Finder</h3>
-              <p className="text-gray-600">Discover your ideal career path</p>
+          </Link>
+          
+          <Link href="/interview-prep" className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow group">
+            <div className="flex items-center">
+              <div className="h-10 w-10 bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center mr-3">
+                <User className="h-5 w-5 text-yellow-600" />
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">Interview Prep</h3>
+                <p className="text-sm text-gray-500">Practice with AI mock interviews</p>
+              </div>
             </div>
-          </div>
-          <p className="text-gray-600 mb-4">
-            Find career paths that match your skills, education, and interests with personalized AI recommendations.
-          </p>
-          <div className="flex justify-between">
-            <Link
-              href="/career-path"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Find Career Paths
-            </Link>
-            {userData.documents.careerPaths > 0 && (
-              <Link
-                href="/career-path?view=latest"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                View Latest
-              </Link>
-            )}
-          </div>
+          </Link>
+          
+          <Link href="/job-search" className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow group">
+            <div className="flex items-center">
+              <div className="h-10 w-10 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mr-3">
+                <Briefcase className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">Job Search</h3>
+                <p className="text-sm text-gray-500">Find your next opportunity</p>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

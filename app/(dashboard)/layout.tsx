@@ -3,6 +3,19 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/components/auth-wrapper';
+import { 
+  Home, 
+  FileText, 
+  TrendingUp, 
+  Mail, 
+  Settings, 
+  LogOut,
+  Menu,
+  X,
+  User,
+  Briefcase
+} from 'lucide-react';
 
 // Dashboard sidebar and layout component
 export default function DashboardLayout({
@@ -12,39 +25,43 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   // Define navigation items
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ) },
-    { name: 'Resume Builder', href: '/resume-builder', icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ) },
-    { name: 'Career Path', href: '/career-path', icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-      </svg>
-    ) },
-    { name: 'Cover Letter', href: '/cover-letter', icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ) },
-    { name: 'Settings', href: '/settings', icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ) },
+    { 
+      name: 'Dashboard', 
+      href: '/dashboard', 
+      icon: <Home className="h-5 w-5" />
+    },
+    { 
+      name: 'Resume Builder', 
+      href: '/resume-builder', 
+      icon: <FileText className="h-5 w-5" />
+    },
+    { 
+      name: 'Career Path', 
+      href: '/career-path', 
+      icon: <TrendingUp className="h-5 w-5" />
+    },
+    { 
+      name: 'Cover Letter', 
+      href: '/cover-letter', 
+      icon: <Mail className="h-5 w-5" />
+    },
+    { 
+      name: 'Job Search', 
+      href: '/job-search', 
+      icon: <Briefcase className="h-5 w-5" />
+    },
   ];
 
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 flex">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -53,34 +70,39 @@ export default function DashboardLayout({
         />
       )}
 
-      {/* Mobile sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-40 w-64 transition duration-300 ease-in-out transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:inset-auto md:h-auto bg-white md:z-auto`}>
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          <div className="font-bold text-xl text-indigo-600">CareerStarter</div>
+      {/* Sidebar */}
+      <div className={`fixed inset-y-0 left-0 z-40 w-64 transition duration-300 ease-in-out transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:inset-auto md:h-auto bg-white md:z-auto border-r border-gray-200 flex flex-col`}>
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 flex-shrink-0">
+          <Link href="/dashboard" className="flex items-center space-x-2">
+            <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <Briefcase className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-bold text-xl text-gray-900">CareerStarter</span>
+          </Link>
           <button 
-            className="md:hidden p-2 rounded-md hover:bg-gray-100"
+            className="md:hidden p-2 rounded-md hover:bg-gray-100 text-gray-500 hover:text-gray-700"
             onClick={() => setSidebarOpen(false)}
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="h-5 w-5" />
           </button>
         </div>
         
-        <nav className="px-2 py-4 space-y-1">
+        {/* Navigation */}
+        <nav className="px-2 py-4 space-y-1 flex-1 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
+                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                   isActive 
-                    ? 'bg-indigo-100 text-indigo-700' 
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-indigo-50 text-indigo-700 border-r-2 border-indigo-600' 
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                 }`}
               >
-                <div className={`mr-3 flex-shrink-0 ${isActive ? 'text-indigo-700' : 'text-gray-400 group-hover:text-gray-500'}`}>
+                <div className={`mr-3 flex-shrink-0 ${isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-500'}`}>
                   {item.icon}
                 </div>
                 {item.name}
@@ -88,44 +110,50 @@ export default function DashboardLayout({
             );
           })}
         </nav>
-
-        <div className="px-4 py-4 border-t border-gray-200 mt-auto">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-full bg-gray-200"></div>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700">John Doe</p>
-              <Link 
-                href="/api/auth/signout" 
-                className="text-xs font-medium text-gray-500 hover:text-gray-700"
-              >
-                Sign out
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Main content */}
-      <div className="md:pl-64 flex flex-col flex-1">
-        <div className="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-white">
-          <button
-            type="button"
-            className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <span className="sr-only">Open sidebar</span>
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Mobile header */}
+        <div className="sticky top-0 z-10 md:hidden bg-white border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-between h-16 px-4">
+            <button
+              type="button"
+              className="p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <span className="sr-only">Open sidebar</span>
+              <Menu className="h-6 w-6" />
+            </button>
+            
+            <div className="flex items-center space-x-2">
+              <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <Briefcase className="h-5 w-5 text-white" />
+              </div>
+              <span className="font-bold text-lg text-gray-900">CareerStarter</span>
+            </div>
+            
+            {user && (
+              <div className="flex items-center space-x-2">
+                <div className="h-8 w-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-medium">
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-50"
+                  title="Logout"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        <main className="flex-1">
-          <div className="py-6">
-            {children}
-          </div>
+        <main className="flex-1 overflow-auto">
+          {children}
         </main>
       </div>
     </div>
