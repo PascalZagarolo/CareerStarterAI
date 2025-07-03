@@ -174,7 +174,8 @@ export const templates: Template[] = [
     fontFamily: 'Inter',
     fontSize: '14px',
     spacing: 'standard',
-    thumbnail: '/images/templates/professional-classic.png'
+    thumbnail: '/images/templates/professional-classic.png',
+    plan: 'free'
   },
   {
     id: 'modern-minimal',
@@ -186,7 +187,8 @@ export const templates: Template[] = [
     fontFamily: 'Inter',
     fontSize: '14px',
     spacing: 'spacious',
-    thumbnail: '/images/templates/modern-minimal.png'
+    thumbnail: '/images/templates/modern-minimal.png',
+    plan: 'free'
   },
   {
     id: 'creative-sidebar',
@@ -198,19 +200,8 @@ export const templates: Template[] = [
     fontFamily: 'Poppins',
     fontSize: '14px',
     spacing: 'standard',
-    thumbnail: '/images/templates/creative-sidebar.png'
-  },
-  {
-    id: 'executive-two-column',
-    name: 'Executive Two-Column',
-    description: 'Sophisticated two-column layout for senior professionals',
-    category: 'professional',
-    layout: 'two-column',
-    colorSchemes: colorSchemes.classic,
-    fontFamily: 'Merriweather',
-    fontSize: '13px',
-    spacing: 'compact',
-    thumbnail: '/images/templates/executive-two-column.png'
+    thumbnail: '/images/templates/creative-sidebar.png',
+    plan: 'free'
   },
   {
     id: 'startup-modern',
@@ -222,7 +213,8 @@ export const templates: Template[] = [
     fontFamily: 'Inter',
     fontSize: '14px',
     spacing: 'standard',
-    thumbnail: '/images/templates/startup-modern.png'
+    thumbnail: '/images/templates/startup-modern.png',
+    plan: 'premium'
   },
   {
     id: 'academic-clean',
@@ -234,7 +226,8 @@ export const templates: Template[] = [
     fontFamily: 'Times New Roman',
     fontSize: '12px',
     spacing: 'compact',
-    thumbnail: '/images/templates/academic-clean.png'
+    thumbnail: '/images/templates/academic-clean.png',
+    plan: 'premium'
   },
   {
     id: 'designer-portfolio',
@@ -246,19 +239,8 @@ export const templates: Template[] = [
     fontFamily: 'Poppins',
     fontSize: '14px',
     spacing: 'spacious',
-    thumbnail: '/images/templates/designer-portfolio.png'
-  },
-  {
-    id: 'corporate-elegant',
-    name: 'Corporate Elegant',
-    description: 'Refined and sophisticated design for corporate leadership',
-    category: 'professional',
-    layout: 'two-column',
-    colorSchemes: colorSchemes.professional,
-    fontFamily: 'Merriweather',
-    fontSize: '13px',
-    spacing: 'standard',
-    thumbnail: '/images/templates/corporate-elegant.png'
+    thumbnail: '/images/templates/designer-portfolio.png',
+    plan: 'premium'
   },
   {
     id: 'minimalist-clean',
@@ -270,7 +252,34 @@ export const templates: Template[] = [
     fontFamily: 'Inter',
     fontSize: '14px',
     spacing: 'spacious',
-    thumbnail: '/images/templates/minimalist-clean.png'
+    thumbnail: '/images/templates/minimalist-clean.png',
+    plan: 'premium'
+  },
+  {
+    id: 'executive-two-column',
+    name: 'Executive Two-Column',
+    description: 'Sophisticated two-column layout for senior professionals',
+    category: 'professional',
+    layout: 'two-column',
+    colorSchemes: colorSchemes.classic,
+    fontFamily: 'Merriweather',
+    fontSize: '13px',
+    spacing: 'compact',
+    thumbnail: '/images/templates/executive-two-column.png',
+    plan: 'professional'
+  },
+  {
+    id: 'corporate-elegant',
+    name: 'Corporate Elegant',
+    description: 'Refined and sophisticated design for corporate leadership',
+    category: 'professional',
+    layout: 'two-column',
+    colorSchemes: colorSchemes.professional,
+    fontFamily: 'Merriweather',
+    fontSize: '13px',
+    spacing: 'standard',
+    thumbnail: '/images/templates/corporate-elegant.png',
+    plan: 'professional'
   },
   {
     id: 'tech-focused',
@@ -282,7 +291,8 @@ export const templates: Template[] = [
     fontFamily: 'Inter',
     fontSize: '14px',
     spacing: 'standard',
-    thumbnail: '/images/templates/tech-focused.png'
+    thumbnail: '/images/templates/tech-focused.png',
+    plan: 'professional'
   }
 ];
 

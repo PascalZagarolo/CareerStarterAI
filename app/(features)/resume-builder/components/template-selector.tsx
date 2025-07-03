@@ -3,7 +3,7 @@
 import { Template } from './types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles, Palette, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sparkles, Palette, ChevronLeft, ChevronRight, Lock, Crown, Zap, Star } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 interface TemplateSelectorProps {
@@ -12,6 +12,7 @@ interface TemplateSelectorProps {
   selectedColorScheme: string;
   onTemplateChange: (templateId: string) => void;
   onColorSchemeChange: (colorSchemeId: string) => void;
+  userPlan?: 'free' | 'premium' | 'professional'; // Add professional plan
 }
 
 export default function TemplateSelector({ 
@@ -19,7 +20,8 @@ export default function TemplateSelector({
   selectedTemplate, 
   selectedColorScheme,
   onTemplateChange,
-  onColorSchemeChange
+  onColorSchemeChange,
+  userPlan = 'free' // Default to free plan
 }: TemplateSelectorProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
@@ -71,7 +73,10 @@ export default function TemplateSelector({
         case ' ':
           e.preventDefault();
           if (focusedIndex >= 0 && focusedIndex < filteredTemplates.length) {
-            onTemplateChange(filteredTemplates[focusedIndex].id);
+            const template = filteredTemplates[focusedIndex];
+            if (template.plan === 'free' || userPlan === 'premium' || userPlan === 'professional') {
+              onTemplateChange(template.id);
+            }
           }
           break;
       }
@@ -79,7 +84,7 @@ export default function TemplateSelector({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [filteredTemplates, focusedIndex, onTemplateChange]);
+  }, [filteredTemplates, focusedIndex, onTemplateChange, userPlan]);
 
   const scrollToTemplate = (index: number) => {
     if (scrollContainerRef.current) {
@@ -94,8 +99,37 @@ export default function TemplateSelector({
   };
 
   const handleTemplateClick = (templateId: string, index: number) => {
-    setFocusedIndex(index);
-    onTemplateChange(templateId);
+    const template = templates.find(t => t.id === templateId);
+    if (template && (template.plan === 'free' || userPlan === 'premium' || userPlan === 'professional')) {
+      setFocusedIndex(index);
+      onTemplateChange(templateId);
+    }
+  };
+
+  const getPlanRequired = (templatePlan: string) => {
+    if (templatePlan === 'premium') return 'Premium';
+    if (templatePlan === 'professional') return 'Professional';
+    return 'Free';
+  };
+
+  const getPlanFeatures = (templatePlan: string) => {
+    if (templatePlan === 'premium') {
+      return ['Advanced Templates', 'Priority Support', 'Export Options'];
+    }
+    if (templatePlan === 'professional') {
+      return ['Premium Templates', 'AI Features', 'Custom Branding', 'Priority Support'];
+    }
+    return ['Basic Templates', 'Standard Support'];
+  };
+
+  const getUpgradeMessage = (templatePlan: string) => {
+    if (templatePlan === 'premium') {
+      return 'Unlock Premium Templates';
+    }
+    if (templatePlan === 'professional') {
+      return 'Unlock Professional Templates';
+    }
+    return 'Upgrade to Unlock';
   };
 
   return (
@@ -146,53 +180,119 @@ export default function TemplateSelector({
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               <div className="flex gap-4 pb-4" style={{ minWidth: 'max-content' }}>
-                {filteredTemplates.map((template, index) => (
-                  <div
-                    key={template.id}
-                    onClick={() => handleTemplateClick(template.id, index)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleTemplateClick(template.id, index);
-                      }
-                    }}
-                    tabIndex={0}
-                    className={`relative cursor-pointer rounded-lg border-2 transition-all hover:shadow-md flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-                      selectedTemplate === template.id
-                        ? 'border-indigo-500 ring-2 ring-indigo-200 bg-indigo-50'
-                        : focusedIndex === index
-                        ? 'border-indigo-300 ring-1 ring-indigo-200 bg-indigo-25'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    style={{ width: '280px' }}
-                  >
-                    <div className="aspect-[4/3] bg-gray-100 rounded-t-lg flex items-center justify-center p-4">
-                      <div className="text-center w-full">
-                        <div className="flex justify-center mb-2">
-                          {template.colorSchemes.slice(0, 3).map((scheme, index) => (
-                            <div
-                              key={scheme.id}
-                              className="w-6 h-6 rounded-full border-2 border-white shadow-sm"
-                              style={{ 
-                                backgroundColor: scheme.primary,
-                                marginLeft: index > 0 ? '-8px' : '0'
-                              }}
-                            ></div>
-                          ))}
+                {filteredTemplates.map((template, index) => {
+                  const isLocked = (template.plan === 'premium' && userPlan === 'free') || 
+                                  (template.plan === 'professional' && (userPlan === 'free' || userPlan === 'premium'));
+                  const isSelectable = template.plan === 'free' || userPlan === 'premium' || userPlan === 'professional';
+                  
+                  return (
+                    <div
+                      key={template.id}
+                      onClick={() => handleTemplateClick(template.id, index)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          if (isSelectable) {
+                            handleTemplateClick(template.id, index);
+                          }
+                        }
+                      }}
+                      tabIndex={isSelectable ? 0 : -1}
+                      className={`relative cursor-pointer rounded-lg border-2 transition-all hover:shadow-md flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                        selectedTemplate === template.id
+                          ? 'border-indigo-500 ring-2 ring-indigo-200 bg-indigo-50'
+                          : focusedIndex === index
+                          ? 'border-indigo-300 ring-1 ring-indigo-200 bg-indigo-25'
+                          : isLocked
+                          ? 'border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      style={{ width: '280px' }}
+                    >
+                      <div className="aspect-[4/3] bg-gray-100 rounded-t-lg flex items-center justify-center p-4 relative overflow-hidden">
+                        <div className="text-center w-full">
+                          <div className="flex justify-center mb-2">
+                            {template.colorSchemes.slice(0, 3).map((scheme, index) => (
+                              <div
+                                key={scheme.id}
+                                className="w-6 h-6 rounded-full border-2 border-white shadow-sm"
+                                style={{ 
+                                  backgroundColor: scheme.primary,
+                                  marginLeft: index > 0 ? '-8px' : '0'
+                                }}
+                              ></div>
+                            ))}
+                          </div>
+                          <div className="text-xs text-gray-600 font-medium">{template.name}</div>
+                          <div className="text-xs text-gray-500 mt-1">{template.description}</div>
                         </div>
-                        <div className="text-xs text-gray-600 font-medium">{template.name}</div>
-                        <div className="text-xs text-gray-500 mt-1">{template.description}</div>
+                        
+                                                {/* Enhanced Lock overlay for premium/professional templates */}
+                        {isLocked && (
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-indigo-600/90 to-blue-600/90 backdrop-blur-sm rounded-t-lg flex items-center justify-center p-2">
+                            <div className="text-center text-white w-full">
+                              {/* Plan Badge */}
+                              <div className="inline-flex items-center px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-2">
+                                <Zap className="h-3 w-3 mr-1" />
+                                <span className="text-xs font-semibold">{getPlanRequired(template.plan)}</span>
+                              </div>
+                              
+                              {/* Plan Name */}
+                              <div className="text-sm font-bold mb-2">{getUpgradeMessage(template.plan)}</div>
+                              
+                              {/* Features List */}
+                              <div className="text-xs space-y-0.5 mb-3">
+                                {getPlanFeatures(template.plan).slice(0, 2).map((feature, idx) => (
+                                  <div key={idx} className="flex items-center justify-center">
+                                    <div className="w-1 h-1 bg-yellow-300 rounded-full mr-1"></div>
+                                    <span className="truncate">{feature}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              
+                              {/* Upgrade Button */}
+                              <button 
+                                className="bg-white text-indigo-600 px-3 py-1.5 rounded text-xs font-semibold hover:bg-gray-100 transition-colors shadow-lg w-full"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // TODO: Navigate to upgrade page
+                                  console.log('Upgrade to', template.plan);
+                                }}
+                              >
+                                Upgrade Now
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
+                      <div className="p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">{template.name}</div>
+                            <div className="text-xs text-gray-500 capitalize">{template.category} • {template.layout}</div>
+                          </div>
+                          {template.plan !== 'free' && (
+                            <div className="flex items-center space-x-1">
+                              {template.plan === 'professional' ? (
+                                <Crown className="h-3 w-3 text-yellow-500" />
+                              ) : (
+                                <Star className="h-3 w-3 text-purple-500" />
+                              )}
+                              <span className={`text-xs font-medium ${
+                                template.plan === 'professional' ? 'text-yellow-600' : 'text-purple-600'
+                              }`}>
+                                {template.plan === 'professional' ? 'Pro' : 'Premium'}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      {focusedIndex === index && (
+                        <div className="absolute inset-0 border-2 border-indigo-500 rounded-lg pointer-events-none"></div>
+                      )}
                     </div>
-                    <div className="p-3">
-                      <div className="text-sm font-medium text-gray-900">{template.name}</div>
-                      <div className="text-xs text-gray-500 capitalize">{template.category} • {template.layout}</div>
-                    </div>
-                    {focusedIndex === index && (
-                      <div className="absolute inset-0 border-2 border-indigo-500 rounded-lg pointer-events-none"></div>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
             

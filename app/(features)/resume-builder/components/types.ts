@@ -82,4 +82,5 @@ export interface Template {
   fontSize: string;
   spacing: 'compact' | 'standard' | 'spacious';
   thumbnail: string;
+  plan: 'free' | 'premium' | 'professional';
 } 
