@@ -1,7 +1,6 @@
 "use server";
 
 import { register as registerUser, getClientInfo } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 
 export async function register(formData: FormData) {
     try {

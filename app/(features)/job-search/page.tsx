@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 // Types for job search functionality
@@ -35,15 +34,15 @@ interface JobListing {
 export default function JobSearch() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('discover');
-  const [savedJobs, setSavedJobs] = useState<JobListing[]>([]);
-  const [appliedJobs, setAppliedJobs] = useState<JobListing[]>([]);
+
+
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Mock preferences (would be loaded from user profile in a real app)
-  const [preferences, setPreferences] = useState<JobPreferences>({
+  const [preferences] = useState<JobPreferences>({
     jobTitle: 'Software Engineer',
     location: 'Remote',
     industry: 'Technology',
@@ -715,7 +714,7 @@ export default function JobSearch() {
               </div>
               
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Why You'll Love This Role</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Why You&apos;ll Love This Role</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="flex items-start">
                     <svg className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+
 import { loginUser } from '@/actions/auth/login';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -48,9 +48,9 @@ export default function SignIn() {
         router.push('/dashboard');
       }
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing in:', error);
-      setError(error.message || 'Invalid email or password');
+      setError(error instanceof Error ? error.message : 'Invalid email or password');
       setLoading(false);
     }
   };
@@ -76,9 +76,9 @@ export default function SignIn() {
       
       // router.push('/dashboard');
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing in with Google:', error);
-      setError(error.message || 'An error occurred during Google sign in');
+      setError(error instanceof Error ? error.message : 'An error occurred during Google sign in');
       setLoading(false);
     }
   };
@@ -215,7 +215,7 @@ export default function SignIn() {
         
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
               Sign up
             </Link>

@@ -1,13 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState } from 'react';
+
 
 export default function InterviewPrep() {
   const [activeTab, setActiveTab] = useState('common');
-  const [activeResourceTab, setActiveResourceTab] = useState('blog');
-  
+
   // Mock interview questions for different categories
   const interviewQuestions = {
     common: [
@@ -41,145 +40,15 @@ export default function InterviewPrep() {
   };
   
   // Mock progress data
-  const progressData = {
-    completedInterviews: 8,
-    totalQuestions: 42,
-    strongAreas: ["Communication", "Technical Knowledge", "Problem-solving"],
-    improvementAreas: ["Conciseness", "Specific examples"]
-  };
+
 
   // Mock blog posts for tips & tricks
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Top 10 Questions You'll Face in Tech Interviews",
-      excerpt: "Preparing for a technical interview? Here are the most common questions and how to answer them effectively.",
-      author: "Alex Johnson",
-      role: "Senior Technical Recruiter",
-      date: "May 15, 2023",
-      readTime: "8 min read",
-      category: "Technical Interviews",
-      image: "/images/blog/tech-interview.jpg"
-    },
-    {
-      id: 2,
-      title: "How to Answer 'What's Your Greatest Weakness?' Without Shooting Yourself in the Foot",
-      excerpt: "The dreaded weakness question doesn't have to be a trap. Learn how to turn it into an opportunity to showcase your self-awareness and growth mindset.",
-      author: "Sarah Chen",
-      role: "Career Coach",
-      date: "April 28, 2023",
-      readTime: "6 min read",
-      category: "Interview Strategy"
-    },
-    {
-      id: 3,
-      title: "Body Language Tips That Will Make You More Hireable",
-      excerpt: "Your non-verbal cues speak volumes during an interview. Master these body language techniques to make a powerful impression.",
-      author: "Marcus Wilson",
-      role: "Behavioral Psychologist",
-      date: "May 3, 2023",
-      readTime: "5 min read",
-      category: "Interview Techniques"
-    },
-    {
-      id: 4,
-      title: "How I Landed Multiple Job Offers After 20+ Rejections",
-      excerpt: "My journey from constant rejection to having multiple offers to choose from, and the lessons I learned along the way.",
-      author: "Jessica Rivera",
-      role: "Software Engineer",
-      date: "May 10, 2023",
-      readTime: "10 min read",
-      category: "Success Stories"
-    }
-  ];
+
 
   // Mock networking events
-  const networkingEvents = [
-    {
-      id: 1,
-      title: "Tech Meetup: Frontend Development Trends 2023",
-      date: "June 15, 2023",
-      time: "6:00 PM - 9:00 PM",
-      location: "TechHub Downtown",
-      format: "In-person",
-      attendees: 120,
-      tags: ["Frontend", "React", "UI/UX"]
-    },
-    {
-      id: 2,
-      title: "Virtual Networking: Women in Data Science",
-      date: "June 20, 2023",
-      time: "12:00 PM - 1:30 PM",
-      location: "Zoom",
-      format: "Virtual",
-      attendees: 85,
-      tags: ["Data Science", "Women in Tech", "Networking"]
-    },
-    {
-      id: 3,
-      title: "Career Fair: Startups & Tech Companies",
-      date: "July 5, 2023",
-      time: "10:00 AM - 4:00 PM",
-      location: "Convention Center",
-      format: "In-person",
-      attendees: 500,
-      tags: ["Job Fair", "Startups", "Hiring"]
-    },
-    {
-      id: 4,
-      title: "Workshop: Resume Building & LinkedIn Optimization",
-      date: "June 25, 2023",
-      time: "2:00 PM - 4:00 PM",
-      location: "Community College, Room 302",
-      format: "In-person",
-      attendees: 40,
-      tags: ["Resume", "LinkedIn", "Personal Branding"]
-    }
-  ];
+ 
 
-  // Mock job opportunities
-  const jobOpportunities = [
-    {
-      id: 1,
-      title: "Senior Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "San Francisco, CA (Remote Option)",
-      salary: "$120,000 - $150,000",
-      posted: "2 days ago",
-      applicants: 45,
-      tags: ["React", "TypeScript", "5+ years"]
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      company: "AnalyticsPro",
-      location: "New York, NY",
-      salary: "$110,000 - $140,000",
-      posted: "1 week ago",
-      applicants: 78,
-      tags: ["Python", "Machine Learning", "PhD preferred"]
-    },
-    {
-      id: 3,
-      title: "UX/UI Designer",
-      company: "CreativeWorks Studio",
-      location: "Remote",
-      salary: "$90,000 - $120,000",
-      posted: "3 days ago",
-      applicants: 62,
-      tags: ["Figma", "User Research", "3+ years"]
-    },
-    {
-      id: 4,
-      title: "DevOps Engineer",
-      company: "CloudSystems",
-      location: "Austin, TX",
-      salary: "$130,000 - $160,000",
-      posted: "Just now",
-      applicants: 12,
-      tags: ["AWS", "Kubernetes", "CI/CD"]
-    }
-  ];
+
 
   // Career fields options
   const careerFields = [
@@ -546,7 +415,7 @@ export default function InterviewPrep() {
                       </div>
                       <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex-1">
                         <p className="text-gray-800">
-                          Hello! I'm your AI Interview Coach specializing in {selectedField} roles. Today we'll practice some common interview questions for {selectedJob} positions. Are you ready to begin?
+                          Hello! I&apos;m your AI Interview Coach specializing in {selectedField} roles. Today we&apos;ll practice some common interview questions for {selectedJob} positions. Are you ready to begin?
                         </p>
                       </div>
                     </div>
@@ -559,7 +428,7 @@ export default function InterviewPrep() {
                       </div>
                       <div className="bg-indigo-50 p-4 rounded-lg shadow-sm border border-indigo-100 flex-1">
                         <p className="text-gray-800">
-                          Yes, I'm ready to start!
+                          Yes, I&apos;m ready to start!
                         </p>
                       </div>
                     </div>
@@ -576,7 +445,7 @@ export default function InterviewPrep() {
                       <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex-1">
                         <div className="mb-3 pb-3 border-b border-gray-100">
                           <p className="text-gray-800">
-                            Good answer! You've demonstrated leadership and conflict resolution skills well.
+                            Good answer! You&apos;ve demonstrated leadership and conflict resolution skills well.
                           </p>
                         </div>
                         <div className="space-y-2">
@@ -1009,7 +878,7 @@ export default function InterviewPrep() {
       <footer className="bg-gray-50 border-t border-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-gray-600">Need more help with your job search? Check out our <Link href="/job-search" className="text-indigo-600 hover:text-indigo-800">AI Job Search Assistant</Link></p>
-        </div>
+        </div>  
       </footer>
     </div>
   );

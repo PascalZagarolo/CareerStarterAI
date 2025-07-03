@@ -33,7 +33,7 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
           {personalInfo.fullName}
         </h1>
         <p className="text-sm mb-3" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content?.title || 'Executive Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0].content || 'Executive Summary'}
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
           <div className="flex items-center">
@@ -82,12 +82,17 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                 Professional Experience
               </h2>
               <div className="space-y-3">
-                {sections.find(s => s.type === 'experience')?.content?.map((exp: any, index: number) => (
+                {(() => {
+                  const experienceSection = sections.find(s => s.type === 'experience');
+                  if (!experienceSection) return null;
+                  const content = experienceSection.content;
+                  if (!Array.isArray(content)) return null;
+                  return (content as any[]).map((exp, index) => (
                   <div key={index} className="mb-3">
                     <div className="flex justify-between items-start mb-1">
                       <h3 className="font-bold text-sm" style={{ color: colorScheme.secondary }}>
                         {exp.position}
-                      </h3>
+                      </h3> 
                       <span className="text-xs" style={{ color: colorScheme.accent }}>
                         {exp.startDate} - {exp.endDate}
                       </span>
@@ -104,7 +109,8 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                       </ul>
                     )}
                   </div>
-                ))}
+                ));
+                })()}
               </div>
             </div>
           )}
@@ -122,7 +128,12 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                 Key Projects
               </h2>
               <div className="space-y-3">
-                {sections.find(s => s.type === 'projects')?.content?.map((project: any, index: number) => (
+                {(() => {
+                  const projectsSection = sections.find(s => s.type === 'projects');
+                  if (!projectsSection) return null;
+                  const content = projectsSection.content;
+                  if (!Array.isArray(content)) return null;
+                  return (content as any[]).map((project, index) => (
                   <div key={index} className="mb-3">
                     <h3 className="font-bold text-sm mb-1" style={{ color: colorScheme.secondary }}>
                       {project.name}
@@ -145,7 +156,8 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                       </div>
                     )}
                   </div>
-                ))}
+                ));
+                })()}
               </div>
             </div>
           )}
@@ -166,7 +178,12 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                 Core Competencies
               </h2>
               <div className="grid grid-cols-2 gap-2">
-                {sections.find(s => s.type === 'skills')?.content?.map((skill: string, index: number) => (
+                {(() => {
+                  const skillsSection = sections.find(s => s.type === 'skills');
+                  if (!skillsSection) return null;
+                  const content = skillsSection.content;
+                  if (!Array.isArray(content)) return null;
+                  return (content as string[]).map((skill: string, index: number) => (
                   <div
                     key={index}
                     className="p-2 text-center text-xs font-medium"
@@ -178,7 +195,8 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                   >
                     {skill}
                   </div>
-                ))}
+                ));
+                })()}
               </div>
             </div>
           )}
@@ -196,7 +214,12 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                 Education
               </h2>
               <div className="space-y-3">
-                {sections.find(s => s.type === 'education')?.content?.map((edu: any, index: number) => (
+                {(() => {
+                  const educationSection = sections.find(s => s.type === 'education');
+                  if (!educationSection) return null;
+                  const content = educationSection.content;
+                  if (!Array.isArray(content)) return null;
+                  return (content as any[]).map((edu, index) => (
                   <div key={index} className="mb-3">
                     <div className="flex justify-between items-start mb-1">
                       <h3 className="font-bold text-sm" style={{ color: colorScheme.secondary }}>
@@ -213,7 +236,8 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                       <p className="text-xs mt-1">GPA: {edu.gpa}</p>
                     )}
                   </div>
-                ))}
+                ));
+                })()}
               </div>
             </div>
           )}
@@ -231,7 +255,12 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                 Certifications
               </h2>
               <div className="space-y-2">
-                {sections.find(s => s.type === 'certifications')?.content?.map((cert: any, index: number) => (
+                {(() => {
+                  const certificationsSection = sections.find(s => s.type === 'certifications');
+                  if (!certificationsSection) return null;
+                  const content = certificationsSection.content;
+                  if (!Array.isArray(content)) return null;
+                  return (content as any[]).map((cert, index) => (
                   <div key={index} className="flex justify-between items-center p-2 rounded" style={{ backgroundColor: colorScheme.background, border: `1px solid ${colorScheme.border}` }}>
                     <div>
                       <h3 className="font-bold text-xs" style={{ color: colorScheme.secondary }}>
@@ -243,7 +272,8 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                       {cert.date}
                     </span>
                   </div>
-                ))}
+                ));
+                })()}
               </div>
             </div>
           )}

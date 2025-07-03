@@ -1,6 +1,6 @@
 'use client';
 
-import { ResumeData, ColorScheme } from '../types';
+import { ResumeData, ColorScheme, Experience, Education, Project, Certification } from '../types';
 
 interface ProfessionalClassicProps {
   data: ResumeData;
@@ -33,7 +33,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
           {personalInfo.fullName}
         </h1>
         <p className="text-sm mb-3" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content?.title || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0].content || 'Professional Summary'}
         </p>
         <div className="grid grid-cols-3 gap-4 text-xs">
           <div className="flex items-center">
@@ -86,7 +86,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
               
               {section.type === 'experience' && (
                 <div className="space-y-3">
-                  {section.content?.map((exp: any, index: number) => (
+                  {(section.content as Experience[])?.map((exp, index) => (
                     <div key={index} className="mb-3">
                       <div className="flex justify-between items-start mb-1">
                         <h3 className="font-semibold text-sm" style={{ color: colorScheme.secondary }}>
@@ -102,7 +102,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
                       <p className="mb-2 text-xs">{exp.description}</p>
                       {exp.achievements && exp.achievements.length > 0 && (
                         <ul className="list-disc list-inside space-y-1 ml-2">
-                          {exp.achievements.map((achievement: string, idx: number) => (
+                          {exp.achievements.map((achievement, idx) => (
                             <li key={idx} className="text-xs">{achievement}</li>
                           ))}
                         </ul>
@@ -114,7 +114,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
 
               {section.type === 'education' && (
                 <div className="space-y-3">
-                  {section.content?.map((edu: any, index: number) => (
+                  {(section.content as Education[])?.map((edu, index) => (
                     <div key={index} className="mb-3">
                       <div className="flex justify-between items-start mb-1">
                         <h3 className="font-semibold text-sm" style={{ color: colorScheme.secondary }}>
@@ -137,7 +137,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
 
               {section.type === 'skills' && (
                 <div className="flex flex-wrap gap-2">
-                  {section.content?.map((skill: string, index: number) => (
+                  {(section.content as string[])?.map((skill, index) => (
                     <span
                       key={index}
                       className="px-2 py-1 rounded-full text-xs font-medium"
@@ -155,7 +155,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
 
               {section.type === 'projects' && (
                 <div className="space-y-3">
-                  {section.content?.map((project: any, index: number) => (
+                  {(section.content as Project[])?.map((project, index) => (
                     <div key={index} className="mb-3">
                       <h3 className="font-semibold text-sm mb-1" style={{ color: colorScheme.secondary }}>
                         {project.name}
@@ -184,7 +184,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
 
               {section.type === 'certifications' && (
                 <div className="space-y-2">
-                  {section.content?.map((cert: any, index: number) => (
+                  {(section.content as Certification[])?.map((cert, index) => (
                     <div key={index} className="flex justify-between items-center">
                       <div>
                         <h3 className="font-semibold text-xs" style={{ color: colorScheme.secondary }}>

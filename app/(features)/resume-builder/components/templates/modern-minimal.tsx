@@ -30,7 +30,7 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
           {personalInfo.fullName}
         </h1>
         <p className="text-lg mb-4" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content?.title || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0].content || 'Professional Summary'}
         </p>
         <div className="flex justify-center items-center space-x-6 text-xs">
           <div className="flex items-center">
@@ -80,7 +80,12 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
               
               {section.type === 'experience' && (
                 <div className="space-y-4">
-                  {section.content?.map((exp: any, index: number) => (
+                  {(() => {
+                    const experienceSection = sections.find(s => s.type === 'experience');
+                    if (!experienceSection) return null;
+                    const content = experienceSection.content;
+                    if (!Array.isArray(content)) return null;
+                    return (content as any[]).map((exp, index) => (
                     <div key={index} className="border-l-4 pl-4" style={{ borderColor: colorScheme.accent }}>
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="text-lg font-medium" style={{ color: colorScheme.secondary }}>
@@ -102,13 +107,19 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
                         </ul>
                       )}
                     </div>
-                  ))}
+                  ));
+                  })()}
                 </div>
               )}
 
               {section.type === 'education' && (
                 <div className="space-y-4">
-                  {section.content?.map((edu: any, index: number) => (
+                  {(() => {
+                    const educationSection = sections.find(s => s.type === 'education');
+                    if (!educationSection) return null;
+                    const content = educationSection.content;
+                    if (!Array.isArray(content)) return null;
+                    return (content as any[]).map((edu, index) => (
                     <div key={index} className="border-l-4 pl-4" style={{ borderColor: colorScheme.accent }}>
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="text-lg font-medium" style={{ color: colorScheme.secondary }}>
@@ -125,13 +136,19 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
                         <p className="text-xs mt-1">GPA: {edu.gpa}</p>
                       )}
                     </div>
-                  ))}
+                  ));
+                  })()}
                 </div>
               )}
 
               {section.type === 'skills' && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {section.content?.map((skill: string, index: number) => (
+                  {(() => {
+                    const skillsSection = sections.find(s => s.type === 'skills');
+                    if (!skillsSection) return null;
+                    const content = skillsSection.content;
+                    if (!Array.isArray(content)) return null;
+                    return (content as string[]).map((skill: string, index: number) => (
                     <div
                       key={index}
                       className="p-3 text-center"
@@ -145,13 +162,19 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
                         {skill}
                       </span>
                     </div>
-                  ))}
+                  ));
+                  })()}
                 </div>
               )}
 
               {section.type === 'projects' && (
                 <div className="space-y-4">
-                  {section.content?.map((project: any, index: number) => (
+                    {(() => {
+                        const projectsSection = sections.find(s => s.type === 'projects');
+                        if (!projectsSection) return null;
+                        const content = projectsSection.content;
+                        if (!Array.isArray(content)) return null;
+                        return (content as any[]).map((project, index) => (
                     <div key={index} className="border-l-4 pl-4" style={{ borderColor: colorScheme.accent }}>
                       <h3 className="text-lg font-medium mb-2" style={{ color: colorScheme.secondary }}>
                         {project.name}
@@ -174,13 +197,19 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
                         </div>
                       )}
                     </div>
-                  ))}
+                  ));
+                  })()}
                 </div>
               )}
 
               {section.type === 'certifications' && (
-                <div className="space-y-3">
-                  {section.content?.map((cert: any, index: number) => (
+                <div className="space-y-3"> 
+                  {(() => {
+                    const certificationsSection = sections.find(s => s.type === 'certifications');
+                    if (!certificationsSection) return null;
+                    const content = certificationsSection.content;
+                    if (!Array.isArray(content)) return null;
+                    return (content as any[]).map((cert, index) => (
                     <div key={index} className="flex justify-between items-center border-b pb-2" style={{ borderColor: colorScheme.border }}>
                       <div>
                         <h3 className="text-sm font-medium" style={{ color: colorScheme.secondary }}>
@@ -192,7 +221,8 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
                         {cert.date}
                       </span>
                     </div>
-                  ))}
+                  ));
+                  })()}
                 </div>
               )}
             </div>

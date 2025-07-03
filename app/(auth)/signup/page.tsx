@@ -1,14 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { register } from '@/actions/auth/register';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function SignUp() {
+export default function SignUpPage() {
+  return (
+    <Suspense>
+      <SignUp />
+    </Suspense>
+  );
+}
+
+function SignUp() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get('plan');
@@ -76,9 +83,9 @@ export default function SignUp() {
         }
       }
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing up:', error);
-      setError(error.message || 'An error occurred during sign up');
+      setError(error instanceof Error ? error.message : 'An error occurred during sign up');
       setLoading(false);
     }
   };
@@ -108,9 +115,9 @@ export default function SignUp() {
       //   router.push('/dashboard');
       // }
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error signing up with Google:', error);
-      setError(error.message || 'An error occurred during Google sign up');
+      setError(error instanceof Error ? error.message : 'An error occurred during Google sign up');
       setLoading(false);
     }
   };

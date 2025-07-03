@@ -6,13 +6,11 @@ import { useAuth } from "./auth-wrapper";
 import { useState, useRef, useEffect } from "react";
 import { 
   User, 
-  Settings, 
   LogOut, 
   ChevronDown, 
   LayoutDashboard,
   FileText,
   Briefcase,
-  UserCircle
 } from "lucide-react";
 
 export function Header() {

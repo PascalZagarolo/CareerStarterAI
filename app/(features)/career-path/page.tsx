@@ -49,9 +49,7 @@ export default function CareerPathFinder() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleNextStep = () => {
-    setStep(prev => prev + 1);
-  };
+
   
   const handlePrevStep = () => {
     setStep(prev => Math.max(1, prev - 1));

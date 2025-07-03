@@ -28,7 +28,7 @@ export default function Pricing() {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold mb-4">Choose The Right Plan For You</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Whether you're just getting started or looking for advanced features, we have a plan that fits your needs.
+            Whether you&apos;re just getting started or looking for advanced features, we have a plan that fits your needs.
           </p>
           
           {/* Billing toggle - improved design */}
@@ -403,7 +403,7 @@ export default function Pricing() {
               >
                 <div className="px-6 pb-4 pt-2">
                   <p className="text-gray-700">
-                    Yes, you can cancel your subscription at any time. You'll continue to have access to Premium features until the end of your billing period.
+                    Yes, you can cancel your subscription at any time. You&apos;ll continue to have access to Premium features until the end of your billing period.
                   </p>
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function Pricing() {
               >
                 <div className="px-6 pb-4 pt-2">
                   <p className="text-gray-700">
-                    Your documents will remain in your account, but you'll only be able to access the features available in your current plan. You can still view all your saved documents.
+                    Your documents will remain in your account, but you&apos;ll only be able to access the features available in your current plan. You can still view all your saved documents.
                   </p>
                 </div>
               </div>
@@ -443,7 +443,7 @@ export default function Pricing() {
                 onClick={() => toggleFAQ(2)}
                 className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
               >
-                <h3 className="text-lg font-semibold text-gray-900">What's the difference between Premium and Professional?</h3>
+                <h3 className="text-lg font-semibold text-gray-900">What&apos;s the difference between Premium and Professional?</h3>
                 <svg 
                   className={`w-5 h-5 text-gray-500 transform transition-transform duration-300 ${openFAQ === 2 ? 'rotate-180' : ''}`}
                   fill="none" 
@@ -459,7 +459,7 @@ export default function Pricing() {
               >
                 <div className="px-6 pb-4 pt-2">
                   <p className="text-gray-700">
-                    Professional offers unlimited access to all features including unlimited AI headshots, cover letters, and the exclusive AI interview coach. It's ideal for serious job seekers who need comprehensive tools.
+                    Professional offers unlimited access to all features including unlimited AI headshots, cover letters, and the exclusive AI interview coach. It&apos;s ideal for serious job seekers who need comprehensive tools.
                   </p>
                 </div>
               </div>
@@ -487,7 +487,7 @@ export default function Pricing() {
               >
                 <div className="px-6 pb-4 pt-2">
                   <p className="text-gray-700">
-                    We offer a 14-day money-back guarantee if you're not satisfied with your subscription. Contact our support team to request a refund.
+                    We offer a 14-day money-back guarantee if you&apos;re not satisfied with your subscription. Contact our support team to request a refund.
                   </p>
                 </div>
               </div>

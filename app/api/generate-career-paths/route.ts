@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { interests, skills, values, educationLevel, workHistory } = await req.json();
+    const { interests, skills, values, educationLevel, experience, workHistory } = await req.json();
+    console.log(interests, skills, values, educationLevel, experience, workHistory);
     
     // For now, returning mock data
     // In a real implementation, this would call an AI service or backend

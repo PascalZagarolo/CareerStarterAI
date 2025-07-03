@@ -57,7 +57,8 @@ export async function middleware(request: NextRequest) {
         signinUrl.searchParams.set('redirect', pathname);
         return NextResponse.redirect(signinUrl);
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      console.error('Session validation failed:', error);
       // Session validation failed, redirect to signin
       const signinUrl = new URL('/signin', request.url);
       signinUrl.searchParams.set('redirect', pathname);
@@ -73,7 +74,8 @@ export async function middleware(request: NextRequest) {
         // Valid session, redirect to dashboard
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      console.error('Session validation failed:', error);
       // Session validation failed, continue to auth page
     }
   }

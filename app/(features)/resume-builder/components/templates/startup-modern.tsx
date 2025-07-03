@@ -1,6 +1,6 @@
 'use client';
 
-import { ResumeData, ColorScheme } from '../types';
+import { ResumeData, ColorScheme, Project, Certification, Experience, Education } from '../types';
 
 interface StartupModernProps {
   data: ResumeData;
@@ -31,7 +31,7 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
           {personalInfo.fullName}
         </h1>
         <p className="text-lg mb-4 text-white opacity-90">
-          {sections.find(s => s.type === 'summary')?.content?.title || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0].content || 'Professional Summary'}
         </p>
         <div className="flex justify-center items-center space-x-4 text-white opacity-80 text-xs">
           <div className="flex items-center">
@@ -84,10 +84,10 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
               
               {section.type === 'experience' && (
                 <div className="space-y-4">
-                  {section.content?.map((exp: any, index: number) => (
+                  {(section.content as Experience[])?.map((exp, index) => (
                     <div key={index} className="relative pl-4 border-l-4" style={{ borderColor: colorScheme.accent }}>
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-lg font-bold" style={{ color: colorScheme.secondary }}>
+                        <h3 className="text-lg font-bold" style={{ color: colorScheme.secondary } as React.CSSProperties}>
                           {exp.position}
                         </h3>
                         <span className="text-xs font-medium px-2 py-1 rounded-full" style={{ backgroundColor: colorScheme.accent + '20', color: colorScheme.primary }}>
@@ -100,7 +100,7 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
                       <p className="mb-2 leading-relaxed text-xs">{exp.description}</p>
                       {exp.achievements && exp.achievements.length > 0 && (
                         <ul className="space-y-1">
-                          {exp.achievements.map((achievement: string, idx: number) => (
+                          {exp.achievements.map((achievement, idx) => (
                             <li key={idx} className="text-xs flex items-start">
                               <span 
                                 className="mr-2 mt-1 w-1 h-1 rounded-full flex-shrink-0"
@@ -118,10 +118,10 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
 
               {section.type === 'education' && (
                 <div className="space-y-4">
-                  {section.content?.map((edu: any, index: number) => (
+                  {(section.content as Education[])?.map((edu, index) => (
                     <div key={index} className="relative pl-4 border-l-4" style={{ borderColor: colorScheme.accent }}>
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-lg font-bold" style={{ color: colorScheme.secondary }}>
+                        <h3 className="text-lg font-bold" style={{ color: colorScheme.secondary } as React.CSSProperties}>
                           {edu.degree} in {edu.field}
                         </h3>
                         <span className="text-xs font-medium px-2 py-1 rounded-full" style={{ backgroundColor: colorScheme.accent + '20', color: colorScheme.primary }}>
@@ -143,7 +143,7 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
 
               {section.type === 'skills' && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {section.content?.map((skill: string, index: number) => (
+                  {(section.content as string[])?.map((skill, index) => (
                     <div
                       key={index}
                       className="p-3 text-center rounded-lg border-2"
@@ -163,15 +163,15 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
 
               {section.type === 'projects' && (
                 <div className="space-y-4">
-                  {section.content?.map((project: any, index: number) => (
+                  {(section.content as Project[])?.map((project, index) => (
                     <div key={index} className="relative pl-4 border-l-4" style={{ borderColor: colorScheme.accent }}>
-                      <h3 className="text-lg font-bold mb-2" style={{ color: colorScheme.secondary }}>
+                      <h3 className="text-lg font-bold mb-2" style={{ color: colorScheme.secondary } as React.CSSProperties}>
                         {project.name}
                       </h3>
                       <p className="mb-2 leading-relaxed text-xs">{project.description}</p>
                       {project.technologies && (
                         <div className="flex flex-wrap gap-1">
-                          {project.technologies.map((tech: string, idx: number) => (
+                          {project.technologies.map((tech, idx) => (
                             <span
                               key={idx}
                               className="px-2 py-1 rounded-full text-xs font-medium"
@@ -193,11 +193,11 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
 
               {section.type === 'certifications' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {section.content?.map((cert: any, index: number) => (
+                  {(section.content as Certification[])?.map((cert, index) => (
                     <div key={index} className="p-3 rounded-lg border-2" style={{ backgroundColor: colorScheme.background, borderColor: colorScheme.accent }}>
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-bold text-xs" style={{ color: colorScheme.secondary }}>
+                          <h3 className="font-bold text-xs" style={{ color: colorScheme.secondary } as React.CSSProperties            }>
                             {cert.name}
                           </h3>
                           <p className="text-xs mt-1">{cert.issuer}</p>

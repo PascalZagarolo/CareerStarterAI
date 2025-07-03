@@ -11,9 +11,7 @@ import {
   Plus,
   Edit3,
   Eye,
-  Settings,
-  LogOut,
-  User
+  User,
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -90,7 +88,7 @@ export default function Dashboard() {
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {userData.name}</h1>
-        <p className="text-gray-600">Here's what's happening with your career journey today.</p>
+        <p className="text-gray-600">Here&apos;s what&apos;s happening with your career journey today.</p>
       </div>
       
       {/* Stats Cards */}

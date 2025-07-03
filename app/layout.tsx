@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { BsArrowRight } from "react-icons/bs";
+
 import { AuthWrapper } from "@/components/auth-wrapper";
 import { Header } from "@/components/header";
 

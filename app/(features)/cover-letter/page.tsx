@@ -31,6 +31,7 @@ export default function CoverLetterGenerator() {
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
+  console.log(isGenerated);
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',

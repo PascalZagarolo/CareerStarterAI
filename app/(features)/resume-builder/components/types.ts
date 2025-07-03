@@ -3,7 +3,7 @@ export interface ResumeSection {
   id: string;
   type: 'summary' | 'experience' | 'education' | 'skills' | 'projects' | 'certifications';
   title: string;
-  content: any;
+  content: string[] | { technical: string[], soft: string[] } | Experience[] | Education[] | Project[] | Certification[];
   isVisible: boolean;
   order: number;
 }

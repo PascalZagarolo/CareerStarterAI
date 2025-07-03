@@ -15,7 +15,9 @@ export const defaultResumeData: ResumeData = {
       id: 'summary',
       type: 'summary',
       title: 'Professional Summary',
-      content: 'Experienced software developer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable solutions and leading cross-functional teams.',
+      content: [
+        'Experienced software developer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable solutions and leading cross-functional teams.'
+      ],
       isVisible: true,
       order: 0
     },

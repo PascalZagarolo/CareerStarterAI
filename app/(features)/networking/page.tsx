@@ -403,8 +403,8 @@ export default function NetworkingEvents() {
             <div className="md:w-2/3 mb-6 md:mb-0">
               <h2 className="text-2xl font-bold text-white mb-2">Host Your Own Networking Event</h2>
               <p className="text-indigo-100">
-                Create a professional gathering for your industry or interest group. We'll help you promote and organize it.
-              </p>
+                Create a professional gathering for your industry or interest group. We&apos;ll help you promote and organize it.
+              </p>  
             </div>
             <div className="md:w-1/3 text-center md:text-right">
               <button className="bg-white text-indigo-600 font-medium px-6 py-3 rounded-lg shadow-md hover:bg-indigo-50 transition-all">

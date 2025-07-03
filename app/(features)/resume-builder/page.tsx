@@ -40,7 +40,7 @@ export default function ResumeBuilder() {
       id: `${type}-${Date.now()}`,
       type,
       title: type.charAt(0).toUpperCase() + type.slice(1),
-      content: type === 'experience' ? [] : type === 'education' ? [] : type === 'skills' ? [] : '',
+      content: type === 'experience' ? [] : type === 'education' ? [] : type === 'skills' ? [] : type === 'projects' ? [] : type === 'certifications' ? [] : [],
       isVisible: true,
       order: resumeData.sections.length
     };
@@ -93,7 +93,7 @@ export default function ResumeBuilder() {
       const section = resumeData.sections.find(s => s.id === sectionId);
       if (section?.type === 'summary') {
         updateSection(sectionId, {
-          content: 'AI-generated professional summary based on your experience and skills. This summary highlights your key achievements and expertise in a compelling way that will catch recruiters\' attention.'
+          content: ['AI-generated professional summary based on your experience and skills. This summary highlights your key achievements and expertise in a compelling way that will catch recruiters\' attention.']
         });
       }
       setIsGenerating(false);

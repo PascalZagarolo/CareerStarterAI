@@ -1,6 +1,6 @@
 'use client';
 
-import { ResumeSection, Experience } from './types';
+import { ResumeSection, Experience, Education, Project, Certification } from './types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -43,8 +43,8 @@ export default function SectionEditor({
               <Label htmlFor="summary" className="text-sm font-medium text-gray-700">Professional Summary</Label>
               <Textarea
                 id="summary"
-                value={section.content}
-                onChange={(e) => onUpdate(section.id, { content: e.target.value })}
+                value={Array.isArray(section.content) ? section.content.join('\n') : ''}
+                onChange={(e) => onUpdate(section.id, { content: e.target.value.split('\n') })}
                 rows={6}
                 placeholder="Write your professional summary..."
                 className="text-gray-900 placeholder:text-gray-500"
@@ -70,7 +70,10 @@ export default function SectionEditor({
                     achievements: []
                   };
                   onUpdate(section.id, {
-                    content: [...section.content, newExp]
+                    content:
+                      Array.isArray(section.content) && section.type === 'experience'
+                        ? [...(section.content as Experience[]), newExp]
+                        : [newExp]
                   });
                 }}
                 variant="outline"
@@ -82,87 +85,88 @@ export default function SectionEditor({
               </Button>
             </div>
             <div className="space-y-4">
-              {section.content.map((exp: Experience, index: number) => (
-                <Card key={exp.id} className="border-gray-200">
-                  <CardContent className="p-4 space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
+              {Array.isArray(section.content) && section.type === 'experience' &&
+                (section.content as Experience[]).map((exp, index) => (
+                  <Card key={exp.id} className="border-gray-200">
+                    <CardContent className="p-4 space-y-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`company-${exp.id}`} className="text-sm font-medium text-gray-700">Company</Label>
+                          <Input
+                            id={`company-${exp.id}`}
+                            value={exp.company}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                              newContent[index] = { ...exp, company: e.target.value };
+                              onUpdate(section.id, { content: newContent as Experience[] });
+                            }}
+                            placeholder="Company name"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`position-${exp.id}`} className="text-sm font-medium text-gray-700">Position</Label>
+                          <Input
+                            id={`position-${exp.id}`}
+                            value={exp.position}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                              newContent[index] = { ...exp, position: e.target.value };
+                              onUpdate(section.id, { content: newContent as Experience[] });
+                            }}
+                            placeholder="Job title"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`startDate-${exp.id}`} className="text-sm font-medium text-gray-700">Start Date</Label>
+                          <Input
+                            id={`startDate-${exp.id}`}
+                            value={exp.startDate}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                              newContent[index] = { ...exp, startDate: e.target.value };
+                              onUpdate(section.id, { content: newContent as Experience[] });
+                            }}
+                            placeholder="MM/YYYY"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`endDate-${exp.id}`} className="text-sm font-medium text-gray-700">End Date</Label>
+                          <Input
+                            id={`endDate-${exp.id}`}
+                            value={exp.endDate}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                              newContent[index] = { ...exp, endDate: e.target.value };
+                              onUpdate(section.id, { content: newContent as Experience[] });
+                            }}
+                            placeholder="MM/YYYY or Present"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
                       <div className="space-y-2">
-                        <Label htmlFor={`company-${exp.id}`} className="text-sm font-medium text-gray-700">Company</Label>
-                        <Input
-                          id={`company-${exp.id}`}
-                          value={exp.company}
+                        <Label htmlFor={`description-${exp.id}`} className="text-sm font-medium text-gray-700">Description</Label>
+                        <Textarea
+                          id={`description-${exp.id}`}
+                          value={exp.description}
                           onChange={(e) => {
-                            const newContent = [...section.content];
-                            newContent[index] = { ...exp, company: e.target.value };
-                            onUpdate(section.id, { content: newContent });
+                            const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                            newContent[index] = { ...exp, description: e.target.value };
+                            onUpdate(section.id, { content: newContent as Experience[]});
                           }}
-                          placeholder="Company name"
+                          placeholder="Describe your role and responsibilities"
+                          rows={3}
                           className="text-gray-900 placeholder:text-gray-500"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor={`position-${exp.id}`} className="text-sm font-medium text-gray-700">Position</Label>
-                        <Input
-                          id={`position-${exp.id}`}
-                          value={exp.position}
-                          onChange={(e) => {
-                            const newContent = [...section.content];
-                            newContent[index] = { ...exp, position: e.target.value };
-                            onUpdate(section.id, { content: newContent });
-                          }}
-                          placeholder="Job title"
-                          className="text-gray-900 placeholder:text-gray-500"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label htmlFor={`startDate-${exp.id}`} className="text-sm font-medium text-gray-700">Start Date</Label>
-                        <Input
-                          id={`startDate-${exp.id}`}
-                          value={exp.startDate}
-                          onChange={(e) => {
-                            const newContent = [...section.content];
-                            newContent[index] = { ...exp, startDate: e.target.value };
-                            onUpdate(section.id, { content: newContent });
-                          }}
-                          placeholder="MM/YYYY"
-                          className="text-gray-900 placeholder:text-gray-500"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor={`endDate-${exp.id}`} className="text-sm font-medium text-gray-700">End Date</Label>
-                        <Input
-                          id={`endDate-${exp.id}`}
-                          value={exp.endDate}
-                          onChange={(e) => {
-                            const newContent = [...section.content];
-                            newContent[index] = { ...exp, endDate: e.target.value };
-                            onUpdate(section.id, { content: newContent });
-                          }}
-                          placeholder="MM/YYYY or Present"
-                          className="text-gray-900 placeholder:text-gray-500"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`description-${exp.id}`} className="text-sm font-medium text-gray-700">Description</Label>
-                      <Textarea
-                        id={`description-${exp.id}`}
-                        value={exp.description}
-                        onChange={(e) => {
-                          const newContent = [...section.content];
-                          newContent[index] = { ...exp, description: e.target.value };
-                          onUpdate(section.id, { content: newContent });
-                        }}
-                        placeholder="Describe your role and responsibilities"
-                        rows={3}
-                        className="text-gray-900 placeholder:text-gray-500"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
           </div>
         );
@@ -176,12 +180,18 @@ export default function SectionEditor({
                 <Label htmlFor="technical-skills" className="text-sm font-medium text-gray-700">Technical Skills</Label>
                 <Input
                   id="technical-skills"
-                  value={section.content.technical.join(', ')}
+                  value={typeof section.content === 'object' && !Array.isArray(section.content) && section.content.technical ? section.content.technical.join(', ') : ''}
                   onChange={(e) => {
                     const skills = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
-                    onUpdate(section.id, {
-                      content: { ...section.content, technical: skills }
-                    });
+                    if (typeof section.content === 'object' && !Array.isArray(section.content)) {
+                      onUpdate(section.id, {
+                        content: { ...section.content, technical: skills }
+                      });
+                    } else {
+                      onUpdate(section.id, {
+                        content: { technical: skills, soft: [] }
+                      });
+                    }
                   }}
                   placeholder="JavaScript, React, Node.js..."
                   className="text-gray-900 placeholder:text-gray-500"
@@ -192,18 +202,314 @@ export default function SectionEditor({
                 <Label htmlFor="soft-skills" className="text-sm font-medium text-gray-700">Soft Skills</Label>
                 <Input
                   id="soft-skills"
-                  value={section.content.soft.join(', ')}
+                  value={typeof section.content === 'object' && !Array.isArray(section.content) && section.content.soft ? section.content.soft.join(', ') : ''}
                   onChange={(e) => {
                     const skills = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
-                    onUpdate(section.id, {
-                      content: { ...section.content, soft: skills }
-                    });
+                    if (typeof section.content === 'object' && !Array.isArray(section.content)) {
+                      onUpdate(section.id, {
+                        content: { ...section.content, soft: skills }
+                      });
+                    } else {
+                      onUpdate(section.id, {
+                        content: { technical: [], soft: skills }
+                      });
+                    }
                   }}
                   placeholder="Leadership, Communication, Problem Solving..."
                   className="text-gray-900 placeholder:text-gray-500"
                 />
                 <p className="text-xs text-gray-500">Separate skills with commas</p>
               </div>
+            </div>
+          </div>
+        );
+
+      case 'education':
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <Button
+                onClick={() => {
+                  const newEdu: Education = {
+                    id: `edu-${Date.now()}`,
+                    institution: '',
+                    degree: '',
+                    field: '',
+                    startDate: '',
+                    endDate: '',
+                    gpa: ''
+                  };
+                  onUpdate(section.id, {
+                    content:
+                      Array.isArray(section.content) && section.type === 'education'
+                        ? [...(section.content as Education[]), newEdu]
+                        : [newEdu]
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="text-blue-600 border-blue-200 hover:bg-blue-50"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Education
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {Array.isArray(section.content) && section.type === 'education' &&
+                (section.content as Education[]).map((edu, index) => (
+                  <Card key={edu.id} className="border-gray-200">
+                    <CardContent className="p-4 space-y-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`institution-${edu.id}`} className="text-sm font-medium text-gray-700">Institution</Label>
+                          <Input
+                            id={`institution-${edu.id}`}
+                            value={edu.institution}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'education' ? [...(section.content as Education[])] : [];
+                              newContent[index] = { ...edu, institution: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="Institution name"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`degree-${edu.id}`} className="text-sm font-medium text-gray-700">Degree</Label>
+                          <Input
+                            id={`degree-${edu.id}`}
+                            value={edu.degree}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'education' ? [...(section.content as Education[])] : [];
+                              newContent[index] = { ...edu, degree: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="Degree earned"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`field-${edu.id}`} className="text-sm font-medium text-gray-700">Field of Study</Label>
+                          <Input
+                            id={`field-${edu.id}`}
+                            value={edu.field}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'education' ? [...(section.content as Education[])] : [];
+                              newContent[index] = { ...edu, field: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="Major or area of study"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`startDate-${edu.id}`} className="text-sm font-medium text-gray-700">Start Date</Label>
+                          <Input
+                            id={`startDate-${edu.id}`}
+                            value={edu.startDate}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'education' ? [...(section.content as Education[])] : [];
+                              newContent[index] = { ...edu, startDate: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="MM/YYYY"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`endDate-${edu.id}`} className="text-sm font-medium text-gray-700">End Date</Label>
+                          <Input
+                            id={`endDate-${edu.id}`}
+                            value={edu.endDate}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'education' ? [...(section.content as Education[])] : [];
+                              newContent[index] = { ...edu, endDate: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="MM/YYYY or Present"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          </div>
+        );
+
+      case 'projects':
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <Button
+                onClick={() => {
+                  const newProj: Project = {
+                    id: `proj-${Date.now()}`,
+                    name: '',
+                    description: '',
+                    technologies: []
+                  };
+                  onUpdate(section.id, {
+                    content:
+                      Array.isArray(section.content) && section.type === 'projects'
+                        ? [...(section.content as Project[]), newProj]
+                        : [newProj]
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="text-purple-600 border-purple-200 hover:bg-purple-50"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Project
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {Array.isArray(section.content) && section.type === 'projects' &&
+                (section.content as Project[]).map((proj, index) => (
+                  <Card key={proj.id} className="border-gray-200">
+                    <CardContent className="p-4 space-y-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`name-${proj.id}`} className="text-sm font-medium text-gray-700">Name</Label>
+                          <Input
+                            id={`name-${proj.id}`}
+                            value={proj.name}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                              newContent[index] = { ...proj, name: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="Project name"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`description-${proj.id}`} className="text-sm font-medium text-gray-700">Description</Label>
+                        <Textarea
+                          id={`description-${proj.id}`}
+                          value={proj.description}
+                          onChange={(e) => {
+                            const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                            newContent[index] = { ...proj, description: e.target.value };
+                            onUpdate(section.id, { content: newContent });
+                          }}
+                          placeholder="Describe your project"
+                          rows={3}
+                          className="text-gray-900 placeholder:text-gray-500"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          </div>
+        );
+
+      case 'certifications':
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <Button
+                onClick={() => {
+                  const newCert: Certification = {
+                    id: `cert-${Date.now()}`,
+                    name: '',
+                    issuer: '',
+                    date: '',
+                  };
+                  onUpdate(section.id, {
+                    content:
+                      Array.isArray(section.content) && section.type === 'certifications'
+                        ? [...(section.content as Certification[]), newCert]
+                        : [newCert]
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="text-teal-600 border-teal-200 hover:bg-teal-50"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Certification
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {Array.isArray(section.content) && section.type === 'certifications' &&
+                (section.content as Certification[]).map((cert, index) => (
+                  <Card key={cert.id} className="border-gray-200">
+                    <CardContent className="p-4 space-y-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`name-${cert.id}`} className="text-sm font-medium text-gray-700">Name</Label>
+                          <Input
+                            id={`name-${cert.id}`}
+                            value={cert.name}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'certifications' ? [...(section.content as Certification[])] : [];
+                              newContent[index] = { ...cert, name: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="Certification name"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`issuer-${cert.id}`} className="text-sm font-medium text-gray-700">Issuer</Label>
+                          <Input
+                            id={`issuer-${cert.id}`}
+                            value={cert.issuer}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'certifications' ? [...(section.content as Certification[])] : [];
+                              newContent[index] = { ...cert, issuer: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="Certifying organization"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`date-${cert.id}`} className="text-sm font-medium text-gray-700">Date</Label>
+                          <Input
+                            id={`date-${cert.id}`}
+                            value={cert.date}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'certifications' ? [...(section.content as Certification[])] : [];
+                              newContent[index] = { ...cert, date: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="MM/YYYY"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`credentialUrl-${cert.id}`} className="text-sm font-medium text-gray-700">Credential URL</Label>
+                        <Input
+                          id={`credentialUrl-${cert.id}`}
+                         
+                          onChange={() => {
+                            const newContent = Array.isArray(section.content) && section.type === 'certifications' ? [...(section.content as Certification[])] : [];
+                            newContent[index] = { ...cert };
+                            onUpdate(section.id, { content: newContent });
+                          }}
+                          placeholder="Credential URL"
+                          className="text-gray-900 placeholder:text-gray-500"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
           </div>
         );

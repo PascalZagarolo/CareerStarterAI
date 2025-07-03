@@ -5,8 +5,12 @@ import { ResumeData } from './types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
-import { templates, getTemplateById, getColorSchemeById } from './templates/template-data';
-import { templateComponents } from './templates';
+import { getTemplateById, getColorSchemeById } from './templates/template-data';
+import ProfessionalClassic from './templates/professional-classic';
+import ModernMinimal from './templates/modern-minimal';
+import CreativeSidebar from './templates/creative-sidebar';
+import ExecutiveTwoColumn from './templates/executive-two-column';
+import StartupModern from './templates/startup-modern';
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -29,29 +33,23 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
     let Component;
     switch (currentTemplate.id) {
       case 'professional-classic':
-        const { default: ProfessionalClassic } = require('./templates/professional-classic');
         Component = ProfessionalClassic;
         break;
       case 'modern-minimal':
-        const { default: ModernMinimal } = require('./templates/modern-minimal');
         Component = ModernMinimal;
         break;
       case 'creative-sidebar':
-        const { default: CreativeSidebar } = require('./templates/creative-sidebar');
         Component = CreativeSidebar;
         break;
       case 'executive-two-column':
-        const { default: ExecutiveTwoColumn } = require('./templates/executive-two-column');
         Component = ExecutiveTwoColumn;
         break;
       case 'startup-modern':
-        const { default: StartupModern } = require('./templates/startup-modern');
         Component = StartupModern;
         break;
       default:
         // Fallback to professional classic
-        const { default: FallbackTemplate } = require('./templates/professional-classic');
-        Component = FallbackTemplate;
+        Component = ProfessionalClassic;
     }
 
     return (

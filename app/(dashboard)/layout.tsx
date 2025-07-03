@@ -9,11 +9,9 @@ import {
   FileText, 
   TrendingUp, 
   Mail, 
-  Settings, 
   LogOut,
   Menu,
   X,
-  User,
   Briefcase
 } from 'lucide-react';
 

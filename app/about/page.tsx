@@ -243,7 +243,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 max-w-6xl text-center">
           <h2 className="text-3xl font-bold mb-6">Join Our Journey</h2>
           <p className="text-gray-600 max-w-3xl mx-auto mb-8">
-            Be part of our mission to transform career development with AI. Whether you're a job seeker looking to advance your career or a potential team member, we'd love to connect with you.
+            Be part of our mission to transform career development with AI. Whether you&apos;re a job seeker looking to advance your career or a potential team member, we&apos;d love to connect with you.
           </p>
           <a href="/signup" className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors">
             Get Started Today

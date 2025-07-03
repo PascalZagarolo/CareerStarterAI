@@ -63,7 +63,7 @@ export default function Home() {
                 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight"
                 variants={fadeIn}
               >
-                Getting hired <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">shouldn't feel</span> like a job.
+                Getting hired <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">shouldn&apos;t feel</span> like a job.
               </motion.h1>
               
               <motion.p 
@@ -677,7 +677,7 @@ export default function Home() {
                 <FiStar className="fill-current" />
               </div>
               <p className="text-gray-700">
-                "CareerStarter helped me identify the skills I needed to transition into tech. Within 3 months of following their roadmap, I landed my first developer job!"
+                &quot;CareerStarter helped me identify the skills I needed to transition into tech. Within 3 months of following their roadmap, I landed my first developer job!&quot;
               </p>
             </motion.div>
             
@@ -710,7 +710,7 @@ export default function Home() {
                 <FiStar className="fill-current" />
               </div>
               <p className="text-gray-700">
-                "The AI resume builder is incredible. It helped me highlight my achievements in a way I never could have on my own. I started getting interviews within a week!"
+                &quot;The AI resume builder is incredible. It helped me highlight my achievements in a way I never could have on my own. I started getting interviews within a week!&quot;
               </p>
             </motion.div>
             
@@ -743,7 +743,7 @@ export default function Home() {
                 <FiStar className="fill-current" />
               </div>
               <p className="text-gray-700">
-                "As a career changer, I was lost about how to position myself. CareerStarter's cover letter generator helped me tell my story convincingly. I'm now working at my dream company!"
+                &quot;As a career changer, I was lost about how to position myself. CareerStarter&apos;s cover letter generator helped me tell my story convincingly. I&apos;m now working at my dream company!&quot;
               </p>
             </motion.div>
           </div>
@@ -762,7 +762,7 @@ export default function Home() {
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-gray-900">Choose The Right Plan For You</h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-              Whether you're just getting started or looking for advanced features, we have a plan that fits your needs.
+              Whether you&apos;re just getting started or looking for advanced features, we have a plan that fits your needs.
             </p>
             
             {/* Monthly/Annual Toggle */}
@@ -1098,7 +1098,7 @@ export default function Home() {
               
               <div className={`px-6 pb-4 ${openFAQ === 0 ? 'block' : 'hidden'}`}>
                 <p className="text-gray-700">
-                  Yes, you can cancel your subscription at any time. You'll continue to have access to the paid features until the end of your billing period.
+                  Yes, you can cancel your subscription at any time. You&apos;ll continue to have access to the paid features until the end of your billing period.
                 </p>
               </div>
             </motion.div>
@@ -1128,7 +1128,7 @@ export default function Home() {
               
               <div className={`px-6 pb-4 ${openFAQ === 1 ? 'block' : 'hidden'}`}>
                 <p className="text-gray-700">
-                  Your documents will remain in your account, but you'll only be able to access the features available in your current plan. You can still view all your saved documents.
+                  Your documents will remain in your account, but you&apos;ll only be able to access the features available in your current plan. You can still view all your saved documents.
                 </p>
               </div>
             </motion.div>
@@ -1145,7 +1145,7 @@ export default function Home() {
                 onClick={() => toggleFAQ(2)}
                 className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
               >
-                <h3 className="text-lg font-semibold text-gray-900">What's the difference between Premium and Professional?</h3>
+                <h3 className="text-lg font-semibold text-gray-900">What&apos;s the difference between Premium and Professional?</h3>
                 <svg 
                   className={`w-5 h-5 text-gray-500 transform transition-transform ${openFAQ === 2 ? 'rotate-180' : ''}`}
                   fill="none" 
@@ -1158,7 +1158,7 @@ export default function Home() {
               
               <div className={`px-6 pb-4 ${openFAQ === 2 ? 'block' : 'hidden'}`}>
                 <p className="text-gray-700">
-                  Professional offers unlimited access to all features including unlimited AI headshots, cover letters, and the exclusive AI interview coach. It's ideal for serious job seekers who need comprehensive tools.
+                  Professional offers unlimited access to all features including unlimited AI headshots, cover letters, and the exclusive AI interview coach. It&apos;s ideal for serious job seekers who need comprehensive tools.
                 </p>
               </div>
             </motion.div>
@@ -1188,7 +1188,7 @@ export default function Home() {
               
               <div className={`px-6 pb-4 ${openFAQ === 3 ? 'block' : 'hidden'}`}>
                 <p className="text-gray-700">
-                  We offer a 14-day money-back guarantee if you're not satisfied with your subscription. Contact our support team to request a refund.
+                  We offer a 14-day money-back guarantee if you&apos;re not satisfied with your subscription. Contact our support team to request a refund.
                 </p>
               </div>
             </motion.div>
