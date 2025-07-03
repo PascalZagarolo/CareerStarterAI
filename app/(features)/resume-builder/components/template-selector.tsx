@@ -3,7 +3,7 @@
 import { Template } from './types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles, Palette, ChevronLeft, ChevronRight, Lock, Crown, Zap, Star } from 'lucide-react';
+import { Sparkles, Palette, ChevronLeft, ChevronRight, Crown, Zap, Star } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 interface TemplateSelectorProps {
