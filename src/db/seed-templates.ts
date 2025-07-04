@@ -42,7 +42,7 @@ export async function seedTemplates() {
         id: template.id,
         name: template.name,
         description: template.description,
-        categoryId: template.category,
+        categoryId: template.categoryId,
         layout: template.layout,
         fontFamily: template.fontFamily,
         fontSize: template.fontSize,
@@ -56,26 +56,28 @@ export async function seedTemplates() {
 
     // Insert color schemes
     for (const template of existingTemplates) {
-      for (const colorScheme of template.colorSchemes) {
-        await db.insert(colorSchemes).values({
-          templateId: template.id,
-          name: colorScheme.name,
-          primary: colorScheme.primary,
-          secondary: colorScheme.secondary,
-          accent: colorScheme.accent,
-          background: colorScheme.background,
-          text: colorScheme.text,
-          border: colorScheme.border,
-          displayOrder: 0, // Will be set based on color scheme order
-          isDefault: false, // First color scheme will be default
-        })
+      if (template.colorSchemes) {
+        for (const colorScheme of template.colorSchemes) {
+          await db.insert(colorSchemes).values({
+            templateId: template.id,
+            name: colorScheme.name,
+            primary: colorScheme.primary,
+            secondary: colorScheme.secondary,
+            accent: colorScheme.accent,
+            background: colorScheme.background,
+            text: colorScheme.text,
+            border: colorScheme.border,
+            displayOrder: 0, // Will be set based on color scheme order
+            isDefault: false, // First color scheme will be default
+          })
+        }
       }
     }
     console.log('✅ Color schemes seeded');
 
     // Set default color schemes (first one for each template)
     for (const template of existingTemplates) {
-      if (template.colorSchemes.length > 0) {
+      if (template.colorSchemes && template.colorSchemes.length > 0) {
         await db
           .update(colorSchemes)
           .set({ isDefault: true })

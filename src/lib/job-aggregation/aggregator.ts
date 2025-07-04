@@ -69,7 +69,7 @@ export class JobAggregationService {
 
     // Process and rank jobs
     const uniqueJobs = deduplicateJobs(allJobs);
-    const rankedJobs = rankJobs(uniqueJobs, params);
+    const rankedJobs = rankJobs(uniqueJobs);
 
     // Apply filters
     const filteredJobs = this.applyFilters(rankedJobs, params);

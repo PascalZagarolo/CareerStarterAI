@@ -168,6 +168,7 @@ export const templates: Template[] = [
     id: 'professional-classic',
     name: 'Professional Classic',
     description: 'Clean and traditional layout perfect for corporate environments',
+    categoryId: 'professional',
     category: 'professional',
     layout: 'single-column',
     colorSchemes: colorSchemes.professional,
@@ -181,6 +182,7 @@ export const templates: Template[] = [
     id: 'modern-minimal',
     name: 'Modern Minimal',
     description: 'Sleek and contemporary design with plenty of white space',
+    categoryId: 'modern',
     category: 'modern',
     layout: 'single-column',
     colorSchemes: colorSchemes.modern,
@@ -194,6 +196,7 @@ export const templates: Template[] = [
     id: 'creative-sidebar',
     name: 'Creative Sidebar',
     description: 'Bold design with sidebar layout for creative professionals',
+    categoryId: 'creative',
     category: 'creative',
     layout: 'sidebar',
     colorSchemes: colorSchemes.creative,
@@ -207,6 +210,7 @@ export const templates: Template[] = [
     id: 'startup-modern',
     name: 'Startup Modern',
     description: 'Fresh and innovative design for tech and startup professionals',
+    categoryId: 'modern',
     category: 'modern',
     layout: 'header-focused',
     colorSchemes: colorSchemes.modern,
@@ -220,6 +224,7 @@ export const templates: Template[] = [
     id: 'academic-clean',
     name: 'Academic Clean',
     description: 'Structured layout ideal for academic and research positions',
+    categoryId: 'classic',
     category: 'classic',
     layout: 'single-column',
     colorSchemes: colorSchemes.classic,
@@ -233,6 +238,7 @@ export const templates: Template[] = [
     id: 'designer-portfolio',
     name: 'Designer Portfolio',
     description: 'Visually striking design for creative and design professionals',
+    categoryId: 'creative',
     category: 'creative',
     layout: 'sidebar',
     colorSchemes: colorSchemes.creative,
@@ -246,6 +252,7 @@ export const templates: Template[] = [
     id: 'minimalist-clean',
     name: 'Minimalist Clean',
     description: 'Ultra-clean design with maximum readability',
+    categoryId: 'minimal',
     category: 'minimal',
     layout: 'single-column',
     colorSchemes: colorSchemes.minimal,
@@ -259,6 +266,7 @@ export const templates: Template[] = [
     id: 'executive-two-column',
     name: 'Executive Two-Column',
     description: 'Sophisticated two-column layout for senior professionals',
+    categoryId: 'professional',
     category: 'professional',
     layout: 'two-column',
     colorSchemes: colorSchemes.classic,
@@ -272,6 +280,7 @@ export const templates: Template[] = [
     id: 'corporate-elegant',
     name: 'Corporate Elegant',
     description: 'Refined and sophisticated design for corporate leadership',
+    categoryId: 'professional',
     category: 'professional',
     layout: 'two-column',
     colorSchemes: colorSchemes.professional,
@@ -285,6 +294,7 @@ export const templates: Template[] = [
     id: 'tech-focused',
     name: 'Tech Focused',
     description: 'Modern design optimized for technology and engineering roles',
+    categoryId: 'modern',
     category: 'modern',
     layout: 'header-focused',
     colorSchemes: colorSchemes.modern,
@@ -306,5 +316,5 @@ export const getTemplatesByCategory = (category: string): Template[] => {
 
 export const getColorSchemeById = (templateId: string, colorSchemeId: string): ColorScheme | undefined => {
   const template = getTemplateById(templateId);
-  return template?.colorSchemes.find(scheme => scheme.id === colorSchemeId);
+  return template?.colorSchemes?.find(scheme => scheme.id === colorSchemeId);
 }; 

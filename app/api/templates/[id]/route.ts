@@ -3,10 +3,11 @@ import { TemplateService } from '@/lib/template-service';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const template = await TemplateService.getTemplateById(params.id);
+    const { id } = await params;
+    const template = await TemplateService.getTemplateById(id);
 
     if (!template) {
       return NextResponse.json(
