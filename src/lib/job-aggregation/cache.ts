@@ -172,7 +172,7 @@ export const deduplicateJobs = (jobs: Job[]): Job[] => {
 };
 
 // Helper function to rank jobs by relevance
-export const rankJobs = (jobs: Job[], searchParams: SearchParams): Job[] => {
+export const rankJobs = (jobs: Job[]): Job[] => {
   return jobs.sort((a, b) => {
     let scoreA = 0;
     let scoreB = 0;

@@ -3,7 +3,7 @@
 import { db } from './index';
 import { templateCategories, templates, colorSchemes } from './schema';
 import { and, eq } from 'drizzle-orm';
-import { colorSchemes as existingColorSchemes, templates as existingTemplates } from '../../app/(features)/resume-builder/components/templates/template-data';
+import { templates as existingTemplates } from '../../app/(features)/resume-builder/components/templates/template-data';
 
 // Load environment variables
 import 'dotenv/config';

@@ -1,4 +1,4 @@
-import { Job, SearchParams, APIResponse, JobSource } from './types';
+import { Job, SearchParams, APIResponse } from './types';
 import { getApiKeys } from './sources';
 
 // Base API client with rate limiting and error handling

@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const result = await jobAggregationService.aggregateJobs(params);
 
     // Get user-submitted jobs from database
-    let whereConditions = [
+    const whereConditions = [
       eq(jobs.status, 'active'),
       eq(jobs.source, 'user-submitted')
     ];

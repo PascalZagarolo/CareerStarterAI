@@ -1,16 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
+import {  useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-wrapper';
 import { 
   ArrowLeft, 
   MapPin, 
   Building2, 
   Calendar, 
-  DollarSign, 
-  Briefcase,
-  Clock,
+
   Users,
   Globe,
   Mail,
@@ -21,28 +19,28 @@ import {
   Eye,
   TrendingUp,
   CheckCircle,
-  AlertCircle,
+
   Star,
   ExternalLink,
   FileText,
   MessageSquare,
-  Zap,
+
   Sparkles,
   Brain,
   Target,
   Lightbulb,
-  BarChart3,
-  ThumbsUp,
-  ThumbsDown,
+
+
+
   MessageCircle,
-  CalendarDays,
+
   Bell,
   Edit3,
   Download,
-  Award,
-  TrendingDown,
+
+
   Users2,
-  Heart,
+ 
   Flag
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -163,7 +161,7 @@ const mockJobDetails = {
 };
 
 export default function JobDetails() {
-  const params = useParams();
+
   const router = useRouter();
   const { user } = useAuth();
   const [job, setJob] = useState(mockJobDetails);
@@ -591,17 +589,17 @@ export default function JobDetails() {
                   {/* Common Questions */}
                   <div className="bg-white rounded-lg p-6 border border-blue-100">
                     <h4 className="font-semibold text-gray-900 mb-4">Common Interview Questions</h4>
-                    <div className="space-y-4">
+                    <div className="space-y-4"> 
                       <div className="border-l-4 border-blue-500 pl-4">
-                        <h5 className="font-medium text-gray-900 mb-2">"How would you approach building a recommendation system?"</h5>
+                        <h5 className="font-medium text-gray-900 mb-2">How would you approach building a recommendation system?</h5>
                         <p className="text-sm text-gray-600">Focus on data collection, algorithm selection, and evaluation metrics.</p>
                       </div>
                       <div className="border-l-4 border-blue-500 pl-4">
-                        <h5 className="font-medium text-gray-900 mb-2">"Describe a challenging ML project you've worked on."</h5>
+                        <h5 className="font-medium text-gray-900 mb-2">Describe a challenging ML project you{"'"}ve worked on.</h5>
                         <p className="text-sm text-gray-600">Use the STAR method: Situation, Task, Action, Result.</p>
                       </div>
                       <div className="border-l-4 border-blue-500 pl-4">
-                        <h5 className="font-medium text-gray-900 mb-2">"How do you stay updated with AI research?"</h5>
+                        <h5 className="font-medium text-gray-900 mb-2">How do you stay updated with AI research?</h5>
                         <p className="text-sm text-gray-600">Mention conferences, papers, and online communities.</p>
                       </div>
                     </div>
@@ -621,7 +619,7 @@ export default function JobDetails() {
                       </div>
                       <div className="flex items-start">
                         <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
-                        <span className="text-sm text-gray-700">Know the company's tech stack and products</span>
+                        <span className="text-sm text-gray-700">Know the company{"'"}s tech stack and products</span>
                       </div>
                     </div>
                   </div>
@@ -694,7 +692,7 @@ export default function JobDetails() {
                             ))}
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600">"Great company culture, excellent work-life balance, and amazing opportunities for growth."</p>
+                        <p className="text-sm text-gray-600">Great company culture, excellent work-life balance, and amazing opportunities for growth.</p>
                       </div>
                       <div className="border-b border-gray-100 pb-4">
                         <div className="flex items-center justify-between mb-2">
@@ -705,7 +703,7 @@ export default function JobDetails() {
                             ))}
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600">"Innovative projects and supportive team. Benefits are competitive."</p>
+                        <p className="text-sm text-gray-600">Innovative projects and supportive team. Benefits are competitive.</p>
                       </div>
                     </div>
                   </div>
@@ -772,7 +770,7 @@ export default function JobDetails() {
                 <div className="text-center">
                   <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Application Submitted!</h3>
-                  <p className="text-gray-600 mb-4">We'll review your application and get back to you soon.</p>
+                  <p className="text-gray-600 mb-4">We{"'"}ll review your application and get back to you soon.</p>
                   <Button variant="outline" className="w-full">
                     <MessageSquare className="w-4 h-4 mr-2" />
                     Track Application
@@ -1000,8 +998,8 @@ export default function JobDetails() {
                     <div className="space-y-2 text-sm text-blue-800">
                       <div className="flex items-start">
                         <CheckCircle className="w-4 h-4 mt-0.5 mr-2 flex-shrink-0" />
-                        <span>Add "Machine Learning" to your skills section</span>
-                      </div>
+                        <span>Add {"'"}Machine Learning{"'"} to your skills section</span>
+                      </div>  
                       <div className="flex items-start">
                         <CheckCircle className="w-4 h-4 mt-0.5 mr-2 flex-shrink-0" />
                         <span>Highlight Python projects in your experience</span>

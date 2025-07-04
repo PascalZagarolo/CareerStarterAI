@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { TemplateService } from '@/lib/template-service';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const categories = await TemplateService.getTemplateCategories();
 

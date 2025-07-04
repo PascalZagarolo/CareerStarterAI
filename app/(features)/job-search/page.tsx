@@ -14,12 +14,12 @@ import {
   Bookmark,
   BookmarkPlus,
   Sparkles,
-  Loader2,
+
   X,
   ExternalLink,
   RefreshCw,
   Database,
-  Globe,
+
   Plus
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -47,8 +47,9 @@ const aiSuggestions = [
 
 export default function JobSearch() {
   const router = useRouter();
-  const { user } = useAuth();
+  
   const [jobs, setJobs] = useState<Job[]>([]);
+  console.log(jobs);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

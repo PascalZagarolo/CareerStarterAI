@@ -25,8 +25,8 @@ export default function SubmitJob() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [jobId, setJobId] = useState('');
-  
+  const [jobId, setJobId] = useState<string>('');
+  console.log(jobId);
   const [formData, setFormData] = useState({
     title: '',
     company: '',
@@ -120,7 +120,7 @@ export default function SubmitJob() {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Job Submitted Successfully!</h2>
           <p className="text-gray-600 mb-6">
             Your job posting has been submitted and is pending verification. 
-            We'll review it and make it live within 24 hours.
+            We{"'"}ll review it and make it live within 24 hours.
           </p>
           <div className="space-y-3">
             <Button 

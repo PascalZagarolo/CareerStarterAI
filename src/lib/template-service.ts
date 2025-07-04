@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import { templates, templateCategories, colorSchemes, userResumes } from '@/db/schema';
 import { eq, and, desc, asc } from 'drizzle-orm';
-import type { Template, ColorScheme, TemplateCategory, UserResume } from '@/db/schema';
+import type { Template, TemplateCategory } from '@/db/schema';
 
 export class TemplateService {
   /**

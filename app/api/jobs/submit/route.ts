@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     const jobId = nanoid(12);
 
     // Create job record
-    const newJob = await db.insert(jobs).values({
+    await db.insert(jobs).values({
       id: jobId,
       title,
       company,

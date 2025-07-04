@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { ResumeData, Template, ColorScheme } from './types';
+import { ResumeData, Template } from './types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
