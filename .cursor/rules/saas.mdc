@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Enforce strict error handling, logging, and observability across your codebase. Never silently fail. Every error should be actionable, logged, and monitored.

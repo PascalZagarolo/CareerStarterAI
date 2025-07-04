@@ -29,7 +29,9 @@ export default function TemplateSelector({
   
   const categories = [
     { id: 'all', name: 'All Templates' },
-    { id: 'professional', name: 'Professional' },
+    { id: 'free', name: 'Free Templates' },
+    { id: 'premium', name: 'Premium Templates' },
+    { id: 'professional', name: 'Professional Templates' },
     { id: 'modern', name: 'Modern' },
     { id: 'creative', name: 'Creative' },
     { id: 'classic', name: 'Classic' },
@@ -38,7 +40,7 @@ export default function TemplateSelector({
 
   const filteredTemplates = selectedCategory === 'all' 
     ? templates 
-    : templates.filter(template => template.category === selectedCategory);
+    : templates.filter(template => template.categoryId === selectedCategory);
 
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
 
@@ -212,16 +214,24 @@ export default function TemplateSelector({
                       <div className="aspect-[4/3] bg-gray-100 rounded-t-lg flex items-center justify-center p-4 relative overflow-hidden">
                         <div className="text-center w-full">
                           <div className="flex justify-center mb-2">
-                            {template.colorSchemes.slice(0, 3).map((scheme, index) => (
-                              <div
-                                key={scheme.id}
-                                className="w-6 h-6 rounded-full border-2 border-white shadow-sm"
-                                style={{ 
-                                  backgroundColor: scheme.primary,
-                                  marginLeft: index > 0 ? '-8px' : '0'
-                                }}
-                              ></div>
-                            ))}
+                            {template.colorSchemes && Array.isArray(template.colorSchemes) && template.colorSchemes.length > 0 ? (
+                              template.colorSchemes.slice(0, 3).map((scheme, index) => (
+                                <div
+                                  key={scheme.id}
+                                  className="w-6 h-6 rounded-full border-2 border-white shadow-sm"
+                                  style={{ 
+                                    backgroundColor: scheme.primary,
+                                    marginLeft: index > 0 ? '-8px' : '0'
+                                  }}
+                                ></div>
+                              ))
+                            ) : (
+                              <div className="flex space-x-1">
+                                <div className="w-6 h-6 rounded-full border-2 border-white shadow-sm bg-gray-300"></div>
+                                <div className="w-6 h-6 rounded-full border-2 border-white shadow-sm bg-gray-400"></div>
+                                <div className="w-6 h-6 rounded-full border-2 border-white shadow-sm bg-gray-500"></div>
+                              </div>
+                            )}
                           </div>
                           <div className="text-xs text-gray-600 font-medium">{template.name}</div>
                           <div className="text-xs text-gray-500 mt-1">{template.description}</div>
@@ -269,7 +279,7 @@ export default function TemplateSelector({
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="text-sm font-medium text-gray-900">{template.name}</div>
-                            <div className="text-xs text-gray-500 capitalize">{template.category} • {template.layout}</div>
+                            <div className="text-xs text-gray-500 capitalize">{template.categoryId} • {template.layout}</div>
                           </div>
                           {template.plan !== 'free' && (
                             <div className="flex items-center space-x-1">
@@ -338,7 +348,8 @@ export default function TemplateSelector({
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {currentTemplate.colorSchemes.map((scheme) => (
+              {currentTemplate.colorSchemes && Array.isArray(currentTemplate.colorSchemes) && currentTemplate.colorSchemes.length > 0 ? (
+                currentTemplate.colorSchemes.map((scheme) => (
                 <div
                   key={scheme.id}
                   onClick={() => onColorSchemeChange(scheme.id)}
@@ -380,7 +391,15 @@ export default function TemplateSelector({
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+              ) : (
+                <div className="col-span-full text-center py-8">
+                  <div className="text-gray-500">
+                    <Palette className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>No color schemes available for this template</p>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

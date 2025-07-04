@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ResumeData, ResumeSection } from './components/types';
 import { defaultResumeData } from './components/data';
-import { templates } from './components/templates/template-data';
 import Header from './components/header';
 import PersonalInfoEditor from './components/personal-info-editor';
 import SectionManager from './components/section-manager';
 import SectionEditor from './components/section-editor';
 import ResumePreview from './components/resume-preview';
 import TemplateSelector from './components/template-selector';
+import LoadingSpinner from './components/loading-spinner';
+
 
 export default function ResumeBuilder() {
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
@@ -17,6 +18,46 @@ export default function ResumeBuilder() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('professional-classic');
   const [selectedColorScheme, setSelectedColorScheme] = useState<string>('navy-blue');
+  
+  // Database state
+  const [templates, setTemplates] = useState<any[]>([]);
+  const [isLoadingTemplates, setIsLoadingTemplates] = useState(true);
+  const [templateError, setTemplateError] = useState<string | null>(null);
+
+  // Fetch templates from database
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        setIsLoadingTemplates(true);
+        setTemplateError(null);
+        
+        const response = await fetch('/api/templates');
+        const result = await response.json();
+        
+        if (result.success) {
+          setTemplates(result.data);
+          // Set default template and color scheme if available
+          if (result.data.length > 0) {
+            const firstTemplate = result.data[0];
+            setSelectedTemplate(firstTemplate.id);
+            // Safely check for color schemes
+            if (firstTemplate.colorSchemes && Array.isArray(firstTemplate.colorSchemes) && firstTemplate.colorSchemes.length > 0) {
+              setSelectedColorScheme(firstTemplate.colorSchemes[0].id);
+            }
+          }
+        } else {
+          setTemplateError(result.error || 'Failed to load templates');
+        }
+      } catch (error) {
+        console.error('Error fetching templates:', error);
+        setTemplateError('Failed to connect to template service');
+      } finally {
+        setIsLoadingTemplates(false);
+      }
+    };
+
+    fetchTemplates();
+  }, []);
 
   // Handlers
   const updateSection = (sectionId: string, updates: Partial<ResumeSection>) => {
@@ -104,7 +145,7 @@ export default function ResumeBuilder() {
     setSelectedTemplate(templateId);
     // Set the first color scheme of the new template as default
     const template = templates.find(t => t.id === templateId);
-    if (template && template.colorSchemes.length > 0) {
+    if (template && template.colorSchemes && Array.isArray(template.colorSchemes) && template.colorSchemes.length > 0) {
       setSelectedColorScheme(template.colorSchemes[0].id);
     }
   };
@@ -119,6 +160,52 @@ export default function ResumeBuilder() {
   };
 
   const activeSectionData = resumeData.sections.find(s => s.id === activeSection);
+
+    // Show loading state while fetching templates
+  if (isLoadingTemplates) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header onDownloadPDF={downloadPDF} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <LoadingSpinner 
+              size="lg" 
+              text="Loading beautiful templates..." 
+              className="py-12"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if templates failed to load
+  if (templateError) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header onDownloadPDF={downloadPDF} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to Load Templates</h3>
+              <p className="text-gray-600 mb-4">{templateError}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -162,6 +249,7 @@ export default function ResumeBuilder() {
               resumeData={resumeData} 
               selectedTemplate={selectedTemplate}
               selectedColorScheme={selectedColorScheme}
+              templates={templates}
             />
           </div>
         </div>

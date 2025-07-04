@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { FiCheckCircle, FiArrowRight, FiStar } from 'react-icons/fi';
 import { BsLightningCharge, BsGraphUp, BsBriefcase } from 'react-icons/bs';
 import { HiOutlineDocument, HiOutlineChatAlt2, HiOutlineChartBar } from 'react-icons/hi';
+import { Search, Bookmark } from 'lucide-react';
 
 // Animation variants
 const fadeIn = {
@@ -44,7 +45,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
         
-        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 max-w-[1400px] relative z-10">
           <div className="flex flex-col items-center md:flex-row md:justify-between md:space-x-8">
             <motion.div 
               className="md:w-1/2 mb-16 md:mb-0 text-center md:text-left"
@@ -198,7 +199,7 @@ export default function Home() {
 
       {/* Client logos */}
       <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-[1400px]">
           <div className="text-center mb-8">
             <p className="text-gray-500 font-medium">Trusted by professionals from companies like</p>
           </div>
@@ -215,7 +216,7 @@ export default function Home() {
 
       {/* Features Section - Update to match new functions */}
       <section id="features" className="py-24 bg-white">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-[1400px]">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -487,13 +488,270 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Job Search Promotion Section */}
+      <section className="py-24 bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -mt-32 -mr-32"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -mb-32 -ml-32"></div>
+        
+        <div className="container mx-auto px-4 max-w-[1400px] relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Content */}
+            <motion.div 
+              className="text-center lg:text-left"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full mb-6">
+                <BsLightningCharge className="w-4 h-4 mr-2" />
+                AI-Powered Job Matching
+              </div>
+              
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+                Stop Scrolling, Start <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Finding</span>
+              </h2>
+              
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Our AI job search assistant analyzes thousands of opportunities to find the perfect matches for your skills, experience, and career goals. No more endless scrolling through irrelevant job boards.
+              </p>
+              
+              {/* Key Benefits */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <FiCheckCircle className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Smart Job Matching</h4>
+                    <p className="text-gray-600 text-sm">AI analyzes your profile and job requirements for 95% accuracy</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <FiCheckCircle className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Real-time Updates</h4>
+                    <p className="text-gray-600 text-sm">Get notified about new opportunities that match your criteria</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <FiCheckCircle className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Advanced Filters</h4>
+                    <p className="text-gray-600 text-sm">Filter by location, salary, remote work, and experience level</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-6 mb-8">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-indigo-600 mb-1">10K+</div>
+                  <div className="text-sm text-gray-600">Active Jobs</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-indigo-600 mb-1">95%</div>
+                  <div className="text-sm text-gray-600">Match Accuracy</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-indigo-600 mb-1">24/7</div>
+                  <div className="text-sm text-gray-600">AI Monitoring</div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Link 
+                  href="/job-search" 
+                  className="group bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center justify-center shadow-lg hover:shadow-xl"
+                >
+                  Start Job Search
+                  <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                
+                <Link 
+                  href="/signup" 
+                  className="bg-white border border-indigo-200 text-indigo-700 px-8 py-3 rounded-lg font-medium text-lg hover:bg-indigo-50 transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
+                >
+                  Try for Free
+                </Link>
+              </div>
+            </motion.div>
+            
+            {/* Visual Demo */}
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 relative overflow-hidden">
+                {/* Mock Job Search Interface */}
+                <div className="space-y-6">
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <div className="flex items-center bg-gray-50 rounded-lg p-3 border border-gray-200">
+                      <Search className="w-5 h-5 text-gray-400 mr-3" />
+                      <input 
+                        type="text" 
+                        placeholder="Search for jobs, companies, or skills..." 
+                        className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500"
+                        readOnly
+                      />
+                      <div className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Search
+                      </div>
+                    </div>
+                    
+                    {/* AI Suggestions Dropdown */}
+                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 z-10">
+                      <div className="p-2">
+                        <div className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                          <BsLightningCharge className="w-4 h-4 text-indigo-500 mr-2" />
+                          <span className="text-sm">AI Engineer</span>
+                        </div>
+                        <div className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                          <BsLightningCharge className="w-4 h-4 text-indigo-500 mr-2" />
+                          <span className="text-sm">Machine Learning Researcher</span>
+                        </div>
+                        <div className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                          <BsLightningCharge className="w-4 h-4 text-indigo-500 mr-2" />
+                          <span className="text-sm">Data Scientist</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Job Cards */}
+                  <div className="space-y-4">
+                    {/* Job Card 1 */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-semibold text-sm">
+                            T
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <h4 className="font-semibold text-gray-900">Senior AI Engineer</h4>
+                              <span className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 text-xs px-2 py-1 rounded-full border border-purple-200">
+                                <BsLightningCharge className="w-3 h-3 inline mr-1" />
+                                AI Recommended
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2">TechCorp • San Francisco, CA • $120k - $180k</p>
+                            <div className="flex flex-wrap gap-1">
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Remote</span>
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">AI</span>
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Machine Learning</span>
+                            </div>
+                          </div>
+                        </div>
+                        <button className="text-gray-400 hover:text-indigo-600 p-1">
+                          <Bookmark className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Job Card 2 */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-semibold text-sm">
+                            D
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-900 mb-1">Data Scientist</h4>
+                            <p className="text-sm text-gray-600 mb-2">DataFlow Inc • Austin, TX • $90k - $140k</p>
+                            <div className="flex flex-wrap gap-1">
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Hybrid</span>
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Python</span>
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">SQL</span>
+                            </div>
+                          </div>
+                        </div>
+                        <button className="text-gray-400 hover:text-indigo-600 p-1">
+                          <Bookmark className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Job Card 3 */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center text-white font-semibold text-sm">
+                            S
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-900 mb-1">Frontend Developer</h4>
+                            <p className="text-sm text-gray-600 mb-2">StartupXYZ • New York, NY • $80k - $120k</p>
+                            <div className="flex flex-wrap gap-1">
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Remote</span>
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">React</span>
+                              <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">TypeScript</span>
+                            </div>
+                          </div>
+                        </div>
+                        <button className="text-gray-400 hover:text-indigo-600 p-1">
+                          <Bookmark className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Results Count */}
+                  <div className="text-center py-4 border-t border-gray-200">
+                    <p className="text-sm text-gray-600">
+                      Showing <span className="font-semibold text-indigo-600">12</span> of <span className="font-semibold text-indigo-600">1,247</span> matching jobs
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating Elements */}
+              <motion.div 
+                className="absolute -top-4 -right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+              >
+                <div className="flex items-center">
+                  <FiStar className="mr-1" />
+                  <span>95% Match</span>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="absolute -bottom-4 -left-4 bg-white px-3 py-1 rounded-full text-indigo-700 text-sm font-medium shadow-lg border border-indigo-200"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+              >
+                <div className="flex items-center">
+                  <BsLightningCharge className="mr-1" />
+                  <span>AI Powered</span>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works Section with Timeline */}
       <section className="py-24 bg-gray-50 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -mt-32 -mr-32"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -mb-32 -ml-32"></div>
         
-        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 max-w-[1400px] relative z-10">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -633,7 +891,7 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-[1400px]">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}

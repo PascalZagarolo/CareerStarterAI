@@ -69,18 +69,28 @@ export interface ColorScheme {
   background: string;
   text: string;
   border: string;
+  templateId?: string;
+  displayOrder?: number;
+  isDefault?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Template {
   id: string;
   name: string;
   description: string;
-  category: 'professional' | 'creative' | 'modern' | 'classic' | 'minimal';
+  categoryId: string; // Database field
+  category?: string; // Legacy field for backward compatibility
   layout: 'single-column' | 'two-column' | 'sidebar' | 'header-focused';
-  colorSchemes: ColorScheme[];
+  colorSchemes?: ColorScheme[]; // Optional since it might not be loaded
   fontFamily: string;
   fontSize: string;
   spacing: 'compact' | 'standard' | 'spacious';
   thumbnail: string;
   plan: 'free' | 'premium' | 'professional';
+  isActive?: boolean;
+  displayOrder?: number;
+  createdAt?: string;
+  updatedAt?: string;
 } 

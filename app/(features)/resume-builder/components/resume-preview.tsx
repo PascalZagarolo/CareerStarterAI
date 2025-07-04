@@ -1,11 +1,10 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { ResumeData } from './types';
+import { ResumeData, Template, ColorScheme } from './types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
-import { getTemplateById, getColorSchemeById } from './templates/template-data';
 import ProfessionalClassic from './templates/professional-classic';
 import ModernMinimal from './templates/modern-minimal';
 import CreativeSidebar from './templates/creative-sidebar';
@@ -16,14 +15,15 @@ interface ResumePreviewProps {
   resumeData: ResumeData;
   selectedTemplate: string;
   selectedColorScheme: string;
+  templates: Template[];
 }
 
-export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme }: ResumePreviewProps) {
+export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumePreviewProps) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [pageCount, setPageCount] = useState(1);
 
-  const currentTemplate = getTemplateById(selectedTemplate);
-  const currentColorScheme = getColorSchemeById(selectedTemplate, selectedColorScheme);
+  const currentTemplate = templates.find(t => t.id === selectedTemplate);
+  const currentColorScheme = currentTemplate?.colorSchemes?.find(cs => cs.id === selectedColorScheme);
 
   // Detect content overflow and calculate needed pages
   useEffect(() => {
@@ -49,8 +49,12 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
   }, [resumeData, selectedTemplate, selectedColorScheme]);
 
   const renderTemplate = () => {
-    if (!currentTemplate || !currentColorScheme) {
-      return <div className="p-8 text-center text-gray-500">Please select a template and color scheme</div>;
+    if (!currentTemplate) {
+      return <div className="p-8 text-center text-gray-500">Please select a template</div>;
+    }
+    
+    if (!currentColorScheme) {
+      return <div className="p-8 text-center text-gray-500">Please select a color scheme</div>;
     }
 
     // For now, we'll use a simple mapping since dynamic imports are complex in this context
