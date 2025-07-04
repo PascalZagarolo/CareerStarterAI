@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 import { useAuth } from "./auth-wrapper";
 import { useState, useRef, useEffect } from "react";
+import { signout } from "../../actions/auth/signout";
 import { 
   User, 
   LogOut, 
@@ -19,7 +20,24 @@ export function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async () => {
-    await logout();
+    try {
+      // Call the signout server action
+      const result = await signout();
+      
+      if (result?.error) {
+        console.error('Signout error:', result.error);
+        return;
+      }
+      
+      // Clear localStorage items related to auth/session
+      localStorage.removeItem('user');
+      localStorage.removeItem('session_token');
+      
+      // Update auth context and redirect
+      logout();
+    } catch (error) {
+      console.error('Signout error:', error);
+    }
   };
 
   // Close dropdown when clicking outside

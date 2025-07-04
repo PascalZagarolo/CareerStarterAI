@@ -1,7 +1,6 @@
 "use server";
 
 import { register as registerUser, getClientInfo } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 
 export async function register(formData: FormData) {
     try {
@@ -56,8 +55,8 @@ export async function register(formData: FormData) {
 
         return { success: true, user: result.user };
 
-     } catch (error) {
+    } catch (error) {
         console.error('Registration error:', error);
         return { error: "Failed to register. Please try again." };
-     }
+    }
 }

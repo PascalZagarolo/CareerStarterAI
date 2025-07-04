@@ -35,4 +35,4 @@ export async function loginUser(formData: FormData) {
         console.error('Login error:', error);
         return { error: "Failed to login. Please try again." };
     }
-} 
+}

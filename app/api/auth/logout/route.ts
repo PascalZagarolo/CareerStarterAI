@@ -3,9 +3,18 @@ import { logout } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const { allDevices } = await request.json();
+    let allDevices = false;
     
-    const result = await logout(allDevices === true);
+    // Try to parse request body, but handle cases where no body is sent
+    try {
+      const body = await request.json();
+      allDevices = body.allDevices === true;
+    } catch (error) {
+      // No body sent, default to current device only
+      allDevices = false;
+    }
+    
+    const result = await logout(allDevices);
 
     if (!result.success) {
       return NextResponse.json(

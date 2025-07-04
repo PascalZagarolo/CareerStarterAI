@@ -74,6 +74,10 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
         },
       });
 
+      // Clear localStorage items related to auth/session
+      localStorage.removeItem('user');
+      localStorage.removeItem('session_token');
+
       if (response.ok) {
         setUser(null);
         router.push('/');

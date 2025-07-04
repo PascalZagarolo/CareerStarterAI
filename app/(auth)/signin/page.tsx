@@ -3,19 +3,21 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/auth-wrapper';
 
-import { loginUser } from '@/actions/auth/login';
+import { loginUser } from '../../../actions/auth/login';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export default function SignIn() {
   const router = useRouter();
+  const { refreshUser } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-  
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -45,6 +47,10 @@ export default function SignIn() {
       }
       
       if (result?.success) {
+        // Refresh user data to update auth context
+        await refreshUser();
+        
+        // Redirect to dashboard
         router.push('/dashboard');
       }
       
@@ -64,17 +70,7 @@ export default function SignIn() {
       setError('Google sign in is not yet implemented. Please use email login.');
       setLoading(false);
       
-      // This would be replaced with actual OAuth implementation
-      // const { data, error } = await supabase.auth.signInWithOAuth({
-      //   provider: 'google',
-      //   options: {
-      //     redirectTo: `${window.location.origin}/auth/callback`
-      //   }
-      // });
-      
-      // if (error) throw error;
-      
-      // router.push('/dashboard');
+
       
     } catch (error: unknown) {
       console.error('Error signing in with Google:', error);

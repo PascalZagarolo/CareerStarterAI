@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { register } from '@/actions/auth/register';
+import { register } from '../../../actions/auth/register';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
