@@ -9,8 +9,9 @@ export async function POST(request: NextRequest) {
     try {
       const body = await request.json();
       allDevices = body.allDevices === true;
-    } catch (error) {
+    } catch (e) {
       // No body sent, default to current device only
+      console.log('No body sent, defaulting to current device only' + e);
       allDevices = false;
     }
     
