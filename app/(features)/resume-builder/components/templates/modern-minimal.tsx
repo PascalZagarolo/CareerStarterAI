@@ -30,7 +30,7 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
           {personalInfo.fullName}
         </h1>
         <p className="text-lg mb-4" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content[0].content || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0] || 'Professional Summary'}
         </p>
         <div className="flex justify-center items-center space-x-6 text-xs">
           <div className="flex items-center">

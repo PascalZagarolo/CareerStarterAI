@@ -33,7 +33,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
           {personalInfo.fullName}
         </h1>
         <p className="text-sm mb-3" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content[0].content || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0] || 'Professional Summary'}
         </p>
         <div className="grid grid-cols-3 gap-4 text-xs">
           <div className="flex items-center">
