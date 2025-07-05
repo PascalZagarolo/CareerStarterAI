@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Toaster } from "sonner";
 
 import { AuthWrapper } from "@/components/auth-wrapper";
 import { Header } from "@/components/header";
@@ -27,6 +28,8 @@ export default function RootLayout({
         <main>{children}</main>
         </AuthWrapper>
         
+        <Toaster position="top-right" richColors />
+        
         <footer className="bg-gray-800 text-white py-12">
           <div className="container mx-auto px-4 max-w-[1400px]">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -46,6 +49,11 @@ export default function RootLayout({
                   <li>
                     <Link href="/career-path" className="text-gray-400 hover:text-white">
                       Career Path Finder
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/career-blog" className="text-gray-400 hover:text-white">
+                      Career Blog
                     </Link>
                   </li>
                   <li>

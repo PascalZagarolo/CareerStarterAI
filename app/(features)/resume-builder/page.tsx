@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ResumeData, ResumeSection, Template } from './components/types';
 import { defaultResumeData } from './components/data';
 import Header from './components/header';
@@ -9,6 +10,8 @@ import SectionManager from './components/section-manager';
 import SectionEditor from './components/section-editor';
 import ResumePreview from './components/resume-preview';
 import LoadingSpinner from './components/loading-spinner';
+import { useSavedResumes } from '@/lib/hooks/use-saved-resumes';
+import { toast } from 'sonner';
 
 function DesignSidebar({
   templates,
@@ -197,6 +200,7 @@ function DesignSidebar({
 }
 
 export default function ResumeBuilder() {
+  const searchParams = useSearchParams();
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
   const [activeSection, setActiveSection] = useState<string>('summary');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -208,6 +212,12 @@ export default function ResumeBuilder() {
   const [templates, setTemplates] = useState<any[]>([]);
   const [isLoadingTemplates, setIsLoadingTemplates] = useState(true);
   const [templateError, setTemplateError] = useState<string | null>(null);
+
+  // Save/load functionality
+  const { getDefaultResume, parseResumeData, loadResume } = useSavedResumes();
+  const [currentResumeId, setCurrentResumeId] = useState<string | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch templates from database
   useEffect(() => {
@@ -244,6 +254,103 @@ export default function ResumeBuilder() {
     fetchTemplates();
   }, []);
 
+  // Load resume from URL parameter or default resume
+  useEffect(() => {
+    const loadResumeData = async () => {
+      if (isLoadingTemplates) return;
+
+      try {
+        const loadId = searchParams.get('load');
+        
+        if (loadId) {
+          // Load specific resume from URL parameter
+          const resume = await loadResume(loadId);
+          if (resume) {
+            const parsedData = parseResumeData(resume.data);
+            if (parsedData) {
+              setResumeData(parsedData);
+              setSelectedTemplate(resume.templateId);
+              setSelectedColorScheme(resume.colorSchemeId);
+              setCurrentResumeId(resume.id);
+              setHasUnsavedChanges(false);
+              toast.success(`Loaded resume: ${resume.name}`);
+            }
+          } else {
+            toast.error('Resume not found');
+          }
+        } else {
+          // Load default resume if no specific resume requested
+          const defaultResume = getDefaultResume();
+          if (defaultResume) {
+            const parsedData = parseResumeData(defaultResume.data);
+            if (parsedData) {
+              setResumeData(parsedData);
+              setSelectedTemplate(defaultResume.templateId);
+              setSelectedColorScheme(defaultResume.colorSchemeId);
+              setCurrentResumeId(defaultResume.id);
+              toast.success('Loaded your default resume');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading resume:', error);
+        toast.error('Failed to load resume');
+      }
+    };
+
+    loadResumeData();
+  }, [isLoadingTemplates, searchParams, loadResume, parseResumeData, getDefaultResume]);
+
+  // Auto-save functionality
+  const autoSave = useCallback(async () => {
+    if (!hasUnsavedChanges || !currentResumeId) return;
+
+    try {
+      const response = await fetch(`/api/resumes/${currentResumeId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: resumeData,
+          templateId: selectedTemplate,
+          colorSchemeId: selectedColorScheme,
+        }),
+      });
+
+      if (response.ok) {
+        setHasUnsavedChanges(false);
+        console.log('Auto-saved successfully');
+      }
+    } catch (error) {
+      console.error('Auto-save failed:', error);
+    }
+  }, [hasUnsavedChanges, currentResumeId, resumeData, selectedTemplate, selectedColorScheme]);
+
+  // Set up auto-save timer
+  useEffect(() => {
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+
+    if (hasUnsavedChanges && currentResumeId) {
+      autoSaveTimeoutRef.current = setTimeout(autoSave, 30000); // Auto-save after 30 seconds
+    }
+
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, [hasUnsavedChanges, currentResumeId, autoSave]);
+
+  // Mark changes as unsaved
+  const markAsUnsaved = useCallback(() => {
+    if (currentResumeId) {
+      setHasUnsavedChanges(true);
+    }
+  }, [currentResumeId]);
+
   // Handlers
   const updateSection = (sectionId: string, updates: Partial<ResumeSection>) => {
     setResumeData(prev => ({
@@ -252,6 +359,7 @@ export default function ResumeBuilder() {
         section.id === sectionId ? { ...section, ...updates } : section
       )
     }));
+    markAsUnsaved();
   };
 
   const updatePersonalInfo = (field: string, value: string) => {
@@ -259,6 +367,7 @@ export default function ResumeBuilder() {
       ...prev,
       personalInfo: { ...prev.personalInfo, [field]: value }
     }));
+    markAsUnsaved();
   };
 
   const addSection = (type: ResumeSection['type']) => {
@@ -275,6 +384,7 @@ export default function ResumeBuilder() {
       ...prev,
       sections: [...prev.sections, newSection]
     }));
+    markAsUnsaved();
   };
 
   const removeSection = (sectionId: string) => {
@@ -282,6 +392,7 @@ export default function ResumeBuilder() {
       ...prev,
       sections: prev.sections.filter(section => section.id !== sectionId)
     }));
+    markAsUnsaved();
   };
 
   const toggleSectionVisibility = (sectionId: string) => {
@@ -297,6 +408,7 @@ export default function ResumeBuilder() {
         ...prev,
         sections: sections.map((section, index) => ({ ...section, order: index }))
       }));
+      markAsUnsaved();
     }
   };
 
@@ -309,6 +421,7 @@ export default function ResumeBuilder() {
         ...prev,
         sections: sections.map((section, index) => ({ ...section, order: index }))
       }));
+      markAsUnsaved();
     }
   };
 
@@ -345,10 +458,20 @@ export default function ResumeBuilder() {
         id: `${section.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
       }))
     }));
+    markAsUnsaved();
   };
 
   const changeColorScheme = (colorSchemeId: string) => {
     setSelectedColorScheme(colorSchemeId);
+    markAsUnsaved();
+  };
+
+  const handleLoadResume = (data: ResumeData, templateId: string, colorSchemeId: string) => {
+    setResumeData(data);
+    setSelectedTemplate(templateId);
+    setSelectedColorScheme(colorSchemeId);
+    setHasUnsavedChanges(false);
+    toast.success('Resume loaded successfully');
   };
 
   const downloadPDF = () => {
@@ -362,7 +485,13 @@ export default function ResumeBuilder() {
   if (isLoadingTemplates) {
     return (
       <div className="min-h-screen bg-white">
-        <Header onDownloadPDF={downloadPDF} />
+        <Header 
+          onDownloadPDF={downloadPDF}
+          currentResumeData={resumeData}
+          currentTemplateId={selectedTemplate}
+          currentColorSchemeId={selectedColorScheme}
+          onLoadResume={handleLoadResume}
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
             <LoadingSpinner 
@@ -380,7 +509,13 @@ export default function ResumeBuilder() {
   if (templateError) {
     return (
       <div className="min-h-screen bg-white">
-        <Header onDownloadPDF={downloadPDF} />
+        <Header 
+          onDownloadPDF={downloadPDF}
+          currentResumeData={resumeData}
+          currentTemplateId={selectedTemplate}
+          currentColorSchemeId={selectedColorScheme}
+          onLoadResume={handleLoadResume}
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
@@ -406,7 +541,30 @@ export default function ResumeBuilder() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header onDownloadPDF={downloadPDF} />
+      <Header 
+        onDownloadPDF={downloadPDF}
+        currentResumeData={resumeData}
+        currentTemplateId={selectedTemplate}
+        currentColorSchemeId={selectedColorScheme}
+        onLoadResume={handleLoadResume}
+      />
+
+      {/* Unsaved changes indicator */}
+      {hasUnsavedChanges && (
+        <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center text-yellow-800">
+              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <span className="text-sm font-medium">You have unsaved changes</span>
+            </div>
+            <div className="text-xs text-yellow-600">
+              Auto-saving in 30 seconds...
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Tab Toggle - At the very top */}
       <div className="border-b border-gray-200 bg-white">

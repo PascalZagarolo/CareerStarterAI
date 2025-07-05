@@ -92,8 +92,12 @@ export const userResumes = pgTable('user_resumes', {
   templateId: text('template_id').references(() => templates.id).notNull(),
   colorSchemeId: uuid('color_scheme_id').references(() => colorSchemes.id).notNull(),
   name: text('name').notNull(),
+  description: text('description'), // Optional description for the resume
   data: text('data').notNull(), // JSON string of resume data
+  status: text('status').notNull().default('draft'), // 'draft', 'published', 'archived'
+  version: integer('version').notNull().default(1), // For version tracking
   isPublic: boolean('is_public').notNull().default(false),
+  isDefault: boolean('is_default').notNull().default(false), // Mark as user's default resume
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
