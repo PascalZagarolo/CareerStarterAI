@@ -298,13 +298,7 @@ export default function Pricing() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-medium">5 professional</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-medium">All templates</td>
                 </tr>
-                {/* CV Exports */}
-                <tr className="bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CV Exports (PDF)</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">2 per month</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-medium">15 per month</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-medium">Unlimited</td>
-                </tr>
+
                 {/* AI Headshots */}
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AI Headshots</td>

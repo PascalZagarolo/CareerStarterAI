@@ -7,7 +7,7 @@ import { getCurrentUser } from '@/lib/auth';
 // GET /api/resumes/[id] - Get a specific resume
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -15,12 +15,14 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
+
     const resume = await db
       .select()
       .from(userResumes)
       .where(
         and(
-          eq(userResumes.id, params.id),
+          eq(userResumes.id, id),
           eq(userResumes.userId, user.id)
         )
       )
@@ -43,7 +45,7 @@ export async function GET(
 // PUT /api/resumes/[id] - Update a resume
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -51,6 +53,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
     const body = await request.json();
     const { name, description, templateId, colorSchemeId, data, status, isDefault = false } = body;
 
@@ -60,7 +63,7 @@ export async function PUT(
       .from(userResumes)
       .where(
         and(
-          eq(userResumes.id, params.id),
+          eq(userResumes.id, id),
           eq(userResumes.userId, user.id)
         )
       )
@@ -78,7 +81,7 @@ export async function PUT(
         .where(
           and(
             eq(userResumes.userId, user.id),
-            eq(userResumes.id, params.id)
+            eq(userResumes.id, id)
           )
         );
     }
@@ -105,7 +108,7 @@ export async function PUT(
       .set(updateData)
       .where(
         and(
-          eq(userResumes.id, params.id),
+          eq(userResumes.id, id),
           eq(userResumes.userId, user.id)
         )
       )
@@ -124,7 +127,7 @@ export async function PUT(
 // DELETE /api/resumes/[id] - Delete a resume
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -132,11 +135,13 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
+
     const deletedResume = await db
       .delete(userResumes)
       .where(
         and(
-          eq(userResumes.id, params.id),
+          eq(userResumes.id, id),
           eq(userResumes.userId, user.id)
         )
       )

@@ -21,7 +21,7 @@ export interface ResumeData {
   };
   sections: ResumeSection[];
   template: string;
-  theme?: {
+  theme: {
     primaryColor: string;
     secondaryColor: string;
     fontFamily: string;

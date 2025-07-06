@@ -1,12 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Download, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { SaveLoadDialog } from './save-load-dialog';
 import { ResumeData } from './types';
 
 interface HeaderProps {
-  onDownloadPDF: () => void;
   currentResumeData: ResumeData;
   currentTemplateId: string;
   currentColorSchemeId: string;
@@ -14,7 +13,6 @@ interface HeaderProps {
 }
 
 export default function Header({ 
-  onDownloadPDF, 
   currentResumeData, 
   currentTemplateId, 
   currentColorSchemeId, 
@@ -41,13 +39,6 @@ export default function Header({
                 </Button>
               }
             />
-            <Button
-              onClick={onDownloadPDF}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download PDF
-            </Button>
           </div>
         </div>
       </div>

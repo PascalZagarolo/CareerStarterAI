@@ -260,7 +260,7 @@ export default function ResumeBuilder() {
       if (isLoadingTemplates) return;
 
       try {
-        const loadId = searchParams.get('load');
+        const loadId = searchParams!.get('load');
         
         if (loadId) {
           // Load specific resume from URL parameter
@@ -474,11 +474,6 @@ export default function ResumeBuilder() {
     toast.success('Resume loaded successfully');
   };
 
-  const downloadPDF = () => {
-    // In a real app, this would use html2pdf or similar library
-    alert('PDF download functionality would be implemented here');
-  };
-
   const activeSectionData = resumeData.sections.find(s => s.id === activeSection);
 
   // Show loading state while fetching templates
@@ -486,7 +481,6 @@ export default function ResumeBuilder() {
     return (
       <div className="min-h-screen bg-white">
         <Header 
-          onDownloadPDF={downloadPDF}
           currentResumeData={resumeData}
           currentTemplateId={selectedTemplate}
           currentColorSchemeId={selectedColorScheme}
@@ -510,7 +504,6 @@ export default function ResumeBuilder() {
     return (
       <div className="min-h-screen bg-white">
         <Header 
-          onDownloadPDF={downloadPDF}
           currentResumeData={resumeData}
           currentTemplateId={selectedTemplate}
           currentColorSchemeId={selectedColorScheme}
@@ -542,7 +535,6 @@ export default function ResumeBuilder() {
   return (
     <div className="min-h-screen bg-white">
       <Header 
-        onDownloadPDF={downloadPDF}
         currentResumeData={resumeData}
         currentTemplateId={selectedTemplate}
         currentColorSchemeId={selectedColorScheme}

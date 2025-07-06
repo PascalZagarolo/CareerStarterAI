@@ -1,15 +1,17 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ResumeData, Template } from './types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, Eye } from 'lucide-react';
+import { Eye, Download, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import ProfessionalClassic from './templates/professional-classic';
 import ModernMinimal from './templates/modern-minimal';
 import CreativeSidebar from './templates/creative-sidebar';
 import ExecutiveTwoColumn from './templates/executive-two-column';
 import StartupModern from './templates/startup-modern';
+import ResumeA4Preview from './resume-a4-preview';
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -20,6 +22,7 @@ interface ResumePreviewProps {
 
 export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumePreviewProps) {
   const previewRef = useRef<HTMLDivElement>(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
   const currentColorScheme = currentTemplate?.colorSchemes?.find(cs => cs.id === selectedColorScheme);
@@ -68,14 +71,49 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
     );
   };
 
-  const handleDownload = () => {
-    // TODO: Implement PDF download functionality
-    console.log('Download PDF');
-  };
-
   const handlePrint = () => {
     if (previewRef.current) {
       window.print();
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    
+    try {
+      // Prepare the profile data to pass to the PDF API
+      const profileData = {
+        name: resumeData.personalInfo.fullName || 'John Doe',
+        occupation: 'Software Developer',
+        website: resumeData.personalInfo.linkedin || 'linkedin.com/in/johndoe',
+        email: resumeData.personalInfo.email || 'john.doe@email.com',
+        phone: resumeData.personalInfo.phone || '+1 (555) 123-4567',
+        profilePic: '/profile-pic-podpros-unsplash.jpg',
+      };
+      
+      // Generate filename
+      const name = resumeData.personalInfo.fullName || 'Resume';
+      const filename = `${name.replace(/[^a-zA-Z0-9]/g, '_')}_Resume.pdf`;
+      
+      // Encode the profile data and pass it to the PDF API
+      const encodedProfileData = encodeURIComponent(JSON.stringify(profileData));
+      const downloadUrl = `/api/pdf?profileData=${encodedProfileData}`;
+      
+      // Create a temporary link to trigger the download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success('PDF generated successfully!');
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsGeneratingPDF(false);
     }
   };
 
@@ -91,9 +129,19 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
               <Eye className="h-4 w-4 mr-2" />
               Print View
             </Button>
-            <Button variant="outline" size="sm" onClick={handleDownload} className="text-gray-700">
-              <Download className="h-4 w-4 mr-2" />
-              Download PDF
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleDownloadPDF} 
+              disabled={isGeneratingPDF}
+              className="text-gray-700"
+            >
+              {isGeneratingPDF ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4 mr-2" />
+              )}
+              {isGeneratingPDF ? 'Generating...' : 'Download PDF'}
             </Button>
           </div>
         </div>
@@ -102,27 +150,12 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
         <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center px-2">
           <div className="flex flex-col gap-6">
             {/* Single page preview */}
-            <div 
-              className="bg-white shadow-xl border border-gray-200 relative overflow-hidden px-4 py-4"
-              style={{
-                width: '210mm', // A4 width
-                height: '297mm', // A4 height
-                aspectRatio: '210/297', // A4 aspect ratio (1:1.41)
-                maxWidth: '100%',
-                maxHeight: '80vh',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1)',
-                borderRadius: '8px'
-              }}
-              ref={previewRef}
-            >
-              {/* Page fold effect */}
-              <div className="absolute top-0 right-0 w-4 h-4 bg-gradient-to-br from-transparent to-gray-200 opacity-50 z-5"></div>
-              
-              {/* Content container */}
-              <div className="w-full h-full overflow-hidden">
-                {renderTemplate()}
-              </div>
-            </div>
+            <ResumeA4Preview
+              resumeData={resumeData}
+              selectedTemplate={selectedTemplate}
+              selectedColorScheme={selectedColorScheme}
+              templates={templates}
+            />
           </div>
         </div>
       </CardContent>

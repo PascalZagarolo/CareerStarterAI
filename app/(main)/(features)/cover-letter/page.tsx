@@ -115,10 +115,7 @@ export default function CoverLetterGenerator() {
     alert('Cover letter saved successfully!');
   };
   
-  const handleExportPDF = () => {
-    // In a real app, this would use react-pdf to export as PDF
-    alert('PDF export is a Pro feature. Please upgrade to export your cover letter.');
-  };
+
   
   const handleCopy = () => {
     const fullCoverLetter = `${generatedCoverLetter.salutation}\n\n${generatedCoverLetter.introduction}\n\n${generatedCoverLetter.body.join('\n\n')}\n\n${generatedCoverLetter.conclusion}\n\n${generatedCoverLetter.signature}`;
@@ -457,12 +454,7 @@ export default function CoverLetterGenerator() {
                       Save Cover Letter
                     </button>
                     
-                    <button
-                      onClick={handleExportPDF}
-                      className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-md shadow-sm hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
-                    >
-                      Export PDF
-                    </button>
+
                   </div>
                 </div>
               </motion.div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../../globals.css";
 import Link from "next/link";
 import { Toaster } from "sonner";
 
@@ -16,20 +16,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params
 }: Readonly<{
   children: React.ReactNode;
+  params?: { [key: string]: string | string[] };
 }>) {
+  // Server-side: get the current path from process.env.NEXT_PUBLIC_VERCEL_URL or headers
+  // But in Next.js App Router, you can use the segment from the params or from the pathname
+  // We'll use a workaround: check if the pathname includes '/pdf-export'
+  const isPdfExport = typeof window === 'undefined' && typeof globalThis.location === 'undefined'
+    ? (typeof require !== 'undefined' && require('next/headers').headers().get('x-invoke-path')?.includes('/pdf-export'))
+    : false;
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <AuthWrapper>
-          <Header />
-        
+          {!isPdfExport && <Header />}
         <main>{children}</main>
         </AuthWrapper>
-        
         <Toaster position="top-right" richColors />
-        
+        {!isPdfExport && (
         <footer className="bg-gray-800 text-white py-12">
           <div className="container mx-auto px-4 max-w-[1400px]">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -37,7 +44,6 @@ export default function RootLayout({
                 <h3 className="text-xl font-bold mb-4">CareerStarter</h3>
                 <p className="text-gray-400">AI-powered career tools to help you find and land your dream job.</p>
               </div>
-              
               <div>
                 <h4 className="font-semibold mb-4">Features</h4>
                 <ul className="space-y-2">
@@ -63,7 +69,6 @@ export default function RootLayout({
                   </li>
                 </ul>
               </div>
-              
               <div>
                 <h4 className="font-semibold mb-4">Company</h4>
                 <ul className="space-y-2">
@@ -84,7 +89,6 @@ export default function RootLayout({
                   </li>
                 </ul>
               </div>
-              
               <div>
                 <h4 className="font-semibold mb-4">Contact</h4>
                 <ul className="space-y-2">
@@ -97,12 +101,12 @@ export default function RootLayout({
                 </ul>
               </div>
             </div>
-            
             <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
               <p>&copy; {new Date().getFullYear()} CareerStarter. All rights reserved.</p>
             </div>
           </div>
         </footer>
+        )}
       </body>
     </html>
   );
