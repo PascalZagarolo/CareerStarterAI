@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { ResumeData, ResumeSection, Template } from './components/types';
 import { defaultResumeData } from './components/data';
 import Header from './components/header';
@@ -12,6 +12,7 @@ import ResumePreview from './components/resume-preview';
 import LoadingSpinner from './components/loading-spinner';
 import { useSavedResumes } from '@/lib/hooks/use-saved-resumes';
 import { toast } from 'sonner';
+import { useResumeStore } from '../../../../src/lib/store/useResumeStore';
 
 function DesignSidebar({
   templates,
@@ -201,11 +202,17 @@ function DesignSidebar({
 
 export default function ResumeBuilder() {
   const searchParams = useSearchParams();
-  const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
+  const router = useRouter();
+  const {
+    resumeData,
+    setResumeData,
+    templateId,
+    setTemplateId,
+    colorSchemeId,
+    setColorSchemeId
+  } = useResumeStore();
   const [activeSection, setActiveSection] = useState<string>('summary');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('professional-classic');
-  const [selectedColorScheme, setSelectedColorScheme] = useState<string>('navy-blue');
   const [activeTab, setActiveTab] = useState<'content' | 'design'>('content');
   
   // Database state
@@ -234,10 +241,10 @@ export default function ResumeBuilder() {
           // Set default template and color scheme if available
           if (result.data.length > 0) {
             const firstTemplate = result.data[0];
-            setSelectedTemplate(firstTemplate.id);
+            setTemplateId(firstTemplate.id);
             // Safely check for color schemes
             if (firstTemplate.colorSchemes && Array.isArray(firstTemplate.colorSchemes) && firstTemplate.colorSchemes.length > 0) {
-              setSelectedColorScheme(firstTemplate.colorSchemes[0].id);
+              setColorSchemeId(firstTemplate.colorSchemes[0].id);
             }
           }
         } else {
@@ -269,8 +276,8 @@ export default function ResumeBuilder() {
             const parsedData = parseResumeData(resume.data);
             if (parsedData) {
               setResumeData(parsedData);
-              setSelectedTemplate(resume.templateId);
-              setSelectedColorScheme(resume.colorSchemeId);
+              setTemplateId(resume.templateId);
+              setColorSchemeId(resume.colorSchemeId);
               setCurrentResumeId(resume.id);
               setHasUnsavedChanges(false);
               toast.success(`Loaded resume: ${resume.name}`);
@@ -285,8 +292,8 @@ export default function ResumeBuilder() {
             const parsedData = parseResumeData(defaultResume.data);
             if (parsedData) {
               setResumeData(parsedData);
-              setSelectedTemplate(defaultResume.templateId);
-              setSelectedColorScheme(defaultResume.colorSchemeId);
+              setTemplateId(defaultResume.templateId);
+              setColorSchemeId(defaultResume.colorSchemeId);
               setCurrentResumeId(defaultResume.id);
               toast.success('Loaded your default resume');
             }
@@ -313,8 +320,8 @@ export default function ResumeBuilder() {
         },
         body: JSON.stringify({
           data: resumeData,
-          templateId: selectedTemplate,
-          colorSchemeId: selectedColorScheme,
+          templateId: templateId,
+          colorSchemeId: colorSchemeId,
         }),
       });
 
@@ -325,7 +332,7 @@ export default function ResumeBuilder() {
     } catch (error) {
       console.error('Auto-save failed:', error);
     }
-  }, [hasUnsavedChanges, currentResumeId, resumeData, selectedTemplate, selectedColorScheme]);
+  }, [hasUnsavedChanges, currentResumeId, resumeData, templateId, colorSchemeId]);
 
   // Set up auto-save timer
   useEffect(() => {
@@ -353,20 +360,20 @@ export default function ResumeBuilder() {
 
   // Handlers
   const updateSection = (sectionId: string, updates: Partial<ResumeSection>) => {
-    setResumeData(prev => ({
-      ...prev,
-      sections: prev.sections.map(section =>
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map(section =>
         section.id === sectionId ? { ...section, ...updates } : section
       )
-    }));
+    });
     markAsUnsaved();
   };
 
   const updatePersonalInfo = (field: string, value: string) => {
-    setResumeData(prev => ({
-      ...prev,
-      personalInfo: { ...prev.personalInfo, [field]: value }
-    }));
+    setResumeData({
+      ...resumeData,
+      personalInfo: { ...resumeData.personalInfo, [field]: value }
+    });
     markAsUnsaved();
   };
 
@@ -379,19 +386,18 @@ export default function ResumeBuilder() {
       isVisible: true,
       order: resumeData.sections.length
     };
-    
-    setResumeData(prev => ({
-      ...prev,
-      sections: [...prev.sections, newSection]
-    }));
+    setResumeData({
+      ...resumeData,
+      sections: [...resumeData.sections, newSection]
+    });
     markAsUnsaved();
   };
 
   const removeSection = (sectionId: string) => {
-    setResumeData(prev => ({
-      ...prev,
-      sections: prev.sections.filter(section => section.id !== sectionId)
-    }));
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.filter(section => section.id !== sectionId)
+    });
     markAsUnsaved();
   };
 
@@ -404,10 +410,10 @@ export default function ResumeBuilder() {
     const currentIndex = sections.findIndex(s => s.id === sectionId);
     if (currentIndex > 0) {
       [sections[currentIndex], sections[currentIndex - 1]] = [sections[currentIndex - 1], sections[currentIndex]];
-      setResumeData(prev => ({
-        ...prev,
+      setResumeData({
+        ...resumeData,
         sections: sections.map((section, index) => ({ ...section, order: index }))
-      }));
+      });
       markAsUnsaved();
     }
   };
@@ -417,10 +423,10 @@ export default function ResumeBuilder() {
     const currentIndex = sections.findIndex(s => s.id === sectionId);
     if (currentIndex < sections.length - 1) {
       [sections[currentIndex], sections[currentIndex + 1]] = [sections[currentIndex + 1], sections[currentIndex]];
-      setResumeData(prev => ({
-        ...prev,
+      setResumeData({
+        ...resumeData,
         sections: sections.map((section, index) => ({ ...section, order: index }))
-      }));
+      });
       markAsUnsaved();
     }
   };
@@ -440,41 +446,47 @@ export default function ResumeBuilder() {
   };
 
   const changeTemplate = (templateId: string) => {
-    setSelectedTemplate(templateId);
-    // Set the first color scheme of the new template as default
+    setTemplateId(templateId);
     const template = templates.find(t => t.id === templateId);
     if (template && template.colorSchemes && Array.isArray(template.colorSchemes) && template.colorSchemes.length > 0) {
-      setSelectedColorScheme(template.colorSchemes[0].id);
+      setColorSchemeId(template.colorSchemes[0].id);
     } else {
-      // If no color schemes available, set to empty string to trigger fallback
-      setSelectedColorScheme('');
+      setColorSchemeId('');
     }
-    
-    // Reset sections to default when template changes
-    setResumeData(prev => ({
-      ...prev,
+    setResumeData({
+      ...resumeData,
       sections: defaultResumeData.sections.map(section => ({
         ...section,
         id: `${section.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
       }))
-    }));
+    });
     markAsUnsaved();
   };
 
   const changeColorScheme = (colorSchemeId: string) => {
-    setSelectedColorScheme(colorSchemeId);
+    setColorSchemeId(colorSchemeId);
     markAsUnsaved();
   };
 
   const handleLoadResume = (data: ResumeData, templateId: string, colorSchemeId: string) => {
     setResumeData(data);
-    setSelectedTemplate(templateId);
-    setSelectedColorScheme(colorSchemeId);
+    setTemplateId(templateId);
+    setColorSchemeId(colorSchemeId);
     setHasUnsavedChanges(false);
     toast.success('Resume loaded successfully');
   };
 
   const activeSectionData = resumeData.sections.find(s => s.id === activeSection);
+
+  // Add export handler
+  const handleExport = () => {
+    const params = new URLSearchParams({
+      data: encodeURIComponent(JSON.stringify(resumeData)),
+      template: templateId,
+      color: colorSchemeId,
+    });
+    router.push(`/resume-export?${params.toString()}`);
+  };
 
   // Show loading state while fetching templates
   if (isLoadingTemplates) {
@@ -482,8 +494,8 @@ export default function ResumeBuilder() {
       <div className="min-h-screen bg-white">
         <Header 
           currentResumeData={resumeData}
-          currentTemplateId={selectedTemplate}
-          currentColorSchemeId={selectedColorScheme}
+          currentTemplateId={templateId}
+          currentColorSchemeId={colorSchemeId}
           onLoadResume={handleLoadResume}
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -505,8 +517,8 @@ export default function ResumeBuilder() {
       <div className="min-h-screen bg-white">
         <Header 
           currentResumeData={resumeData}
-          currentTemplateId={selectedTemplate}
-          currentColorSchemeId={selectedColorScheme}
+          currentTemplateId={templateId}
+          currentColorSchemeId={colorSchemeId}
           onLoadResume={handleLoadResume}
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -536,8 +548,8 @@ export default function ResumeBuilder() {
     <div className="min-h-screen bg-white">
       <Header 
         currentResumeData={resumeData}
-        currentTemplateId={selectedTemplate}
-        currentColorSchemeId={selectedColorScheme}
+        currentTemplateId={templateId}
+        currentColorSchemeId={colorSchemeId}
         onLoadResume={handleLoadResume}
       />
 
@@ -622,9 +634,9 @@ export default function ResumeBuilder() {
             ) : (
               <DesignSidebar
                 templates={templates}
-                selectedTemplate={selectedTemplate}
+                selectedTemplate={templateId}
                 setSelectedTemplate={changeTemplate}
-                selectedColorScheme={selectedColorScheme}
+                selectedColorScheme={colorSchemeId}
                 setSelectedColorScheme={changeColorScheme}
               />
             )}
@@ -632,10 +644,17 @@ export default function ResumeBuilder() {
 
           {/* Main Preview always on the right */}
           <div className="lg:col-span-2">
+            <button
+              className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              onClick={handleExport}
+              type="button"
+            >
+              Export to PDF
+            </button>
             <ResumePreview 
               resumeData={resumeData} 
-              selectedTemplate={selectedTemplate}
-              selectedColorScheme={selectedColorScheme}
+              selectedTemplate={templateId}
+              selectedColorScheme={colorSchemeId}
               templates={templates}
             />
           </div>

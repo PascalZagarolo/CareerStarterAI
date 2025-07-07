@@ -55,15 +55,12 @@ export default function ResumeA4Preview({ resumeData, selectedTemplate, selected
 
   return (
     <div
-      className="bg-white shadow-xl border border-gray-200 relative overflow-hidden px-4 py-4 resume-preview-print"
+      className="bg-white relative overflow-hidden resume-preview-print"
       style={{
         width: '210mm', // A4 width
         height: '297mm', // A4 height
         aspectRatio: '210/297', // A4 aspect ratio (1:1.41)
         maxWidth: '100%',
-        maxHeight: '80vh',
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1)',
-        borderRadius: '8px',
       }}
     >
       {/* Page fold effect */}

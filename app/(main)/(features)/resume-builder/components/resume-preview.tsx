@@ -12,6 +12,7 @@ import CreativeSidebar from './templates/creative-sidebar';
 import ExecutiveTwoColumn from './templates/executive-two-column';
 import StartupModern from './templates/startup-modern';
 import ResumeA4Preview from './resume-a4-preview';
+import { useRouter } from 'next/navigation';
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -23,6 +24,7 @@ interface ResumePreviewProps {
 export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumePreviewProps) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const router = useRouter();
 
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
   const currentColorScheme = currentTemplate?.colorSchemes?.find(cs => cs.id === selectedColorScheme);
@@ -72,43 +74,32 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
   };
 
   const handlePrint = () => {
-    if (previewRef.current) {
-      window.print();
-    }
+    const params = new URLSearchParams({
+      template: selectedTemplate,
+      color: selectedColorScheme,
+      data: encodeURIComponent(JSON.stringify(resumeData)),
+    });
+    window.open(`/resume-export?${params.toString()}#print`, '_blank');
   };
 
   const handleDownloadPDF = async () => {
     setIsGeneratingPDF(true);
-    
     try {
-      // Prepare the profile data to pass to the PDF API
-      const profileData = {
-        name: resumeData.personalInfo.fullName || 'John Doe',
-        occupation: 'Software Developer',
-        website: resumeData.personalInfo.linkedin || 'linkedin.com/in/johndoe',
-        email: resumeData.personalInfo.email || 'john.doe@email.com',
-        phone: resumeData.personalInfo.phone || '+1 (555) 123-4567',
-        profilePic: '/profile-pic-podpros-unsplash.jpg',
-      };
-      
-      // Generate filename
       const name = resumeData.personalInfo.fullName || 'Resume';
       const filename = `${name.replace(/[^a-zA-Z0-9]/g, '_')}_Resume.pdf`;
-      
-      // Encode the profile data and pass it to the PDF API
-      const encodedProfileData = encodeURIComponent(JSON.stringify(profileData));
-      const downloadUrl = `/api/pdf?profileData=${encodedProfileData}`;
-      
-      // Create a temporary link to trigger the download
+      const params = new URLSearchParams({
+        template: selectedTemplate,
+        color: selectedColorScheme,
+        data: encodeURIComponent(JSON.stringify(resumeData)),
+      });
+      const downloadUrl = `/api/pdf?${params.toString()}`;
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
       toast.success('PDF generated successfully!');
-      
     } catch (error) {
       console.error('Error generating PDF:', error);
       toast.error('Failed to generate PDF. Please try again.');
