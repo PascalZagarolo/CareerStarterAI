@@ -1,32 +1,6 @@
 import { useState, useCallback } from 'react';
 import { UserResume } from '@/db/schema';
-
-export interface ResumeSection {
-  id: string;
-  type: 'summary' | 'experience' | 'education' | 'skills' | 'projects' | 'certifications';
-  title: string;
-  content: any;
-  isVisible: boolean;
-  order: number;
-}
-
-export interface ResumeData {
-  personalInfo: {
-    fullName: string;
-    email: string;
-    phone: string;
-    location: string;
-    linkedin?: string;
-    portfolio?: string;
-  };
-  sections: ResumeSection[];
-  template: string;
-  theme: {
-    primaryColor: string;
-    secondaryColor: string;
-    fontFamily: string;
-  };
-}
+import { ResumeData } from '../../../app/(main)/(features)/resume-builder/components/types';
 
 export interface SaveResumeParams {
   name: string;

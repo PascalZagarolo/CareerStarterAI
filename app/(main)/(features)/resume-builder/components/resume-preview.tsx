@@ -1,18 +1,13 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { ResumeData, Template } from './types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Eye, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import ProfessionalClassic from './templates/professional-classic';
-import ModernMinimal from './templates/modern-minimal';
-import CreativeSidebar from './templates/creative-sidebar';
-import ExecutiveTwoColumn from './templates/executive-two-column';
-import StartupModern from './templates/startup-modern';
+
 import ResumeA4Preview from './resume-a4-preview';
-import { useRouter } from 'next/navigation';
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -22,9 +17,7 @@ interface ResumePreviewProps {
 }
 
 export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumePreviewProps) {
-  const previewRef = useRef<HTMLDivElement>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const router = useRouter();
 
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
   const currentColorScheme = currentTemplate?.colorSchemes?.find(cs => cs.id === selectedColorScheme);
@@ -35,43 +28,7 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
     colorSchemeToUse = currentTemplate.colorSchemes[0];
   }
 
-  const renderTemplate = () => {
-    if (!currentTemplate) {
-      return <div className="p-8 text-center text-gray-500">Please select a template</div>;
-    }
-    
-    if (!colorSchemeToUse) {
-      return <div className="p-8 text-center text-gray-500">No color schemes available for this template</div>;
-    }
-
-    let Component;
-    switch (currentTemplate.id) {
-      case 'professional-classic':
-        Component = ProfessionalClassic;
-        break;
-      case 'modern-minimal':
-        Component = ModernMinimal;
-        break;
-      case 'creative-sidebar':
-        Component = CreativeSidebar;
-        break;
-      case 'executive-two-column':
-        Component = ExecutiveTwoColumn;
-        break;
-      case 'startup-modern':
-        Component = StartupModern;
-        break;
-      default:
-        Component = ProfessionalClassic;
-    }
-
-    return (
-      <Component 
-        data={resumeData} 
-        colorScheme={colorSchemeToUse}
-      />
-    );
-  };
+ 
 
   const handlePrint = () => {
     const params = new URLSearchParams({

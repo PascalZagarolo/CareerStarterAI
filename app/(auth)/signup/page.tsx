@@ -18,7 +18,7 @@ export default function SignUpPage() {
 function SignUp() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const plan = searchParams.get('plan');
+  const plan = searchParams?.get('plan');
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -305,4 +305,6 @@ function SignUp() {
       </div>
     </div>
   );
-} 
+}
+
+export const dynamic = 'force-dynamic'; 

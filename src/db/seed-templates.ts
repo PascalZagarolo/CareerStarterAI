@@ -1,12 +1,15 @@
 "use server";
 
-import { db } from './index';
+
 import { templateCategories, templates, colorSchemes } from './schema';
 import { and, eq } from 'drizzle-orm';
-import { templates as existingTemplates } from '../../app/(features)/resume-builder/components/templates/template-data';
+
 
 // Load environment variables
 import 'dotenv/config';
+
+import { templates as existingTemplates } from '../../app/(main)/(features)/resume-builder/components/templates/template-data';
+import { db } from '.';
 
 export async function seedTemplates() {
   console.log('🌱 Seeding template data...');
@@ -17,6 +20,8 @@ export async function seedTemplates() {
     databaseUrlLength: process.env.DATABASE_URL?.length || 0,
     nodeEnv: process.env.NODE_ENV
   });
+
+ 
 
   try {
     // Insert template categories

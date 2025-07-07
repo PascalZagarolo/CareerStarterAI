@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ResumeData, ResumeSection, Template } from './components/types';
 import { defaultResumeData } from './components/data';
 import Header from './components/header';
@@ -200,9 +200,8 @@ function DesignSidebar({
   );
 }
 
-export default function ResumeBuilder() {
+function ResumeBuilderContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const {
     resumeData,
     setResumeData,
@@ -216,7 +215,7 @@ export default function ResumeBuilder() {
   const [activeTab, setActiveTab] = useState<'content' | 'design'>('content');
   
   // Database state
-  const [templates, setTemplates] = useState<any[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
   const [isLoadingTemplates, setIsLoadingTemplates] = useState(true);
   const [templateError, setTemplateError] = useState<string | null>(null);
 
@@ -275,7 +274,7 @@ export default function ResumeBuilder() {
           if (resume) {
             const parsedData = parseResumeData(resume.data);
             if (parsedData) {
-              setResumeData(parsedData);
+              setResumeData(parsedData as unknown as ResumeData);
               setTemplateId(resume.templateId);
               setColorSchemeId(resume.colorSchemeId);
               setCurrentResumeId(resume.id);
@@ -291,7 +290,7 @@ export default function ResumeBuilder() {
           if (defaultResume) {
             const parsedData = parseResumeData(defaultResume.data);
             if (parsedData) {
-              setResumeData(parsedData);
+              setResumeData(parsedData as unknown as ResumeData);
               setTemplateId(defaultResume.templateId);
               setColorSchemeId(defaultResume.colorSchemeId);
               setCurrentResumeId(defaultResume.id);
@@ -306,7 +305,7 @@ export default function ResumeBuilder() {
     };
 
     loadResumeData();
-  }, [isLoadingTemplates, searchParams, loadResume, parseResumeData, getDefaultResume]);
+  }, [isLoadingTemplates, searchParams, loadResume, parseResumeData, getDefaultResume, setResumeData, setTemplateId, setColorSchemeId]);
 
   // Auto-save functionality
   const autoSave = useCallback(async () => {
@@ -478,16 +477,6 @@ export default function ResumeBuilder() {
 
   const activeSectionData = resumeData.sections.find(s => s.id === activeSection);
 
-  // Add export handler
-  const handleExport = () => {
-    const params = new URLSearchParams({
-      data: encodeURIComponent(JSON.stringify(resumeData)),
-      template: templateId,
-      color: colorSchemeId,
-    });
-    router.push(`/resume-export?${params.toString()}`);
-  };
-
   // Show loading state while fetching templates
   if (isLoadingTemplates) {
     return (
@@ -644,13 +633,7 @@ export default function ResumeBuilder() {
 
           {/* Main Preview always on the right */}
           <div className="lg:col-span-2">
-            <button
-              className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-              onClick={handleExport}
-              type="button"
-            >
-              Export to PDF
-            </button>
+           
             <ResumePreview 
               resumeData={resumeData} 
               selectedTemplate={templateId}
@@ -661,5 +644,13 @@ export default function ResumeBuilder() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResumeBuilder() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResumeBuilderContent />
+    </Suspense>
   );
 }

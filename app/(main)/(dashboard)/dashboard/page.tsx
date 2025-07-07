@@ -1,18 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '@/components/auth-wrapper';
 import { 
   FileText, 
-  Briefcase, 
   CreditCard, 
   Calendar, 
   TrendingUp,
   Plus,
   Edit3,
   Eye,
-  User,
   Trash2,
   Star,
   Clock,

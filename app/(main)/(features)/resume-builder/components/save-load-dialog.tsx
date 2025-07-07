@@ -8,9 +8,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 
-import { useSavedResumes, type ResumeData } from '@/lib/hooks/use-saved-resumes';
-import { Save, Loader2, Trash2, Edit, Calendar, Star, Download } from 'lucide-react';
+import { useSavedResumes } from '@/lib/hooks/use-saved-resumes';
+import { ResumeData } from './types';
+import { Save, Loader2, Trash2, Calendar, Star, Download } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { UserResume } from '@/db/schema';
 
 
 interface SaveLoadDialogProps {
@@ -33,7 +35,6 @@ export function SaveLoadDialog({
   const [saveName, setSaveName] = useState('');
   const [saveDescription, setSaveDescription] = useState('');
   const [isDefault, setIsDefault] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
 
   const {
     resumes,
@@ -41,7 +42,6 @@ export function SaveLoadDialog({
     error,
     fetchResumes,
     saveResume,
-    updateResume,
     deleteResume,
     parseResumeData
   } = useSavedResumes();
@@ -72,7 +72,7 @@ export function SaveLoadDialog({
     }
   };
 
-  const handleLoad = async (resume: any) => {
+  const handleLoad = async (resume: UserResume) => {
     const parsedData = parseResumeData(resume.data);
     if (parsedData) {
       onLoadResume(parsedData, resume.templateId, resume.colorSchemeId);

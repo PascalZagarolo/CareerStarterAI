@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/components/auth-wrapper';
+
 
 import { loginUser } from '../../../actions/auth/login';
 import { Input } from '@/components/ui/input';
@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 
 export default function SignIn() {
   const router = useRouter();
-  const { refreshUser } = useAuth();
+  
   
   const [formData, setFormData] = useState({
     email: '',
@@ -48,7 +48,7 @@ export default function SignIn() {
       
       if (result?.success) {
         // Refresh user data to update auth context
-        await refreshUser();
+        router.refresh();
         
         // Redirect to dashboard
         router.push('/dashboard');
@@ -209,7 +209,7 @@ export default function SignIn() {
           </div>
         </div>
         
-        <div className="text-center mt-6">
+        <div className="text-center mt-8">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
@@ -220,4 +220,6 @@ export default function SignIn() {
       </div>
     </div>
   );
-} 
+}
+
+export const dynamic = 'force-dynamic'; 
