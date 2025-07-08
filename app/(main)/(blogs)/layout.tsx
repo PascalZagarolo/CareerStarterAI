@@ -10,11 +10,11 @@ import { Header } from "@/components/header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CareerStarter - AI to Jumpstart Your Dream Career",
-  description: "Discover your ideal career path, create perfect resumes, and get personalized roadmaps - all powered by AI.",
+  title: "Career Blog - Expert Career Advice & Job Search Tips",
+  description: "Discover expert career advice, job search strategies, and professional development tips. Get insights on resumes, interviews, networking, and career growth.",
 };
 
-export default function RootLayout({
+export default function BlogsLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

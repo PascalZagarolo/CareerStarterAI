@@ -280,6 +280,12 @@ function ResumeBuilderContent() {
               setCurrentResumeId(resume.id);
               setHasUnsavedChanges(false);
               toast.success(`Loaded resume: ${resume.name}`);
+            } else {
+              toast.error(`Failed to load resume "${resume.name}". The data appears to be corrupted.`);
+              // Fallback to default resume data
+              setResumeData(defaultResumeData);
+              setCurrentResumeId(null);
+              setHasUnsavedChanges(false);
             }
           } else {
             toast.error('Resume not found');
@@ -295,6 +301,12 @@ function ResumeBuilderContent() {
               setColorSchemeId(defaultResume.colorSchemeId);
               setCurrentResumeId(defaultResume.id);
               toast.success('Loaded your default resume');
+            } else {
+              toast.error(`Failed to load default resume. The data appears to be corrupted.`);
+              // Fallback to default resume data
+              setResumeData(defaultResumeData);
+              setCurrentResumeId(null);
+              setHasUnsavedChanges(false);
             }
           }
         }
@@ -486,6 +498,15 @@ function ResumeBuilderContent() {
           currentTemplateId={templateId}
           currentColorSchemeId={colorSchemeId}
           onLoadResume={handleLoadResume}
+          currentResumeId={currentResumeId}
+          currentResumeName={resumeData.personalInfo.fullName || "Untitled Resume"}
+          onResumeNameChange={(name) => {
+            setResumeData({
+              ...resumeData,
+              personalInfo: { ...resumeData.personalInfo, fullName: name }
+            });
+            markAsUnsaved();
+          }}
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -509,6 +530,15 @@ function ResumeBuilderContent() {
           currentTemplateId={templateId}
           currentColorSchemeId={colorSchemeId}
           onLoadResume={handleLoadResume}
+          currentResumeId={currentResumeId}
+          currentResumeName={resumeData.personalInfo.fullName || "Untitled Resume"}
+          onResumeNameChange={(name) => {
+            setResumeData({
+              ...resumeData,
+              personalInfo: { ...resumeData.personalInfo, fullName: name }
+            });
+            markAsUnsaved();
+          }}
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -540,6 +570,15 @@ function ResumeBuilderContent() {
         currentTemplateId={templateId}
         currentColorSchemeId={colorSchemeId}
         onLoadResume={handleLoadResume}
+        currentResumeId={currentResumeId}
+        currentResumeName={resumeData.personalInfo.fullName || "Untitled Resume"}
+        onResumeNameChange={(name) => {
+          setResumeData({
+            ...resumeData,
+            personalInfo: { ...resumeData.personalInfo, fullName: name }
+          });
+          markAsUnsaved();
+        }}
       />
 
       {/* Unsaved changes indicator */}

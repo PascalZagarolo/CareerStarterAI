@@ -302,7 +302,7 @@ export class TemplateService {
         .update(userResumes)
         .set({
           ...data,
-          updatedAt: new Date(),
+          // updatedAt will be automatically set by the database
         })
         .where(
           and(

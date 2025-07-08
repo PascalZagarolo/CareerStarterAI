@@ -57,6 +57,14 @@ export async function PUT(
     const body = await request.json();
     const { name, description, templateId, colorSchemeId, data, status, isDefault = false } = body;
 
+    // Validate resume data structure if data is provided
+    if (data !== undefined && (!data.personalInfo || !data.sections || !Array.isArray(data.sections))) {
+      return NextResponse.json(
+        { error: 'Invalid resume data structure' },
+        { status: 400 }
+      );
+    }
+
     // Check if resume exists and belongs to user
     const existingResume = await db
       .select()
@@ -85,11 +93,10 @@ export async function PUT(
           )
         );
     }
-
     const updateData: any = {
-      updatedAt: new Date().toISOString(),
+      // updatedAt will be automatically set by the database
     };
-
+    console.log(8)
     if (name !== undefined) updateData.name = name;
     if (description !== undefined) updateData.description = description;
     if (templateId !== undefined) updateData.templateId = templateId;
@@ -113,7 +120,6 @@ export async function PUT(
         )
       )
       .returning();
-
     return NextResponse.json({ resume: updatedResume });
   } catch (error) {
     console.error('Error updating resume:', error);

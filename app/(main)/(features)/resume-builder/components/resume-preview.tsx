@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ResumeData, Template } from './types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Eye, Download, Loader2 } from 'lucide-react';
+import { Eye, Download, Loader2, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 
 import ResumeA4Preview from './resume-a4-preview';
@@ -18,6 +18,7 @@ interface ResumePreviewProps {
 
 export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumePreviewProps) {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [lastEdited, setLastEdited] = useState<Date>(new Date());
 
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
   const currentColorScheme = currentTemplate?.colorSchemes?.find(cs => cs.id === selectedColorScheme);
@@ -27,6 +28,43 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
   if (!colorSchemeToUse && currentTemplate?.colorSchemes && currentTemplate.colorSchemes.length > 0) {
     colorSchemeToUse = currentTemplate.colorSchemes[0];
   }
+
+  // Update last edited time whenever resume data changes
+  useEffect(() => {
+    setLastEdited(new Date());
+  }, [resumeData]);
+
+  // Update the display every minute to keep "ago" times current
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Force a re-render to update the time display
+      setLastEdited(prev => new Date(prev.getTime()));
+    }, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatLastEdited = (date: Date) => {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    if (diffInSeconds < 60) {
+      return 'Just now';
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else {
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  };
 
  
 
@@ -94,6 +132,13 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
           </div>
         </div>
       </CardHeader>
+      {/* Last edited indicator */}
+      <div className="px-6 pb-2">
+        <div className="flex items-center justify-end text-xs text-gray-500">
+          <Clock className="h-3 w-3 mr-1" />
+          <span>Last edited: {formatLastEdited(lastEdited)}</span>
+        </div>
+      </div>
       <CardContent>
         <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center px-2">
           <div className="flex flex-col gap-6">

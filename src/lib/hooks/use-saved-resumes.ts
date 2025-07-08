@@ -165,9 +165,31 @@ export function useSavedResumes() {
   // Parse resume data from JSON string
   const parseResumeData = useCallback((data: string): ResumeData | null => {
     try {
-      return JSON.parse(data);
+      // Handle empty or null data
+      if (!data || data.trim() === '') {
+        console.warn('Empty resume data provided');
+        return null;
+      }
+
+      // Try to parse the JSON
+      const parsed = JSON.parse(data);
+      
+      // Validate that it has the expected structure
+      if (!parsed || typeof parsed !== 'object') {
+        console.error('Parsed data is not an object:', parsed);
+        return null;
+      }
+
+      // Check for required fields
+      if (!parsed.personalInfo || !parsed.sections) {
+        console.error('Parsed data missing required fields:', parsed);
+        return null;
+      }
+
+      return parsed;
     } catch (err) {
       console.error('Error parsing resume data:', err);
+      console.error('Raw data:', data);
       return null;
     }
   }, []);

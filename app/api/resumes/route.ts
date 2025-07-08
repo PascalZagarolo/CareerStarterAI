@@ -46,6 +46,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate resume data structure
+    if (!data.personalInfo || !data.sections || !Array.isArray(data.sections)) {
+      return NextResponse.json(
+        { error: 'Invalid resume data structure' },
+        { status: 400 }
+      );
+    }
+
     // If this is set as default, unset other defaults for this user
     if (isDefault) {
       await db
