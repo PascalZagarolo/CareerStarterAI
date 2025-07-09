@@ -2,6 +2,32 @@ import { useState, useCallback } from 'react';
 import { UserResume } from '@/db/schema';
 import { ResumeData } from '../../../app/(main)/(features)/resume-builder/components/types';
 
+// Extended interface to include template and color scheme data
+export interface ResumeWithDetails extends UserResume {
+  template?: {
+    id: string;
+    name: string;
+    description: string;
+    categoryId: string;
+    layout: string;
+    fontFamily: string;
+    fontSize: string;
+    spacing: string;
+    thumbnail: string;
+    plan: string;
+  };
+  colorScheme?: {
+    id: string;
+    name: string;
+    primary: string;
+    secondary: string;
+    accent: string;
+    background: string;
+    text: string;
+    border: string;
+  };
+}
+
 export interface SaveResumeParams {
   name: string;
   description?: string;
@@ -17,7 +43,7 @@ export interface UpdateResumeParams extends Partial<SaveResumeParams> {
 }
 
 export function useSavedResumes() {
-  const [resumes, setResumes] = useState<UserResume[]>([]);
+  const [resumes, setResumes] = useState<ResumeWithDetails[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +69,7 @@ export function useSavedResumes() {
   }, []);
 
   // Save a new resume
-  const saveResume = useCallback(async (params: SaveResumeParams): Promise<UserResume | null> => {
+  const saveResume = useCallback(async (params: SaveResumeParams): Promise<ResumeWithDetails | null> => {
     setLoading(true);
     setError(null);
     
@@ -74,7 +100,7 @@ export function useSavedResumes() {
   }, []);
 
   // Update an existing resume
-  const updateResume = useCallback(async (params: UpdateResumeParams): Promise<UserResume | null> => {
+  const updateResume = useCallback(async (params: UpdateResumeParams): Promise<ResumeWithDetails | null> => {
     setLoading(true);
     setError(null);
     
@@ -109,7 +135,7 @@ export function useSavedResumes() {
   }, []);
 
   // Load a specific resume
-  const loadResume = useCallback(async (id: string): Promise<UserResume | null> => {
+  const loadResume = useCallback(async (id: string): Promise<ResumeWithDetails | null> => {
     setLoading(true);
     setError(null);
     
@@ -158,7 +184,7 @@ export function useSavedResumes() {
   }, []);
 
   // Get default resume
-  const getDefaultResume = useCallback((): UserResume | null => {
+  const getDefaultResume = useCallback((): ResumeWithDetails | null => {
     return resumes.find(resume => resume.isDefault) || null;
   }, [resumes]);
 

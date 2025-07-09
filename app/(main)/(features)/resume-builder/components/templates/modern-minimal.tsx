@@ -1,6 +1,8 @@
 'use client';
 
 import { ResumeData, ColorScheme } from '../types';
+import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface ModernMinimalProps {
   data: ResumeData;
@@ -49,7 +51,17 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
           <div className="mt-3 flex justify-center items-center space-x-6 text-xs">
             {personalInfo.linkedin && (
               <div className="flex items-center">
-                <span>{personalInfo.linkedin}</span>
+                <Linkedin className="w-3 h-3 mr-1" style={{ color: colorScheme.accent }} />
+                <a 
+                  href={ensureHttps(personalInfo.linkedin)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: colorScheme.text }}
+                >
+                  {formatLinkedInLink(personalInfo.linkedin)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </div>
             )}
             {personalInfo.linkedin && personalInfo.portfolio && (
@@ -57,7 +69,17 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
             )}
             {personalInfo.portfolio && (
               <div className="flex items-center">
-                <span>{personalInfo.portfolio}</span>
+                <Globe className="w-3 h-3 mr-1" style={{ color: colorScheme.accent }} />
+                <a 
+                  href={ensureHttps(personalInfo.portfolio)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: colorScheme.text }}
+                >
+                  {formatPortfolioLink(personalInfo.portfolio)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </div>
             )}
           </div>

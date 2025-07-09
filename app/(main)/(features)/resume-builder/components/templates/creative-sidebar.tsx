@@ -2,6 +2,7 @@
 
 import { ResumeData, ColorScheme } from '../types';
 import { Mail, Phone, MapPin, Linkedin, Globe, ExternalLink } from 'lucide-react';
+import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
 
 interface CreativeSidebarProps {
   data: ResumeData;
@@ -67,12 +68,12 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                   <div className="flex items-center gap-3">
                     <Linkedin className="w-4 h-4 text-white/80" />
                     <a 
-                      href={personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`}
+                      href={ensureHttps(personalInfo.linkedin)}
                       className="text-white font-bold opacity-90 text-xs break-all hover:underline transition-colors flex items-center gap-1"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {personalInfo.linkedin}
+                      {formatLinkedInLink(personalInfo.linkedin)}
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
@@ -81,12 +82,12 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                   <div className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-white/80" />
                     <a 
-                      href={personalInfo.portfolio.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`}
+                      href={ensureHttps(personalInfo.portfolio)}
                       className="text-white font-bold opacity-90 text-xs break-all hover:underline transition-colors flex items-center gap-1"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {personalInfo.portfolio}
+                      {formatPortfolioLink(personalInfo.portfolio)}
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>

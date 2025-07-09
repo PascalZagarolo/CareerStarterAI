@@ -1,6 +1,8 @@
 'use client';
 
 import { ResumeData, ColorScheme, Project, Certification, Experience, Education } from '../types';
+import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface StartupModernProps {
   data: ResumeData;
@@ -50,7 +52,16 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
           <div className="mt-3 flex justify-center items-center space-x-4 text-white opacity-80 text-xs">
             {personalInfo.linkedin && (
               <div className="flex items-center">
-                <span>{personalInfo.linkedin}</span>
+                <Linkedin className="w-3 h-3 mr-1" />
+                <a 
+                  href={ensureHttps(personalInfo.linkedin)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {formatLinkedInLink(personalInfo.linkedin)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </div>
             )}
             {personalInfo.linkedin && personalInfo.portfolio && (
@@ -58,7 +69,16 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
             )}
             {personalInfo.portfolio && (
               <div className="flex items-center">
-                <span>{personalInfo.portfolio}</span>
+                <Globe className="w-3 h-3 mr-1" />
+                <a 
+                  href={ensureHttps(personalInfo.portfolio)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {formatPortfolioLink(personalInfo.portfolio)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </div>
             )}
           </div>

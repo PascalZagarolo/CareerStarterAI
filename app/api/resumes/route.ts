@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db/index';
-import { userResumes } from '@/db/schema';
+import { userResumes, templates, colorSchemes } from '@/db/schema';
 import { eq, desc } from 'drizzle-orm';
 import { getCurrentUser } from '@/lib/auth';
 
@@ -13,12 +13,25 @@ export async function GET() {
     }
 
     const resumes = await db
-      .select()
+      .select({
+        resume: userResumes,
+        template: templates,
+        colorScheme: colorSchemes,
+      })
       .from(userResumes)
+      .innerJoin(templates, eq(userResumes.templateId, templates.id))
+      .innerJoin(colorSchemes, eq(userResumes.colorSchemeId, colorSchemes.id))
       .where(eq(userResumes.userId, user.id))
       .orderBy(desc(userResumes.updatedAt));
 
-    return NextResponse.json({ resumes });
+    // Transform the data to include template and color scheme details
+    const resumesWithDetails = resumes.map(row => ({
+      ...row.resume,
+      template: row.template,
+      colorScheme: row.colorScheme,
+    }));
+
+    return NextResponse.json({ resumes: resumesWithDetails });
   } catch (error) {
     console.error('Error fetching resumes:', error);
     return NextResponse.json(

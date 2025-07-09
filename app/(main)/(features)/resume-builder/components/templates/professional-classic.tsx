@@ -1,6 +1,8 @@
 'use client';
 
 import { ResumeData, ColorScheme, Experience, Education, Project, Certification } from '../types';
+import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface ProfessionalClassicProps {
   data: ResumeData;
@@ -53,14 +55,32 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
           <div className="mt-2 flex gap-4 text-xs">
             {personalInfo.linkedin && (
               <div className="flex items-center">
-                <span className="font-semibold mr-2">LinkedIn:</span>
-                <span>{personalInfo.linkedin}</span>
+                <Linkedin className="w-3 h-3 mr-1" style={{ color: colorScheme.accent }} />
+                <a 
+                  href={ensureHttps(personalInfo.linkedin)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: colorScheme.text }}
+                >
+                  {formatLinkedInLink(personalInfo.linkedin)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </div>
             )}
             {personalInfo.portfolio && (
               <div className="flex items-center">
-                <span className="font-semibold mr-2">Portfolio:</span>
-                <span>{personalInfo.portfolio}</span>
+                <Globe className="w-3 h-3 mr-1" style={{ color: colorScheme.accent }} />
+                <a 
+                  href={ensureHttps(personalInfo.portfolio)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: colorScheme.text }}
+                >
+                  {formatPortfolioLink(personalInfo.portfolio)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </div>
             )}
           </div>

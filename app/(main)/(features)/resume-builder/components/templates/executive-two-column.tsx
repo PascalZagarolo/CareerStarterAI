@@ -1,6 +1,8 @@
 'use client';
 
 import { ResumeData, ColorScheme } from '../types';
+import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface ExecutiveTwoColumnProps {
   data: ResumeData;
@@ -51,16 +53,34 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
           <div className="flex items-center">
             {personalInfo.linkedin && (
               <>
-                <span className="font-semibold mr-2">LinkedIn:</span>
-                <span>{personalInfo.linkedin}</span>
+                <Linkedin className="w-3 h-3 mr-1" style={{ color: colorScheme.accent }} />
+                <a 
+                  href={ensureHttps(personalInfo.linkedin)}
+                  className="hover:underline transition-colors flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: colorScheme.text }}
+                >
+                  {formatLinkedInLink(personalInfo.linkedin)}
+                  <ExternalLink className="w-2 h-2" />
+                </a>
               </>
             )}
           </div>
         </div>
         {personalInfo.portfolio && (
-          <div className="mt-2 text-xs">
-            <span className="font-semibold mr-2">Portfolio:</span>
-            <span>{personalInfo.portfolio}</span>
+          <div className="mt-2 text-xs flex items-center">
+            <Globe className="w-3 h-3 mr-1" style={{ color: colorScheme.accent }} />
+            <a 
+              href={ensureHttps(personalInfo.portfolio)}
+              className="hover:underline transition-colors flex items-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: colorScheme.text }}
+            >
+              {formatPortfolioLink(personalInfo.portfolio)}
+              <ExternalLink className="w-2 h-2" />
+            </a>
           </div>
         )}
       </div>
