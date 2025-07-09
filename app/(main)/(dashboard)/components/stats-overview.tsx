@@ -1,6 +1,5 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
 import { StatCard } from '@/components/ui/stat-card';
 import { FileText, Briefcase, Send, Calendar } from 'lucide-react';
 import { DashboardStats } from '@/lib/hooks/use-dashboard-stats';

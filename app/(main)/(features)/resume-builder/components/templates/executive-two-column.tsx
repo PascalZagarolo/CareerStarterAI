@@ -2,6 +2,7 @@
 
 import { ResumeData, ColorScheme } from '../types';
 import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { useTranslatedSectionTitle } from '../utils/section-title-translator';
 import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface ExecutiveTwoColumnProps {
@@ -11,6 +12,7 @@ interface ExecutiveTwoColumnProps {
 
 export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoColumnProps) {
   const { personalInfo, sections } = data;
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
 
   return (
     <div 
@@ -99,7 +101,7 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                   borderColor: colorScheme.border
                 }}
               >
-                Professional Experience
+                {getTranslatedSectionTitle('experience')}
               </h2>
               <div className="space-y-3">
                 {(() => {
@@ -145,7 +147,7 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                   borderColor: colorScheme.border
                 }}
               >
-                Key Projects
+                {getTranslatedSectionTitle('projects')}
               </h2>
               <div className="space-y-3">
                 {(() => {
@@ -195,7 +197,7 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                   borderColor: colorScheme.border
                 }}
               >
-                Core Competencies
+                {getTranslatedSectionTitle('skills')}
               </h2>
               <div className="grid grid-cols-2 gap-2">
                 {(() => {
@@ -231,7 +233,7 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                   borderColor: colorScheme.border
                 }}
               >
-                Education
+                {getTranslatedSectionTitle('education')}
               </h2>
               <div className="space-y-3">
                 {(() => {
@@ -272,7 +274,7 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
                   borderColor: colorScheme.border
                 }}
               >
-                Certifications
+                {getTranslatedSectionTitle('certifications')}
               </h2>
               <div className="space-y-2">
                 {(() => {

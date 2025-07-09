@@ -13,6 +13,8 @@ import LoadingSpinner from './components/loading-spinner';
 import { useSavedResumes } from '@/lib/hooks/use-saved-resumes';
 import { toast } from 'sonner';
 import { useResumeStore } from '../../../../src/lib/store/useResumeStore';
+import { LanguageProvider, useLanguage } from './components/i18n/language-context';
+import LanguageSwitcher from './components/language-switcher';
 
 function DesignSidebar({
   templates,
@@ -27,6 +29,7 @@ function DesignSidebar({
   selectedColorScheme: string;
   setSelectedColorScheme: (id: string) => void;
 }) {
+  const { t } = useLanguage();
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
   const templateListRef = useRef<HTMLDivElement>(null!);
   const colorSchemeListRef = useRef<HTMLDivElement>(null!);
@@ -55,10 +58,10 @@ function DesignSidebar({
 
   return (
     <div className="p-4">
-      <h2 className="font-bold text-xl mb-6 tracking-tight text-gray-900">Design</h2>
+      <h2 className="font-bold text-xl mb-6 tracking-tight text-gray-900">{t.ui.design}</h2>
       {/* Template Selector */}
       <div className="mb-10">
-        <div className="font-semibold mb-3 text-gray-700">Templates</div>
+        <div className="font-semibold mb-3 text-gray-700">{t.ui.templates}</div>
         <div className="relative" style={{ height: boxHeight }}>
           {/* Up arrow inside box */}
           <button
@@ -142,7 +145,7 @@ function DesignSidebar({
       </div>
       {/* Color Scheme Selector */}
       <div>
-        <div className="font-semibold mb-3 text-gray-700">Color Schemes</div>
+        <div className="font-semibold mb-3 text-gray-700">{t.ui.colorSchemes}</div>
         <div className="relative" style={{ height: boxHeight }}>
           {/* Up arrow inside box */}
           <button
@@ -210,6 +213,7 @@ function ResumeBuilderContent() {
     colorSchemeId,
     setColorSchemeId
   } = useResumeStore();
+  const { t, language } = useLanguage();
   const [activeSection, setActiveSection] = useState<string>('summary');
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState<'content' | 'design'>('content');
@@ -279,16 +283,16 @@ function ResumeBuilderContent() {
               setColorSchemeId(resume.colorSchemeId);
               setCurrentResumeId(resume.id);
               setHasUnsavedChanges(false);
-              toast.success(`Loaded resume: ${resume.name}`);
+              toast.success(`${t.ui.resumeLoaded}: ${resume.name}`);
             } else {
-              toast.error(`Failed to load resume "${resume.name}". The data appears to be corrupted.`);
+              toast.error(`${t.ui.resumeLoadError}: "${resume.name}". The data appears to be corrupted.`);
               // Fallback to default resume data
               setResumeData(defaultResumeData);
               setCurrentResumeId(null);
               setHasUnsavedChanges(false);
             }
           } else {
-            toast.error('Resume not found');
+            toast.error(t.ui.resumeLoadError);
           }
         } else {
           // Load default resume if no specific resume requested
@@ -300,9 +304,9 @@ function ResumeBuilderContent() {
               setTemplateId(defaultResume.templateId);
               setColorSchemeId(defaultResume.colorSchemeId);
               setCurrentResumeId(defaultResume.id);
-              toast.success('Loaded your default resume');
+              toast.success(t.ui.resumeLoaded);
             } else {
-              toast.error(`Failed to load default resume. The data appears to be corrupted.`);
+              toast.error(`${t.ui.resumeLoadError}. The data appears to be corrupted.`);
               // Fallback to default resume data
               setResumeData(defaultResumeData);
               setCurrentResumeId(null);
@@ -312,7 +316,7 @@ function ResumeBuilderContent() {
         }
       } catch (error) {
         console.error('Error loading resume:', error);
-        toast.error('Failed to load resume');
+        toast.error(t.ui.resumeLoadError);
       }
     };
 
@@ -392,7 +396,7 @@ function ResumeBuilderContent() {
     const newSection: ResumeSection = {
       id: `${type}-${Date.now()}`,
       type,
-      title: type.charAt(0).toUpperCase() + type.slice(1),
+      title: t.sections[type],
       content: type === 'experience' ? [] : type === 'education' ? [] : type === 'skills' ? [] : type === 'projects' ? [] : type === 'certifications' ? [] : [],
       isVisible: true,
       order: resumeData.sections.length
@@ -484,7 +488,7 @@ function ResumeBuilderContent() {
     setTemplateId(templateId);
     setColorSchemeId(colorSchemeId);
     setHasUnsavedChanges(false);
-    toast.success('Resume loaded successfully');
+    toast.success(t.ui.resumeLoaded);
   };
 
   const activeSectionData = resumeData.sections.find(s => s.id === activeSection);
@@ -512,7 +516,7 @@ function ResumeBuilderContent() {
           <div className="flex items-center justify-center min-h-[60vh]">
             <LoadingSpinner 
               size="lg" 
-              text="Loading beautiful templates..." 
+              text={t.ui.loadingTemplates} 
               className="py-12"
             />
           </div>
@@ -548,13 +552,13 @@ function ResumeBuilderContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to Load Templates</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t.ui.failedToLoadTemplates}</h3>
               <p className="text-gray-600 mb-4">{templateError}</p>
               <button 
                 onClick={() => window.location.reload()} 
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Try Again
+                {t.ui.tryAgain}
               </button>
             </div>
           </div>
@@ -589,10 +593,10 @@ function ResumeBuilderContent() {
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-              <span className="text-sm font-medium">You have unsaved changes</span>
+              <span className="text-sm font-medium">{t.ui.unsavedChanges}</span>
             </div>
             <div className="text-xs text-yellow-600">
-              Auto-saving in 30 seconds...
+              {t.ui.autoSaving}
             </div>
           </div>
         </div>
@@ -601,29 +605,34 @@ function ResumeBuilderContent() {
       {/* Tab Toggle - At the very top */}
       <div className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex">
-            <button
-              className={`px-6 py-4 font-medium text-sm focus:outline-none transition-colors ${
-                activeTab === 'content' 
-                  ? 'border-b-2 border-blue-600 text-blue-600' 
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-              onClick={() => setActiveTab('content')}
-              type="button"
-            >
-              Content
-            </button>
-            <button
-              className={`px-6 py-4 font-medium text-sm focus:outline-none transition-colors ${
-                activeTab === 'design' 
-                  ? 'border-b-2 border-blue-600 text-blue-600' 
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-              onClick={() => setActiveTab('design')}
-              type="button"
-            >
-              Design
-            </button>
+          <div className="flex items-center justify-between">
+            <div className="flex">
+              <button
+                className={`px-6 py-4 font-medium text-sm focus:outline-none transition-colors ${
+                  activeTab === 'content' 
+                    ? 'border-b-2 border-blue-600 text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                onClick={() => setActiveTab('content')}
+                type="button"
+              >
+                {t.ui.content}
+              </button>
+              <button
+                className={`px-6 py-4 font-medium text-sm focus:outline-none transition-colors ${
+                  activeTab === 'design' 
+                    ? 'border-b-2 border-blue-600 text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                onClick={() => setActiveTab('design')}
+                type="button"
+              >
+                {t.ui.design}
+              </button>
+            </div>
+            <div className="flex items-center">
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>
@@ -633,7 +642,7 @@ function ResumeBuilderContent() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Sidebar: switches content based on tab */}
           <div className="lg:col-span-1">
-            {activeTab === 'content' ? (
+            {activeTab === 'content' && (
               <>
                 <PersonalInfoEditor 
                   personalInfo={resumeData.personalInfo}
@@ -659,7 +668,8 @@ function ResumeBuilderContent() {
                   />
                 )}
               </>
-            ) : (
+            )}
+            {activeTab === 'design' && (
               <DesignSidebar
                 templates={templates}
                 selectedTemplate={templateId}
@@ -668,6 +678,7 @@ function ResumeBuilderContent() {
                 setSelectedColorScheme={changeColorScheme}
               />
             )}
+
           </div>
 
           {/* Main Preview always on the right */}
@@ -678,6 +689,7 @@ function ResumeBuilderContent() {
               selectedTemplate={templateId}
               selectedColorScheme={colorSchemeId}
               templates={templates}
+              language={language}
             />
           </div>
         </div>
@@ -688,8 +700,10 @@ function ResumeBuilderContent() {
 
 export default function ResumeBuilder() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ResumeBuilderContent />
-    </Suspense>
+    <LanguageProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ResumeBuilderContent />
+      </Suspense>
+    </LanguageProvider>
   );
 }

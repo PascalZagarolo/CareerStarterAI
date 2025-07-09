@@ -55,6 +55,7 @@ export function useDashboardStats() {
       setStats(data.stats);
     } catch (err) {
       // Fallback to mock data for development
+      console.log(err);
       const mockStats: DashboardStats = {
         totalResumes: 12,
         totalCoverLetters: 8,

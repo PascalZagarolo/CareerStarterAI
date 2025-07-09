@@ -2,6 +2,7 @@ import ResumeA4Preview from '../../(main)/(features)/resume-builder/components/r
 import { defaultResumeData } from '../../(main)/(features)/resume-builder/components/data';
 import { TemplateService } from '@/lib/template-service';
 import type { Template } from '../../(main)/(features)/resume-builder/components/types';
+import type { Language } from '../../(main)/(features)/resume-builder/components/i18n/translations';
 
 export default async function PreviewPage({ 
   searchParams 
@@ -12,9 +13,14 @@ export default async function PreviewPage({
   let templateId = '';
   let colorSchemeId = '';
   let resumeData = defaultResumeData;
+  let language: Language = 'en';
   
   templateId = Array.isArray(params.template) ? params.template[0] : params.template ?? '';
   colorSchemeId = Array.isArray(params.color) ? params.color[0] : params.color ?? '';
+  if (params.language) {
+    language = Array.isArray(params.language) ? params.language[0] as Language : params.language as Language;
+    if (language !== 'en' && language !== 'de') language = 'en';
+  }
 
   if (params.data) {
     try {
@@ -104,12 +110,14 @@ export default async function PreviewPage({
 
   return (
     <div className='h-screen w-screen'>
+      
       <div className="flex justify-center items-center h-full bg-gray-100">
         <ResumeA4Preview
           resumeData={resumeData}
           selectedTemplate={templateId}
           selectedColorScheme={colorSchemeId}
           templates={templates}
+          language={language}
         />
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { ResumeData, ColorScheme, Experience, Education, Project, Certification } from '../types';
 import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { useTranslatedSectionTitle } from '../utils/section-title-translator';
 import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface ProfessionalClassicProps {
@@ -11,6 +12,7 @@ interface ProfessionalClassicProps {
 
 export default function ProfessionalClassic({ data, colorScheme }: ProfessionalClassicProps) {
   const { personalInfo, sections } = data;
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
 
   return (
     <div 
@@ -35,7 +37,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
           {personalInfo.fullName}
         </h1>
         <p className="text-sm mb-3" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content[0] || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0] || getTranslatedSectionTitle('summary')}
         </p>
         <div className="grid grid-cols-3 gap-4 text-xs">
           <div className="flex items-center">
@@ -101,7 +103,7 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
                   borderColor: colorScheme.border
                 }}
               >
-                {section.title}
+                {getTranslatedSectionTitle(section.type)}
               </h2>
               
               {section.type === 'experience' && (

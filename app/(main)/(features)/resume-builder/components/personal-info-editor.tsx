@@ -4,6 +4,7 @@ import { ResumeData } from './types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from './i18n/language-context';
 
 interface PersonalInfoEditorProps {
   personalInfo: ResumeData['personalInfo'];
@@ -11,6 +12,8 @@ interface PersonalInfoEditorProps {
 }
 
 export default function PersonalInfoEditor({ personalInfo, onUpdate }: PersonalInfoEditorProps) {
+  const { t } = useLanguage();
+  
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -18,68 +21,68 @@ export default function PersonalInfoEditor({ personalInfo, onUpdate }: PersonalI
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name</Label>
+          <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">{t.personalInfo.fullName}</Label>
           <Input
             id="fullName"
             value={personalInfo.fullName}
             onChange={(e) => onUpdate('fullName', e.target.value)}
-            placeholder="Enter your full name"
+            placeholder={t.placeholders.fullName}
             className="text-gray-900 placeholder:text-gray-500"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email</Label>
+          <Label htmlFor="email" className="text-sm font-medium text-gray-700">{t.personalInfo.email}</Label>
           <Input
             id="email"
             type="email"
             value={personalInfo.email}
             onChange={(e) => onUpdate('email', e.target.value)}
-            placeholder="your.email@example.com"
+            placeholder={t.placeholders.email}
             className="text-gray-900 placeholder:text-gray-500"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone</Label>
+          <Label htmlFor="phone" className="text-sm font-medium text-gray-700">{t.personalInfo.phone}</Label>
           <Input
             id="phone"
             value={personalInfo.phone}
             onChange={(e) => onUpdate('phone', e.target.value)}
-            placeholder="+1 (555) 123-4567"
+            placeholder={t.placeholders.phone}
             className="text-gray-900 placeholder:text-gray-500"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="location" className="text-sm font-medium text-gray-700">Location</Label>
+          <Label htmlFor="location" className="text-sm font-medium text-gray-700">{t.personalInfo.location}</Label>
           <Input
             id="location"
             value={personalInfo.location}
             onChange={(e) => onUpdate('location', e.target.value)}
-            placeholder="City, State"
+            placeholder={t.placeholders.location}
             className="text-gray-900 placeholder:text-gray-500"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="linkedin" className="text-sm font-medium text-gray-700">LinkedIn</Label>
+          <Label htmlFor="linkedin" className="text-sm font-medium text-gray-700">{t.personalInfo.linkedin}</Label>
           <Input
             id="linkedin"
             value={personalInfo.linkedin || ''}
             onChange={(e) => onUpdate('linkedin', e.target.value)}
-            placeholder="linkedin.com/in/yourprofile"
+            placeholder={t.placeholders.linkedin}
             className="text-gray-900 placeholder:text-gray-500"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="portfolio" className="text-sm font-medium text-gray-700">Portfolio</Label>
+          <Label htmlFor="portfolio" className="text-sm font-medium text-gray-700">{t.personalInfo.portfolio}</Label>
           <Input
             id="portfolio"
             value={personalInfo.portfolio || ''}
             onChange={(e) => onUpdate('portfolio', e.target.value)}
-            placeholder="yourportfolio.com"
+            placeholder={t.placeholders.portfolio}
             className="text-gray-900 placeholder:text-gray-500"
           />
         </div>

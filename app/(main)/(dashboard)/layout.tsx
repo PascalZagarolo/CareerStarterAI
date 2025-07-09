@@ -15,11 +15,10 @@ import {
   Briefcase,
   Settings,
   Bell,
-  User,
-  Crown,
-  Zap,
+
+
   BarChart3,
-  Globe,
+ 
   HelpCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';

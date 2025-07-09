@@ -2,6 +2,7 @@
 
 import { ResumeData, ColorScheme } from '../types';
 import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { useTranslatedSectionTitle } from '../utils/section-title-translator';
 import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface ModernMinimalProps {
@@ -11,6 +12,7 @@ interface ModernMinimalProps {
 
 export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps) {
   const { personalInfo, sections } = data;
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
 
   return (
     <div 
@@ -32,7 +34,7 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
           {personalInfo.fullName}
         </h1>
         <p className="text-lg mb-4" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content[0] || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0] || getTranslatedSectionTitle('summary')}
         </p>
         <div className="flex justify-center items-center space-x-6 text-xs">
           <div className="flex items-center">
@@ -97,7 +99,7 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
                 className="text-xl font-light mb-4 tracking-wide uppercase"
                 style={{ color: colorScheme.primary }}
               >
-                {section.title}
+                {getTranslatedSectionTitle(section.type)}
               </h2>
               
               {section.type === 'experience' && (

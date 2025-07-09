@@ -5,15 +5,18 @@ import CreativeSidebar from './templates/creative-sidebar';
 import ExecutiveTwoColumn from './templates/executive-two-column';
 import StartupModern from './templates/startup-modern';
 import React from 'react';
+import { LanguageProvider } from './i18n/language-context';
+import { Language } from './i18n/translations';
 
 interface ResumeA4PreviewProps {
   resumeData: ResumeData;
   selectedTemplate: string;
   selectedColorScheme: string;
   templates: Template[];
+  language?: Language;
 }
 
-export default function ResumeA4Preview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumeA4PreviewProps) {
+export default function ResumeA4Preview({ resumeData, selectedTemplate, selectedColorScheme, templates, language = 'en' }: ResumeA4PreviewProps) {
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
   const currentColorScheme = currentTemplate?.colorSchemes?.find(cs => cs.id === selectedColorScheme);
 
@@ -54,21 +57,23 @@ export default function ResumeA4Preview({ resumeData, selectedTemplate, selected
   };
 
   return (
-    <div
-      className="bg-white relative overflow-hidden resume-preview-print"
-      style={{
-        width: '210mm', // A4 width
-        height: '297mm', // A4 height
-        aspectRatio: '210/297', // A4 aspect ratio (1:1.41)
-        maxWidth: '100%',
-      }}
-    >
-      {/* Page fold effect */}
-      <div className="absolute top-0 right-0 w-4 h-4 bg-gradient-to-br from-transparent to-gray-200 opacity-50 z-5"></div>
-      {/* Content container */}
-      <div className="w-full h-full overflow-hidden">
-        {renderTemplate()}
+    <LanguageProvider initialLanguage={language}>
+      <div
+        className="bg-white relative overflow-hidden resume-preview-print"
+        style={{
+          width: '210mm', // A4 width
+          height: '297mm', // A4 height
+          aspectRatio: '210/297', // A4 aspect ratio (1:1.41)
+          maxWidth: '100%',
+        }}
+      >
+        {/* Page fold effect */}
+        <div className="absolute top-0 right-0 w-4 h-4 bg-gradient-to-br from-transparent to-gray-200 opacity-50 z-5"></div>
+        {/* Content container */}
+        <div className="w-full h-full overflow-hidden">
+          {renderTemplate()}
+        </div>
       </div>
-    </div>
+    </LanguageProvider>
   );
 } 

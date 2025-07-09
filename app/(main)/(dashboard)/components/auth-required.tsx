@@ -30,7 +30,7 @@ export function AuthRequired() {
           </Link>
           
           <div className="text-center">
-            <span className="text-sm text-gray-500">Don't have an account? </span>
+            <span className="text-sm text-gray-500">Don&apos;t have an account? </span>
             <Link href="/signup" className="text-sm font-medium text-blue-600 hover:text-blue-700">
               Sign up
             </Link>

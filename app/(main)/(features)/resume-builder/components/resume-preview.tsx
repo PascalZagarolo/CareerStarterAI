@@ -14,9 +14,10 @@ interface ResumePreviewProps {
   selectedTemplate: string;
   selectedColorScheme: string;
   templates: Template[];
+  language?: import('./i18n/translations').Language;
 }
 
-export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates }: ResumePreviewProps) {
+export default function ResumePreview({ resumeData, selectedTemplate, selectedColorScheme, templates, language }: ResumePreviewProps) {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [lastEdited, setLastEdited] = useState<Date>(new Date());
 
@@ -85,6 +86,7 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
       const params = new URLSearchParams({
         template: selectedTemplate,
         color: selectedColorScheme,
+        language: language || 'en',
         data: encodeURIComponent(JSON.stringify(resumeData)),
       });
       const downloadUrl = `/api/pdf?${params.toString()}`;
@@ -148,6 +150,7 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
               selectedTemplate={selectedTemplate}
               selectedColorScheme={selectedColorScheme}
               templates={templates}
+              language={language}
             />
           </div>
         </div>

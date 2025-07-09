@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db } from '@/db/index';
 import { userResumes, templates, colorSchemes } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -7,7 +7,7 @@ import { defaultResumeData } from '../../../../app/(main)/(features)/resume-buil
 import type { UserResume } from '@/db/schema';
 
 // POST /api/resumes/seed - Create sample resumes for testing
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const user = await getCurrentUser();
     if (!user) {

@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Search, Filter, Calendar, Clock, User, Tag, ArrowRight, BookOpen, Star, TrendingUp } from 'lucide-react';
+import { Search, Calendar, Clock, User, ArrowRight, BookOpen, Star, TrendingUp } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { blogPosts, categories, BlogPost } from '../data/blog-posts';
+import { blogPosts, categories } from '../data/blog-posts';
   
 export default function BlogsPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,8 +73,6 @@ export default function BlogsPage() {
     href: '/blogs/career-growth-2024',
   };
 
-  const promotedImage = recommendedArticle.imageUrl;
-
   return (
     <div className="min-h-screen bg-white">
       {/* Recommended Article Section at Top */}
@@ -88,7 +86,7 @@ export default function BlogsPage() {
                   {/* Badge */}
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
                     <Star className="h-4 w-4" />
-                    Editor's Choice
+                    Editor&apos;s Choice
                   </div>
                   
                   {/* Title */}
@@ -362,7 +360,7 @@ export default function BlogsPage() {
               </div>
               <h3 className="text-2xl font-semibold text-slate-900 mb-3">No articles found</h3>
               <p className="text-slate-600 max-w-md mx-auto">
-                Try adjusting your search terms or browse our categories to find what you're looking for.
+                Try adjusting your search terms or browse our categories to find what you&apos;re looking for.
               </p>
             </div>
           ) : (

@@ -18,9 +18,9 @@ import { UsageQuota } from '@/components/dashboard/usage-quota';
 import { PerformanceMetrics } from '@/components/dashboard/performance-metrics';
 
 export default function Dashboard() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading } = useAuth();
   const { resumes, loading: resumesLoading, fetchResumes, deleteResume } = useSavedResumes();
-  const { stats, loading: statsLoading, refreshStats } = useDashboardStats();
+  const { stats, loading: statsLoading } = useDashboardStats();
   
   useEffect(() => {
     if (user) {
@@ -28,10 +28,6 @@ export default function Dashboard() {
     }
   }, [user, fetchResumes]);
   
-  const handleLogout = async () => {
-    await logout();
-  };
-
   const handleDeleteResume = async (id: string) => {
     if (confirm('Are you sure you want to delete this resume?')) {
       await deleteResume(id);

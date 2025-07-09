@@ -30,6 +30,7 @@ export function SaveDialog({
   currentResumeId,
   currentResumeName = "Untitled Resume"
 }: SaveDialogProps) {
+  console.log(currentResumeId);
   const [saveName, setSaveName] = useState(currentResumeName);
   const [saveDescription, setSaveDescription] = useState('');
   const [isDefault, setIsDefault] = useState(false);

@@ -1,17 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+
 import { useAuth, AuthWrapper } from '@/components/auth-wrapper';
 import { 
-  Home, 
-  FileText, 
-  TrendingUp, 
-  Mail, 
   LogOut,
   Menu,
-  X,
   Briefcase
 } from 'lucide-react';
 
@@ -21,38 +15,13 @@ function DashboardLayoutContent({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useAuth();
-
+  console.log(sidebarOpen)
   // Define navigation items
-  const navigation = [
-    { 
-      name: 'Dashboard', 
-      href: '/dashboard', 
-      icon: <Home className="h-5 w-5" />
-    },
-    { 
-      name: 'Resume Builder', 
-      href: '/resume-builder', 
-      icon: <FileText className="h-5 w-5" />
-    },
-    { 
-      name: 'Career Path', 
-      href: '/career-path', 
-      icon: <TrendingUp className="h-5 w-5" />
-    },
-    { 
-      name: 'Cover Letter', 
-      href: '/cover-letter', 
-      icon: <Mail className="h-5 w-5" />
-    },
-    { 
-      name: 'Job Search', 
-      href: '/job-search', 
-      icon: <Briefcase className="h-5 w-5" />
-    },
-  ];
+ 
 
   const handleLogout = async () => {
     await logout();

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Clock, User, Share2, Bookmark, Tag, TrendingUp, Eye, Heart, MessageCircle, Megaphone } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Share2, Bookmark, Tag, TrendingUp, Eye, Heart, Megaphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -44,7 +44,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="text-center max-w-md mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h1 className="text-2xl font-bold text-slate-900 mb-4">Article Not Found</h1>
-            <p className="text-slate-600 mb-6">The article you're looking for doesn't exist.</p>
+            <p className="text-slate-600 mb-6">The article you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/blogs">
               <Button className="w-full">Back to Blogs</Button>
             </Link>

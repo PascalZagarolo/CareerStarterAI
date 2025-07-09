@@ -33,7 +33,7 @@ export default function Header({
   const [loadDialogOpen, setLoadDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [resumeName, setResumeName] = useState(currentResumeName);
-  const { saveResume, updateResume } = useSavedResumes();
+  const { updateResume } = useSavedResumes();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Update resume name when prop changes

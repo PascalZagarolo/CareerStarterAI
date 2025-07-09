@@ -3,6 +3,7 @@
 import { ResumeData, ColorScheme } from '../types';
 import { Mail, Phone, MapPin, Linkedin, Globe, ExternalLink } from 'lucide-react';
 import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { useTranslatedSectionTitle } from '../utils/section-title-translator';
 
 interface CreativeSidebarProps {
   data: ResumeData;
@@ -11,6 +12,7 @@ interface CreativeSidebarProps {
 
 export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarProps) {
   const { personalInfo, sections } = data;
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
 
   return (
     <div 
@@ -33,7 +35,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
               {personalInfo.fullName}
             </h1>
             <p className="text-base mb-6 opacity-90 leading-relaxed px-1">
-              {sections.find(s => s.type === 'summary')?.content[0] || 'Professional Summary'}
+              {sections.find(s => s.type === 'summary')?.content[0] || getTranslatedSectionTitle('summary')}
             </p>
           </div>
           {/* Contact Info */}
@@ -97,7 +99,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
           {/* Skills */}
           {sections.find(s => s.type === 'skills') && (
             <div className="mb-6 px-2">
-              <h2 className="text-lg font-bold mb-3 text-white tracking-wide">Skills</h2>
+              <h2 className="text-lg font-bold mb-3 text-white tracking-wide">{getTranslatedSectionTitle('skills')}</h2>
               <div className="flex flex-wrap gap-2">
                 {(() => {
                   const skillsSection = sections.find(s => s.type === 'skills');
@@ -119,7 +121,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
           {/* Education */}
           {sections.find(s => s.type === 'education') && (
             <div className="px-2">
-              <h2 className="text-lg font-bold mb-3 text-white tracking-wide">Education</h2>
+              <h2 className="text-lg font-bold mb-3 text-white tracking-wide">{getTranslatedSectionTitle('education')}</h2>
               <div className="space-y-3">
                 {(() => {
                   const educationSection = sections.find(s => s.type === 'education');
@@ -155,7 +157,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                   borderColor: colorScheme.accent
                 }}
               >
-                Professional Experience
+                {getTranslatedSectionTitle('experience')}
               </h2>
               <div className="space-y-6">
                 {(() => {
@@ -204,7 +206,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                   borderColor: colorScheme.accent
                 }}
               >
-                Projects
+                {getTranslatedSectionTitle('projects')}
               </h2>
               <div className="space-y-6">
                 {(() => {
@@ -249,7 +251,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                   borderColor: colorScheme.accent
                 }}
               >
-                Certifications
+                {getTranslatedSectionTitle('certifications')}
               </h2>
               <div className="space-y-4">
                 {(() => {

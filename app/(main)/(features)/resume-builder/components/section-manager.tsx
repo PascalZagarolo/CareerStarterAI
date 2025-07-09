@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronUp, ChevronDown, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { useLanguage } from './i18n/language-context';
 
 interface SectionManagerProps {
   sections: ResumeSection[];
@@ -27,6 +28,7 @@ export default function SectionManager({
   onSectionRemove,
   onSectionAdd
 }: SectionManagerProps) {
+  const { t } = useLanguage();
   return (
     <Card>
       <CardHeader>
@@ -117,12 +119,12 @@ export default function SectionManager({
               <SelectValue placeholder="Add Section..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="summary">Professional Summary</SelectItem>
-              <SelectItem value="experience">Work Experience</SelectItem>
-              <SelectItem value="education">Education</SelectItem>
-              <SelectItem value="skills">Skills</SelectItem>
-              <SelectItem value="projects">Projects</SelectItem>
-              <SelectItem value="certifications">Certifications</SelectItem>
+              <SelectItem value="summary">{t.sections.summary}</SelectItem>
+              <SelectItem value="experience">{t.sections.experience}</SelectItem>
+              <SelectItem value="education">{t.sections.education}</SelectItem>
+              <SelectItem value="skills">{t.sections.skills}</SelectItem>
+              <SelectItem value="projects">{t.sections.projects}</SelectItem>
+              <SelectItem value="certifications">{t.sections.certifications}</SelectItem>
             </SelectContent>
           </Select>
         </div>

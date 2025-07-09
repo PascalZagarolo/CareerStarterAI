@@ -2,6 +2,7 @@
 
 import { ResumeData, ColorScheme, Project, Certification, Experience, Education } from '../types';
 import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
+import { useTranslatedSectionTitle } from '../utils/section-title-translator';
 import { Linkedin, Globe, ExternalLink } from 'lucide-react';
 
 interface StartupModernProps {
@@ -11,6 +12,7 @@ interface StartupModernProps {
 
 export default function StartupModern({ data, colorScheme }: StartupModernProps) {
   const { personalInfo, sections } = data;
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
 
   return (
     <div 
@@ -33,7 +35,7 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
           {personalInfo.fullName}
         </h1>
         <p className="text-lg mb-4 text-white opacity-90">
-          {sections.find(s => s.type === 'summary')?.content[0].content || 'Professional Summary'}
+          {sections.find(s => s.type === 'summary')?.content[0].content || getTranslatedSectionTitle('summary')}
         </p>
         <div className="flex justify-center items-center space-x-4 text-white opacity-80 text-xs">
           <div className="flex items-center">
@@ -99,7 +101,7 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
                   borderColor: colorScheme.accent
                 }}
               >
-                {section.title}
+                {getTranslatedSectionTitle(section.type)}
               </h2>
               
               {section.type === 'experience' && (
