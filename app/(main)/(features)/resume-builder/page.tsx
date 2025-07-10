@@ -684,7 +684,7 @@ function ResumeBuilderContent() {
           {/* Main Preview always on the right */}
           <div className="lg:col-span-2">
            
-            <ResumePreview 
+          <ResumePreview 
               resumeData={resumeData} 
               selectedTemplate={templateId}
               selectedColorScheme={colorSchemeId}

@@ -48,7 +48,7 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
   const formatLastEdited = (date: Date) => {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) {
       return 'Just now';
     } else if (diffInSeconds < 3600) {
@@ -67,7 +67,7 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
     }
   };
 
- 
+
 
   const handlePrint = () => {
     const params = new URLSearchParams({
@@ -117,10 +117,10 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
               <Eye className="h-4 w-4 mr-2" />
               Print View
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleDownloadPDF} 
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownloadPDF}
               disabled={isGeneratingPDF}
               className="text-gray-700"
             >
@@ -142,8 +142,8 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
         </div>
       </div>
       <CardContent>
-        <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center px-2">
-          <div className="flex flex-col gap-6">
+        <div className="rounded-lg overflow-hidden bg-gray-50 flex justify-center ">
+          <div className="flex flex-col gap-6 aspect-[1/1.414] max-w-full border">
             {/* Single page preview */}
             <ResumeA4Preview
               resumeData={resumeData}
