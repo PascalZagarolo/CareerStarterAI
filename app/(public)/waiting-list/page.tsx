@@ -95,7 +95,7 @@ export default function WaitingList() {
               variants={fadeInUp}
               className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed"
             >
-              The world's first comprehensive AI platform that handles your entire career journey—from discovering your perfect path to landing your dream job.
+              The world&apos;s first comprehensive AI platform that handles your entire career journey—from discovering your perfect path to landing your dream job.
             </motion.p>
 
             {/* CTA Section */}
@@ -133,8 +133,8 @@ export default function WaitingList() {
               ) : (
                 <div className="bg-green-500/20 border border-green-400/30 rounded-xl p-6 text-center">
                   <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">You're on the list!</h3>
-                  <p className="text-gray-300">We'll notify you as soon as we launch. Get ready to transform your career!</p>
+                  <h3 className="text-xl font-semibold text-white mb-2">You&apos;re on the list!</h3>
+                  <p className="text-gray-300">We&apos;ll notify you as soon as we launch. Get ready to transform your career!</p>
                 </div>
               )}
             </motion.div>
@@ -462,7 +462,7 @@ export default function WaitingList() {
               <div className="bg-green-500/20 border border-green-400/30 rounded-xl p-8 max-w-md mx-auto">
                 <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
                 <h3 className="text-2xl font-semibold text-white mb-2">Welcome aboard!</h3>
-                <p className="text-gray-300">You'll be among the first to experience the future of career development.</p>
+                <p className="text-gray-300">You&apos;ll be among the first to experience the future of career development.</p>
               </div>
             )}
 

@@ -23,8 +23,34 @@ const authRoutes = [
   '/signup'
 ];
 
+// Define allowed routes when not in development (waiting list mode)
+const allowedRoutesInWaitingList = [
+  '/waiting-list',
+  '/about',
+  '/pricing',
+  '/api/auth',
+  '/_next',
+  '/favicon.ico',
+  '/public'
+];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Check if we're not in development environment
+  const isDevelopment = process.env.ENVIRONMENT === 'development';
+  
+  if (!isDevelopment) {
+    // Check if the current path is allowed in waiting list mode
+    const isAllowedRoute = allowedRoutesInWaitingList.some(route => 
+      pathname.startsWith(route)
+    );
+    
+    // If not an allowed route, redirect to waiting list
+    if (!isAllowedRoute) {
+      return NextResponse.redirect(new URL('/waiting-list', request.url));
+    }
+  }
 
   // Check if the route is protected
   const isProtectedRoute = protectedRoutes.some(route => 
