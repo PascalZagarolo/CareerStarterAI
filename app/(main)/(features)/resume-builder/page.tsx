@@ -7,7 +7,6 @@ import { defaultResumeData } from './components/data';
 import Header from './components/header';
 import PersonalInfoEditor from './components/personal-info-editor';
 import SectionManager from './components/section-manager';
-import SectionEditor from './components/section-editor';
 import ResumePreview from './components/resume-preview';
 import LoadingSpinner from './components/loading-spinner';
 import { useSavedResumes } from '@/lib/hooks/use-saved-resumes';
@@ -588,7 +587,7 @@ function ResumeBuilderContent() {
       {/* Unsaved changes indicator */}
       {hasUnsavedChanges && (
         <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-2">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="max-w-[1400px] mx-auto flex items-center justify-between">
             <div className="flex items-center text-yellow-800">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
@@ -603,8 +602,8 @@ function ResumeBuilderContent() {
       )}
 
       {/* Tab Toggle - At the very top */}
-      <div className="border-b border-gray-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-b border-gray-200 bg-white">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex">
               <button
@@ -638,7 +637,7 @@ function ResumeBuilderContent() {
       </div>
 
       {/* Main Content - Consistent layout: sidebar + preview */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Sidebar: switches content based on tab */}
           <div className="lg:col-span-1">
@@ -657,16 +656,10 @@ function ResumeBuilderContent() {
                   onSectionToggleVisibility={toggleSectionVisibility}
                   onSectionRemove={removeSection}
                   onSectionAdd={addSection}
+                  onSectionUpdate={updateSection}
+                  isGenerating={isGenerating}
+                  onGenerateWithAI={generateWithAI}
                 />
-                {/* Section Editor */}
-                {activeSectionData && (
-                  <SectionEditor
-                    section={activeSectionData}
-                    onUpdate={updateSection}
-                    isGenerating={isGenerating}
-                    onGenerateWithAI={generateWithAI}
-                  />
-                )}
               </>
             )}
             {activeTab === 'design' && (

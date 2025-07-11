@@ -59,14 +59,13 @@ export default function ResumeA4Preview({ resumeData, selectedTemplate, selected
   return (
     <LanguageProvider initialLanguage={language}>
       <div
-          className="bg-white relative overflow-hidden resume-preview-print w-full h-full"
-        
+        className="bg-white relative overflow-hidden resume-preview-print w-full h-full"
       >
         {/* Page fold effect */}
         
         {/* Content container */}
         <div className="w-full h-full overflow-hidden">
-        {renderTemplate()}
+          {renderTemplate()}
         </div>
       </div>
     </LanguageProvider>

@@ -1,12 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { ResumeSection, Experience, Education, Project, Certification } from './types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Sparkles } from 'lucide-react';
+import { Plus, Sparkles, ChevronDown, ChevronRight, Edit3, Eye } from 'lucide-react';
 
 interface SectionEditorProps {
   section: ResumeSection;
@@ -15,13 +16,61 @@ interface SectionEditorProps {
   onGenerateWithAI: (sectionId: string) => void;
 }
 
+// Helper function to get section preview content
+const getSectionPreview = (section: ResumeSection) => {
+  switch (section.type) {
+    case 'summary':
+      const summaryContent = Array.isArray(section.content) ? section.content[0] : '';
+      return typeof summaryContent === 'string' && summaryContent ? summaryContent.slice(0, 100) + (summaryContent.length > 100 ? '...' : '') : 'No summary added';
+    
+    case 'experience':
+      if (!Array.isArray(section.content) || section.content.length === 0) return 'No experience added';
+      const exp = section.content[0] as Experience;
+      return `${exp.position} at ${exp.company}` || 'No experience added';
+    
+    case 'education':
+      if (!Array.isArray(section.content) || section.content.length === 0) return 'No education added';
+      const edu = section.content[0] as Education;
+      return `${edu.degree} in ${edu.field} from ${edu.institution}` || 'No education added';
+    
+    case 'skills':
+      if (typeof section.content === 'object' && !Array.isArray(section.content)) {
+        const technical = section.content.technical || [];
+        const soft = section.content.soft || [];
+        const allSkills = [...technical, ...soft];
+        return allSkills.length > 0 ? allSkills.slice(0, 5).join(', ') + (allSkills.length > 5 ? '...' : '') : 'No skills added';
+      }
+      return 'No skills added';
+    
+    case 'projects':
+      if (!Array.isArray(section.content) || section.content.length === 0) return 'No projects added';
+      const proj = section.content[0] as Project;
+      return proj.name || 'No projects added';
+    
+    case 'certifications':
+      if (!Array.isArray(section.content) || section.content.length === 0) return 'No certifications added';
+      const cert = section.content[0] as Certification;
+      return `${cert.name} from ${cert.issuer}` || 'No certifications added';
+    
+    default:
+      return 'Section content';
+  }
+};
+
 export default function SectionEditor({ 
   section, 
   onUpdate, 
   isGenerating, 
   onGenerateWithAI 
 }: SectionEditorProps) {
-  const renderSectionEditor = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const preview = getSectionPreview(section);
+
+  const handleDoubleClick = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const renderExpandedEditor = () => {
     switch (section.type) {
       case 'summary':
         return (
@@ -335,6 +384,20 @@ export default function SectionEditor({
                             className="text-gray-900 placeholder:text-gray-500"
                           />
                         </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`gpa-${edu.id}`} className="text-sm font-medium text-gray-700">GPA</Label>
+                          <Input
+                            id={`gpa-${edu.id}`}
+                            value={edu.gpa}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'education' ? [...(section.content as Education[])] : [];
+                              newContent[index] = { ...edu, gpa: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="3.8"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -376,21 +439,19 @@ export default function SectionEditor({
                 (section.content as Project[]).map((proj, index) => (
                   <Card key={proj.id} className="border-gray-200">
                     <CardContent className="p-4 space-y-4">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-2">
-                          <Label htmlFor={`name-${proj.id}`} className="text-sm font-medium text-gray-700">Name</Label>
-                          <Input
-                            id={`name-${proj.id}`}
-                            value={proj.name}
-                            onChange={(e) => {
-                              const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
-                              newContent[index] = { ...proj, name: e.target.value };
-                              onUpdate(section.id, { content: newContent });
-                            }}
-                            placeholder="Project name"
-                            className="text-gray-900 placeholder:text-gray-500"
-                          />
-                        </div>
+                      <div className="space-y-2">
+                        <Label htmlFor={`name-${proj.id}`} className="text-sm font-medium text-gray-700">Name</Label>
+                        <Input
+                          id={`name-${proj.id}`}
+                          value={proj.name}
+                          onChange={(e) => {
+                            const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                            newContent[index] = { ...proj, name: e.target.value };
+                            onUpdate(section.id, { content: newContent });
+                          }}
+                          placeholder="Project name"
+                          className="text-gray-900 placeholder:text-gray-500"
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor={`description-${proj.id}`} className="text-sm font-medium text-gray-700">Description</Label>
@@ -477,33 +538,17 @@ export default function SectionEditor({
                           />
                         </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-2">
-                          <Label htmlFor={`date-${cert.id}`} className="text-sm font-medium text-gray-700">Date</Label>
-                          <Input
-                            id={`date-${cert.id}`}
-                            value={cert.date}
-                            onChange={(e) => {
-                              const newContent = Array.isArray(section.content) && section.type === 'certifications' ? [...(section.content as Certification[])] : [];
-                              newContent[index] = { ...cert, date: e.target.value };
-                              onUpdate(section.id, { content: newContent });
-                            }}
-                            placeholder="MM/YYYY"
-                            className="text-gray-900 placeholder:text-gray-500"
-                          />
-                        </div>
-                      </div>
                       <div className="space-y-2">
-                        <Label htmlFor={`credentialUrl-${cert.id}`} className="text-sm font-medium text-gray-700">Credential URL</Label>
+                        <Label htmlFor={`date-${cert.id}`} className="text-sm font-medium text-gray-700">Date</Label>
                         <Input
-                          id={`credentialUrl-${cert.id}`}
-                         
-                          onChange={() => {
+                          id={`date-${cert.id}`}
+                          value={cert.date}
+                          onChange={(e) => {
                             const newContent = Array.isArray(section.content) && section.type === 'certifications' ? [...(section.content as Certification[])] : [];
-                            newContent[index] = { ...cert };
+                            newContent[index] = { ...cert, date: e.target.value };
                             onUpdate(section.id, { content: newContent });
                           }}
-                          placeholder="Credential URL"
+                          placeholder="MM/YYYY"
                           className="text-gray-900 placeholder:text-gray-500"
                         />
                       </div>
@@ -521,12 +566,42 @@ export default function SectionEditor({
 
   return (
     <Card className="mt-6">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900">{section.title}</CardTitle>
+      <CardHeader 
+        className="cursor-pointer hover:bg-gray-50 transition-colors"
+        onDoubleClick={handleDoubleClick}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {isExpanded ? (
+              <ChevronDown className="h-5 w-5 text-gray-500" />
+            ) : (
+              <ChevronRight className="h-5 w-5 text-gray-500" />
+            )}
+            <div>
+              <CardTitle className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                {section.title}
+                <Edit3 className="h-4 w-4 text-gray-400" />
+              </CardTitle>
+              {!isExpanded && (
+                <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
+                  <Eye className="h-3 w-3" />
+                  {preview}
+                </p>
+              )}
+            </div>
+          </div>
+          {!isExpanded && (
+            <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+              Double-click to edit
+            </div>
+          )}
+        </div>
       </CardHeader>
-      <CardContent>
-        {renderSectionEditor()}
-      </CardContent>
+      {isExpanded && (
+        <CardContent>
+          {renderExpandedEditor()}
+        </CardContent>
+      )}
     </Card>
   );
 } 
