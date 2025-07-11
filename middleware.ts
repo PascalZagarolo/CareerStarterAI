@@ -28,6 +28,7 @@ const allowedRoutesInWaitingList = [
   '/about',
   '/pricing',
   '/api/auth',
+  '/api/waiting-list',
   '/_next',
   '/favicon.ico',
   '/public'
@@ -93,12 +94,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api/auth (auth API routes)
+     * - api/ (all API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
      */
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|public).*)',
+    '/((?!api/|_next/static|_next/image|favicon.ico|public).*)',
   ],
 }; 

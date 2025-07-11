@@ -20,6 +20,35 @@ export const sessions = pgTable('sessions', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+// Waiting List table for SaaS pre-launch
+export const waitingList = pgTable('waiting_list', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  email: text('email').notNull().unique(),
+  firstName: text('first_name'),
+  lastName: text('last_name'),
+  company: text('company'),
+  jobTitle: text('job_title'),
+  industry: text('industry'),
+  companySize: text('company_size'), // '1-10', '11-50', '51-200', '201-1000', '1000+'
+  interests: text('interests').array(), // ['resume-builder', 'interview-prep', 'job-search', etc.]
+  referralSource: text('referral_source'), // 'google', 'social-media', 'friend', 'blog', etc.
+  expectedUsage: text('expected_usage'), // 'personal', 'team', 'enterprise'
+  budget: text('budget'), // 'free', 'under-50', '50-100', '100-500', '500+'
+  timeline: text('timeline'), // 'immediately', 'next-month', 'next-quarter', 'planning'
+  additionalInfo: text('additional_info'), // Free text field for additional context
+  status: text('status').notNull().default('waiting'), // 'waiting', 'invited', 'registered', 'declined'
+  priority: integer('priority').notNull().default(0), // Higher number = higher priority
+  invitedAt: timestamp('invited_at'),
+  registeredAt: timestamp('registered_at'),
+  ipAddress: text('ip_address'),
+  userAgent: text('user_agent'),
+  utmSource: text('utm_source'),
+  utmMedium: text('utm_medium'),
+  utmCampaign: text('utm_campaign'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
 export const jobs = pgTable('jobs', {
   id: text('id').primaryKey(),
   title: text('title').notNull(),
@@ -172,3 +201,6 @@ export type NewColorScheme = typeof colorSchemes.$inferInsert;
 
 export type UserResume = typeof userResumes.$inferSelect;
 export type NewUserResume = typeof userResumes.$inferInsert;
+
+export type WaitingList = typeof waitingList.$inferSelect;
+export type NewWaitingList = typeof waitingList.$inferInsert;

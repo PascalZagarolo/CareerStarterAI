@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import { 
   Sparkles, 
   Target, 
@@ -27,16 +28,48 @@ export default function WaitingList() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Check localStorage on component mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('waitingListEmail');
+    if (savedEmail) {
+      setIsSubmitted(true);
+      setEmail(savedEmail);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    console.log(email)
+    // Check if already submitted
+    if (isSubmitted) {
+      setError('You have already joined the waiting list!');
+      return;
+    }
     
-    // Simulate API call
-    setTimeout(() => {
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      console.log("2")
+      const response = await axios.post('/api/waiting-list', { email });
+      console.log(response)
+      
+      // Save to localStorage to prevent multiple submissions
+      localStorage.setItem('waitingListEmail', email);
+      localStorage.setItem('waitingListSubmitted', 'true');
+      
       setIsSubmitted(true);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || err.message || 'Failed to join waiting list');
+      } else {
+        setError('Something went wrong');
+      }
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const fadeInUp = {
@@ -54,14 +87,14 @@ export default function WaitingList() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32">
         {/* Animated background elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
           <div className="absolute top-40 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
-          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-2000"></div>
+          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-2000"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -73,7 +106,7 @@ export default function WaitingList() {
             {/* Badge */}
             <motion.div
               variants={fadeInUp}
-              className="inline-flex items-center px-4 py-2 bg-purple-500/20 border border-purple-400/30 rounded-full text-purple-300 text-sm font-medium mb-8"
+              className="inline-flex items-center px-4 py-2 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-sm font-medium mb-8"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               AI-Powered Career Platform
@@ -85,7 +118,7 @@ export default function WaitingList() {
               className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
             >
               Your Career Journey
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
                 Reimagined by AI
               </span>
             </motion.h1>
@@ -111,14 +144,17 @@ export default function WaitingList() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email address"
-                      className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
+                      className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm"
                       required
                     />
                   </div>
+                  {error && (
+                    <div className="text-red-400 text-sm text-center">{error}</div>
+                  )}
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 to-cyan-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
                     {isLoading ? (
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -147,7 +183,7 @@ export default function WaitingList() {
               <div className="flex items-center">
                 <div className="flex -space-x-2">
                   {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full border-2 border-slate-900"></div>
+                    <div key={i} className="w-8 h-8 bg-gradient-to-r from-indigo-400 to-cyan-400 rounded-full border-2 border-slate-900"></div>
                   ))}
                 </div>
                 <span className="ml-3 text-sm">2,847+ already waiting</span>
@@ -169,7 +205,7 @@ export default function WaitingList() {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Why CareerStarter AI is
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
                 Revolutionary
               </span>
             </h2>
@@ -184,37 +220,37 @@ export default function WaitingList() {
                 icon: Brain,
                 title: "AI-First Approach",
                 description: "Every feature leverages advanced AI, from resume optimization to interview coaching, ensuring personalized results.",
-                color: "from-purple-500 to-pink-500"
+                color: "from-indigo-500 to-cyan-500"
               },
               {
                 icon: Target,
                 title: "Complete Career Journey",
                 description: "From career discovery to job application to interview prep—all in one seamless platform.",
-                color: "from-blue-500 to-cyan-500"
+                color: "from-blue-500 to-indigo-500"
               },
               {
                 icon: Zap,
                 title: "Real-time Optimization",
                 description: "AI continuously optimizes your materials based on job market trends and ATS requirements.",
-                color: "from-yellow-500 to-orange-500"
+                color: "from-cyan-500 to-blue-500"
               },
               {
                 icon: Users,
                 title: "Personalized Experience",
                 description: "AI learns your preferences and career goals to provide tailored recommendations and content.",
-                color: "from-green-500 to-emerald-500"
+                color: "from-indigo-500 to-purple-500"
               },
               {
                 icon: TrendingUp,
                 title: "Data-Driven Insights",
                 description: "Access real-time market intelligence, salary data, and career progression analytics.",
-                color: "from-red-500 to-pink-500"
+                color: "from-blue-500 to-cyan-500"
               },
               {
                 icon: Shield,
                 title: "ATS-Optimized Results",
                 description: "Ensure your resume passes through Applicant Tracking Systems with AI-powered keyword optimization.",
-                color: "from-indigo-500 to-purple-500"
+                color: "from-indigo-500 to-blue-500"
               }
             ].map((usp, index) => (
               <motion.div
@@ -248,7 +284,7 @@ export default function WaitingList() {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Everything You Need to
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
                 Succeed
               </span>
             </h2>
@@ -269,7 +305,7 @@ export default function WaitingList() {
                   "Professional templates",
                   "Smart content suggestions"
                 ],
-                gradient: "from-blue-500 to-cyan-500"
+                gradient: "from-indigo-500 to-cyan-500"
               },
               {
                 icon: Camera,
@@ -281,7 +317,7 @@ export default function WaitingList() {
                   "Professional backgrounds",
                   "Instant generation"
                 ],
-                gradient: "from-purple-500 to-pink-500"
+                gradient: "from-blue-500 to-indigo-500"
               },
               {
                 icon: Search,
@@ -293,7 +329,7 @@ export default function WaitingList() {
                   "Salary insights",
                   "Application tracking"
                 ],
-                gradient: "from-green-500 to-emerald-500"
+                gradient: "from-cyan-500 to-blue-500"
               },
               {
                 icon: MessageSquare,
@@ -305,7 +341,7 @@ export default function WaitingList() {
                   "Tone customization",
                   "Company research integration"
                 ],
-                gradient: "from-yellow-500 to-orange-500"
+                gradient: "from-indigo-500 to-purple-500"
               },
               {
                 icon: Brain,
@@ -317,7 +353,7 @@ export default function WaitingList() {
                   "Behavioral training",
                   "Confidence building"
                 ],
-                gradient: "from-red-500 to-pink-500"
+                gradient: "from-blue-500 to-cyan-500"
               },
               {
                 icon: BarChart3,
@@ -329,7 +365,7 @@ export default function WaitingList() {
                   "Market trend forecasting",
                   "Performance analytics"
                 ],
-                gradient: "from-indigo-500 to-purple-500"
+                gradient: "from-indigo-500 to-blue-500"
               }
             ].map((service, index) => (
               <motion.div
@@ -382,7 +418,7 @@ export default function WaitingList() {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Trusted by Career
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
                 Professionals
               </span>
             </h2>
@@ -403,7 +439,7 @@ export default function WaitingList() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-white mb-2">{stat.number}</div>
@@ -425,7 +461,7 @@ export default function WaitingList() {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to Transform
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
                 Your Career?
               </span>
             </h2>
@@ -440,13 +476,16 @@ export default function WaitingList() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
+                  className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm"
                   required
                 />
+                {error && (
+                  <div className="text-red-400 text-sm text-center">{error}</div>
+                )}
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 to-cyan-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {isLoading ? (
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
