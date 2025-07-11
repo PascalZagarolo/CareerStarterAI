@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   // Check if we're not in development environment
   const isDevelopment = process.env.ENVIRONMENT === 'development';
   
-  if (isDevelopment) {
+  if (!isDevelopment) {
     // Check if the current path is allowed in waiting list mode
     const isAllowedRoute = allowedRoutesInWaitingList.some(route => 
       pathname.startsWith(route)
