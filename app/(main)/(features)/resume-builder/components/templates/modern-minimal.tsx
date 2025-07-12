@@ -28,6 +28,18 @@ export default function ModernMinimal({ data, colorScheme }: ModernMinimalProps)
     >
       {/* Header */}
       <div className="text-center mb-5 border-b pb-3" style={{ borderColor: colorScheme.border }}>
+        {/* Profile Picture */}
+        {personalInfo.profilePicture && (
+          <div className="flex justify-center mb-3">
+            <img
+              src={personalInfo.profilePicture}
+              alt="Profile"
+              className="w-28 h-28 rounded-full object-cover border-2"
+              style={{ borderColor: colorScheme.primary }}
+            />
+          </div>
+        )}
+        
         <h1 
           className="text-2xl font-light mb-2 tracking-wide"
           style={{ color: colorScheme.primary }}

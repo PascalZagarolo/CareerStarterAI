@@ -30,6 +30,18 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
         className="p-4 text-center"
         style={{ backgroundColor: colorScheme.primary }}
       >
+        {/* Profile Picture */}
+        {personalInfo.profilePicture && (
+          <div className="flex justify-center mb-3">
+            <img
+              src={personalInfo.profilePicture}
+              alt="Profile"
+              className="w-28 h-28 rounded-full object-cover border-4 shadow-lg"
+              style={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
+            />
+          </div>
+        )}
+        
         <h1 
           className="text-2xl font-bold mb-1 text-white"
         >

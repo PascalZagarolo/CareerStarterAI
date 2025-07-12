@@ -19,6 +19,7 @@ export interface Translations {
     location: string;
     linkedin: string;
     portfolio: string;
+    profilePicture: string;
   };
   
   // UI elements
@@ -100,6 +101,7 @@ export const translations: Record<Language, Translations> = {
       location: 'Location',
       linkedin: 'LinkedIn',
       portfolio: 'Portfolio',
+      profilePicture: 'Profile Picture',
     },
     ui: {
       content: 'Content',
@@ -173,6 +175,7 @@ export const translations: Record<Language, Translations> = {
       location: 'Standort',
       linkedin: 'LinkedIn',
       portfolio: 'Portfolio',
+      profilePicture: 'Profilbild',
     },
     ui: {
       content: 'Inhalt',

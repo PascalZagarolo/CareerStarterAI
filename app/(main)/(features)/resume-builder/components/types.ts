@@ -50,6 +50,7 @@ export interface ResumeData {
     location: string;
     linkedin?: string;
     portfolio?: string;
+    profilePicture?: string; // Base64 encoded image or URL
   };
   sections: ResumeSection[];
   template: string;

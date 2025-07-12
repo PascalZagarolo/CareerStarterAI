@@ -33,6 +33,18 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
           className="w-1/3 p-5 flex flex-col gap-5"
           style={{ background: `linear-gradient(135deg, ${colorScheme.primary} 80%, ${colorScheme.accent} 100%)` }}
         >
+          {/* Profile Picture */}
+          {personalInfo.profilePicture && (
+            <div className="flex justify-center mb-3">
+              <img
+                src={personalInfo.profilePicture}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover border-4 shadow-lg"
+                style={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
+              />
+            </div>
+          )}
+          
           <div className="text-white px-1">
             <h1 className="text-2xl font-extrabold mb-3 tracking-tight drop-shadow-lg text-white">
               {personalInfo.fullName}

@@ -8,6 +8,9 @@ CareerStarter is an AI-powered platform designed to help you discover your ideal
 
 - **Career Path Finder**: Discover careers aligned with your skills, interests, and values
 - **AI Resume Builder**: Create professionally designed resumes tailored to specific job descriptions
+  - **Profile Picture Upload**: Add a professional profile picture to your resume with drag-and-drop functionality
+  - **Multiple Templates**: Choose from various professional templates (Classic, Modern, Creative, Executive, Startup)
+  - **Custom Color Schemes**: Personalize your resume with different color combinations
 - **Cover Letter Generator**: Generate personalized cover letters in seconds
 - **Personalized Roadmaps**: Get step-by-step guidance on how to transition into your desired career
 - **Skills Analysis**: Identify skill gaps and get recommendations on how to fill them

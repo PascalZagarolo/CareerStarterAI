@@ -8,7 +8,8 @@ export const defaultResumeData: ResumeData = {
     phone: '+1 (555) 123-4567',
     location: 'San Francisco, CA',
     linkedin: 'linkedin.com/in/johndoe',
-    portfolio: 'johndoe.dev'
+    portfolio: 'johndoe.dev',
+    profilePicture: undefined
   },
   sections: [
     {

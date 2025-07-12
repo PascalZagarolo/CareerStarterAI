@@ -31,12 +31,27 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
         className="mb-4 pb-2 border-b"
         style={{ borderColor: colorScheme.primary }}
       >
-        <h1 
-          className="text-xl font-bold mb-1"
-          style={{ color: colorScheme.primary }}
-        >
-          {personalInfo.fullName}
-        </h1>
+        <div className="flex items-start gap-4">
+          {/* Profile Picture */}
+          {personalInfo.profilePicture && (
+            <div className="flex-shrink-0">
+              <img
+                src={personalInfo.profilePicture}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border-2"
+                style={{ borderColor: colorScheme.primary }}
+              />
+            </div>
+          )}
+          
+          {/* Personal Info */}
+          <div className="flex-1">
+            <h1 
+              className="text-xl font-bold mb-1"
+              style={{ color: colorScheme.primary }}
+            >
+              {personalInfo.fullName}
+            </h1>
         <p className="text-xs mb-2" style={{ color: colorScheme.secondary }}>
           {sections.find(s => s.type === 'summary')?.content[0].content || 'Executive Summary'}
         </p>
@@ -86,6 +101,8 @@ export default function ExecutiveTwoColumn({ data, colorScheme }: ExecutiveTwoCo
             </a>
           </div>
         )}
+          </div>
+        </div>
       </div>
 
       {/* Two Column Layout */}

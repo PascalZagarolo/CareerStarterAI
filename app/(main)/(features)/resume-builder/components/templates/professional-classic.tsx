@@ -33,63 +33,80 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
         className="mb-4 pb-2 border-b"
         style={{ borderColor: colorScheme.primary }}
       >
-        <h1 
-          className="text-xl font-bold mb-1"
-          style={{ color: colorScheme.primary }}
-        >
-          {personalInfo.fullName}
-        </h1>
-        <p className="text-xs mb-2" style={{ color: colorScheme.secondary }}>
-          {sections.find(s => s.type === 'summary')?.content[0] || getTranslatedSectionTitle('summary')}
-        </p>
-        <div className="grid grid-cols-3 gap-2 text-xs">
-          <div className="flex items-center">
-            <span className="font-semibold mr-1">Email:</span>
-            <span>{personalInfo.email}</span>
-          </div>
-          <div className="flex items-center">
-            <span className="font-semibold mr-1">Phone:</span>
-            <span>{personalInfo.phone}</span>
-          </div>
-          <div className="flex items-center">
-            <span className="font-semibold mr-1">Location:</span>
-            <span>{personalInfo.location}</span>
+        <div className="flex items-start gap-4">
+          {/* Profile Picture */}
+          {personalInfo.profilePicture && (
+            <div className="flex-shrink-0">
+              <img
+                src={personalInfo.profilePicture}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border-2"
+                style={{ borderColor: colorScheme.primary }}
+              />
+            </div>
+          )}
+          
+          {/* Personal Info */}
+          <div className="flex-1">
+            <h1 
+              className="text-xl font-bold mb-1"
+              style={{ color: colorScheme.primary }}
+            >
+              {personalInfo.fullName}
+            </h1>
+            <p className="text-xs mb-2" style={{ color: colorScheme.secondary }}>
+              {sections.find(s => s.type === 'summary')?.content[0] || getTranslatedSectionTitle('summary')}
+            </p>
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="flex items-center">
+                <span className="font-semibold mr-1">Email:</span>
+                <span>{personalInfo.email}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold mr-1">Phone:</span>
+                <span>{personalInfo.phone}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold mr-1">Location:</span>
+                <span>{personalInfo.location}</span>
+              </div>
+            </div>
+            {(personalInfo.linkedin || personalInfo.portfolio) && (
+              <div className="mt-1 flex gap-3 text-xs">
+                {personalInfo.linkedin && (
+                  <div className="flex items-center">
+                    <Linkedin className="w-2 h-2 mr-1" style={{ color: colorScheme.accent }} />
+                    <a 
+                      href={ensureHttps(personalInfo.linkedin)}
+                      className="hover:underline transition-colors flex items-center gap-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: colorScheme.text }}
+                    >
+                      {formatLinkedInLink(personalInfo.linkedin)}
+                      <ExternalLink className="w-1 h-1" />
+                    </a>
+                  </div>
+                )}
+                {personalInfo.portfolio && (
+                  <div className="flex items-center">
+                    <Globe className="w-2 h-2 mr-1" style={{ color: colorScheme.accent }} />
+                    <a 
+                      href={ensureHttps(personalInfo.portfolio)}
+                      className="hover:underline transition-colors flex items-center gap-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: colorScheme.text }}
+                    >
+                      {formatPortfolioLink(personalInfo.portfolio)}
+                      <ExternalLink className="w-1 h-1" />
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
-        {(personalInfo.linkedin || personalInfo.portfolio) && (
-          <div className="mt-1 flex gap-3 text-xs">
-            {personalInfo.linkedin && (
-              <div className="flex items-center">
-                <Linkedin className="w-2 h-2 mr-1" style={{ color: colorScheme.accent }} />
-                <a 
-                  href={ensureHttps(personalInfo.linkedin)}
-                  className="hover:underline transition-colors flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: colorScheme.text }}
-                >
-                  {formatLinkedInLink(personalInfo.linkedin)}
-                  <ExternalLink className="w-1 h-1" />
-                </a>
-              </div>
-            )}
-            {personalInfo.portfolio && (
-              <div className="flex items-center">
-                <Globe className="w-2 h-2 mr-1" style={{ color: colorScheme.accent }} />
-                <a 
-                  href={ensureHttps(personalInfo.portfolio)}
-                  className="hover:underline transition-colors flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: colorScheme.text }}
-                >
-                  {formatPortfolioLink(personalInfo.portfolio)}
-                  <ExternalLink className="w-1 h-1" />
-                </a>
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Content */}
