@@ -92,13 +92,29 @@ export const defaultResumeData: ResumeData = {
           id: 'proj1',
           name: 'E-commerce Platform',
           description: 'Built a full-stack e-commerce platform using React, Node.js, and MongoDB',
-          technologies: ['React', 'Node.js', 'MongoDB', 'Stripe']
+          technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+          bulletPoints: [
+            'Implemented secure payment processing with Stripe integration',
+            'Built responsive UI with React and Material-UI components',
+            'Designed RESTful API with Node.js and Express framework',
+            'Integrated real-time inventory management system'
+          ],
+          githubLink: 'github.com/johndoe/ecommerce-platform',
+          liveLink: 'ecommerce-demo.com'
         },
         {
           id: 'proj2',
           name: 'Task Management App',
           description: 'Developed a collaborative task management application with real-time updates',
-          technologies: ['React', 'Socket.io', 'Express', 'PostgreSQL']
+          technologies: ['React', 'Socket.io', 'Express', 'PostgreSQL'],
+          bulletPoints: [
+            'Implemented real-time collaboration using Socket.io',
+            'Created drag-and-drop interface for task management',
+            'Built user authentication and role-based access control',
+            'Optimized database queries for improved performance'
+          ],
+          githubLink: 'github.com/johndoe/task-manager',
+          liveLink: 'taskmanager-demo.com'
         }
       ],
       isVisible: true,

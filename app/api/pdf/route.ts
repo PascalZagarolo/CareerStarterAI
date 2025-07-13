@@ -24,35 +24,35 @@ export async function GET(request: NextRequest) {
     });
     const page = await browser.newPage();
 
-  // Set viewport for consistent rendering
-  await page.setViewport({ width: 1200, height: 800 });
+    // Set viewport for consistent rendering
+    await page.setViewport({ width: 1200, height: 800 });
 
-  // Now go to the export page
-  await page.goto(exportUrl, { waitUntil: 'networkidle2' });
+    // Now go to the export page
+    await page.goto(exportUrl, { waitUntil: 'networkidle2' });
 
-  // Wait for content to be fully rendered
-  await page.waitForSelector('.resume-preview-print', { timeout: 10000 });
-  
-  // Additional wait to ensure all fonts and styles are loaded
-  await new Promise(r => setTimeout(r, 1000));
-
-  // Generate PDF as a buffer (do not use the 'path' option)
-  const pdfBuffer = await page.pdf({
-    format: 'A4',
-    printBackground: true,
+    // Wait for content to be fully rendered
+    await page.waitForSelector('.resume-preview-print', { timeout: 10000 });
     
-  });
+    // Additional wait to ensure all fonts and styles are loaded
+    await new Promise(r => setTimeout(r, 1000));
+
+    // Generate PDF as a buffer
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+    });
 
     await browser.close();
 
-    // Return the PDF buffer as a response
+    // Return the PDF buffer directly
     return new NextResponse(pdfBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="hn.pdf"',
+        'Content-Disposition': 'attachment; filename="resume.pdf"',
       },
     });
+
   } catch (error) {
     console.error('Error generating PDF:', error);
     
@@ -61,14 +61,9 @@ export async function GET(request: NextRequest) {
       await browser.close();
     }
     
-    return new NextResponse(
-      JSON.stringify({ error: 'Failed to generate PDF' }),
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    return NextResponse.json(
+      { success: false, error: 'Failed to generate PDF' },
+      { status: 500 }
     );
   }
 } 

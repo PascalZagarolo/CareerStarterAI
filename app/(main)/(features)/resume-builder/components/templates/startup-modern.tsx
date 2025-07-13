@@ -200,11 +200,52 @@ export default function StartupModern({ data, colorScheme }: StartupModernProps)
                 <div className="space-y-3">
                   {(section.content as Project[])?.map((project, index) => (
                     <div key={index} className="relative pl-3 border-l-2" style={{ borderColor: colorScheme.accent }}>
-                      <h3 className="text-sm font-bold mb-1" style={{ color: colorScheme.secondary } as React.CSSProperties}>
-                        {project.name}
-                      </h3>
+                      <div className="flex justify-between items-start mb-1">
+                        <h3 className="text-sm font-bold" style={{ color: colorScheme.secondary } as React.CSSProperties}>
+                          {project.name}
+                        </h3>
+                        <div className="flex gap-2 text-xs">
+                          {project.githubLink && (
+                            <a 
+                              href={ensureHttps(project.githubLink)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1 hover:underline"
+                              style={{ color: colorScheme.accent }}
+                            >
+                              GitHub
+                              <ExternalLink className="w-1 h-1" />
+                            </a>
+                          )}
+                          {project.liveLink && (
+                            <a 
+                              href={ensureHttps(project.liveLink)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1 hover:underline"
+                              style={{ color: colorScheme.accent }}
+                            >
+                              Live
+                              <ExternalLink className="w-1 h-1" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
                       <p className="mb-1 leading-relaxed text-xs">{project.description}</p>
-                      {project.technologies && (
+                      {project.bulletPoints && project.bulletPoints.length > 0 && (
+                        <ul className="space-y-0.5 mb-1">
+                          {project.bulletPoints.map((bullet, idx) => (
+                            <li key={idx} className="text-xs flex items-start">
+                              <span 
+                                className="mr-1 mt-1 w-1 h-1 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: colorScheme.accent }}
+                              ></span>
+                              {bullet}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {project.technologies && project.technologies.length > 0 && (
                         <div className="flex flex-wrap gap-1">
                           {project.technologies.map((tech, idx) => (
                             <span

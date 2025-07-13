@@ -415,6 +415,7 @@ export default function SectionEditor({
                 onClick={() => {
                   const newProj: Project = {
                     id: `proj-${Date.now()}`,
+                    bulletPoints: [],
                     name: '',
                     description: '',
                     technologies: []

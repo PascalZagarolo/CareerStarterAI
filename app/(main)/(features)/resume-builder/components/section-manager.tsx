@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+
 import { ResumeSection, Experience, Education, Project, Certification } from './types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,8 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronUp, ChevronDown, Eye, EyeOff, Trash2, FileText, Briefcase, GraduationCap, Code, Award, BookOpen, Plus, Sparkles, ChevronRight } from 'lucide-react';
+import { ChevronUp, ChevronDown, Eye, EyeOff, Trash2, FileText, Briefcase, GraduationCap, Code, Award, BookOpen, Plus, Sparkles,    } from 'lucide-react';
 import { useLanguage } from './i18n/language-context';
+import TechnologiesInput from './technologies-input';
 
 interface SectionManagerProps {
   sections: ResumeSection[];
@@ -46,24 +47,7 @@ const getSectionIcon = (type: ResumeSection['type']) => {
 };
 
 // Get section description for better context
-const getSectionDescription = (type: ResumeSection['type'], t: any) => {
-  switch (type) {
-    case 'summary':
-      return t.sections.summaryDescription || 'Professional overview and career objectives';
-    case 'experience':
-      return t.sections.experienceDescription || 'Work history and professional achievements';
-    case 'education':
-      return t.sections.educationDescription || 'Academic background and qualifications';
-    case 'skills':
-      return t.sections.skillsDescription || 'Technical and soft skills';
-    case 'projects':
-      return t.sections.projectsDescription || 'Notable projects and accomplishments';
-    case 'certifications':
-      return t.sections.certificationsDescription || 'Professional certifications and licenses';
-    default:
-      return 'Resume section';
-  }
-};
+
 
 // Helper function to get section preview content
 const getSectionPreview = (section: ResumeSection) => {
@@ -465,7 +449,10 @@ const SectionEditor = ({
                     id: `proj-${Date.now()}`,
                     name: '',
                     description: '',
-                    technologies: []
+                    technologies: [],
+                    bulletPoints: [],
+                    githubLink: '',
+                    liveLink: ''
                   };
                   onUpdate(section.id, {
                     content:
@@ -515,6 +502,106 @@ const SectionEditor = ({
                           rows={3}
                           className="text-gray-900 placeholder:text-gray-500"
                         />
+                      </div>
+                      
+                      {/* Technologies */}
+                      <div className="space-y-2">
+                        <Label htmlFor={`technologies-${proj.id}`} className="text-sm font-medium text-gray-700">Technologies</Label>
+                        <TechnologiesInput
+                          id={`technologies-${proj.id}`}
+                          value={proj.technologies}
+                          onChange={(technologies) => {
+                            const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                            newContent[index] = { ...proj, technologies };
+                            onUpdate(section.id, { content: newContent });
+                          }}
+                          placeholder="React, Node.js, MongoDB (comma separated)"
+                        />
+                      </div>
+                      
+                      {/* Links */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor={`github-${proj.id}`} className="text-sm font-medium text-gray-700">GitHub Link</Label>
+                          <Input
+                            id={`github-${proj.id}`}
+                            value={proj.githubLink || ''}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                              newContent[index] = { ...proj, githubLink: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="github.com/username/project"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`live-${proj.id}`} className="text-sm font-medium text-gray-700">Live Link</Label>
+                          <Input
+                            id={`live-${proj.id}`}
+                            value={proj.liveLink || ''}
+                            onChange={(e) => {
+                              const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                              newContent[index] = { ...proj, liveLink: e.target.value };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            placeholder="project-demo.com"
+                            className="text-gray-900 placeholder:text-gray-500"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Bullet Points */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Key Features & Achievements</Label>
+                        <div className="space-y-2">
+                          {(proj.bulletPoints || []).map((bullet, bulletIndex) => (
+                            <div key={bulletIndex} className="flex gap-2">
+                              <Input
+                                value={bullet}
+                                onChange={(e) => {
+                                  const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                                  const newBulletPoints = [...(proj.bulletPoints || [])];
+                                  newBulletPoints[bulletIndex] = e.target.value;
+                                  newContent[index] = { ...proj, bulletPoints: newBulletPoints };
+                                  onUpdate(section.id, { content: newContent });
+                                }}
+                                placeholder="Describe a key feature or achievement"
+                                className="text-gray-900 placeholder:text-gray-500"
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                                  const newBulletPoints = [...(proj.bulletPoints || [])];
+                                  newBulletPoints.splice(bulletIndex, 1);
+                                  newContent[index] = { ...proj, bulletPoints: newBulletPoints };
+                                  onUpdate(section.id, { content: newContent });
+                                }}
+                                className="text-red-600 border-red-200 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ))}
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newContent = Array.isArray(section.content) && section.type === 'projects' ? [...(section.content as Project[])] : [];
+                              const newBulletPoints = [...(proj.bulletPoints || []), ''];
+                              newContent[index] = { ...proj, bulletPoints: newBulletPoints };
+                              onUpdate(section.id, { content: newContent });
+                            }}
+                            className="text-green-600 border-green-200 hover:bg-green-50"
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Add Bullet Point
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>

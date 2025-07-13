@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -19,7 +20,7 @@ export function QuickActions({ resumeCount }: QuickActionsProps) {
       title: 'Create Resume',
       description: 'Build a new professional resume',
       icon: Plus,
-      href: '/resume-builder',
+      href: '/resume-builder?new=true',
       primary: true
     },
     {
@@ -79,16 +80,18 @@ export function QuickActions({ resumeCount }: QuickActionsProps) {
                       {action.description}
                     </p>
                     
-                    <Button
-                      size="sm"
-                      className={`${
-                        action.primary
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300'
-                      }`}
-                    >
-                      Get Started
-                    </Button>
+                    <Link href={action.href}>
+                      <Button
+                        size="sm"
+                        className={`${
+                          action.primary
+                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300'
+                        }`}
+                      >
+                        Get Started
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>

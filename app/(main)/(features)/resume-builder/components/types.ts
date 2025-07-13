@@ -33,6 +33,9 @@ export interface Project {
   name: string;
   description: string;
   technologies: string[];
+  bulletPoints: string[];
+  githubLink?: string;
+  liveLink?: string;
 }
 
 export interface Certification {

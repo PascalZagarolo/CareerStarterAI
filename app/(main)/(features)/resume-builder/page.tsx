@@ -270,8 +270,15 @@ function ResumeBuilderContent() {
 
       try {
         const loadId = searchParams!.get('load');
+        const isNewResume = searchParams!.get('new') === 'true';
         
-        if (loadId) {
+        if (isNewResume) {
+          // Create a new resume from scratch
+          setResumeData(defaultResumeData);
+          setCurrentResumeId(null);
+          setHasUnsavedChanges(false);
+          toast.success('New resume created! Start building your professional profile.');
+        } else if (loadId) {
           // Load specific resume from URL parameter
           const resume = await loadResume(loadId);
           if (resume) {
@@ -490,7 +497,6 @@ function ResumeBuilderContent() {
     toast.success(t.ui.resumeLoaded);
   };
 
-  const activeSectionData = resumeData.sections.find(s => s.id === activeSection);
 
   // Show loading state while fetching templates
   if (isLoadingTemplates) {
@@ -502,6 +508,7 @@ function ResumeBuilderContent() {
           currentColorSchemeId={colorSchemeId}
           onLoadResume={handleLoadResume}
           currentResumeId={currentResumeId}
+          hasUnsavedChanges={hasUnsavedChanges}
           currentResumeName={resumeData.personalInfo.fullName || "Untitled Resume"}
           onResumeNameChange={(name) => {
             setResumeData({
@@ -534,6 +541,7 @@ function ResumeBuilderContent() {
           currentColorSchemeId={colorSchemeId}
           onLoadResume={handleLoadResume}
           currentResumeId={currentResumeId}
+          hasUnsavedChanges={hasUnsavedChanges}
           currentResumeName={resumeData.personalInfo.fullName || "Untitled Resume"}
           onResumeNameChange={(name) => {
             setResumeData({
@@ -574,6 +582,7 @@ function ResumeBuilderContent() {
         currentColorSchemeId={colorSchemeId}
         onLoadResume={handleLoadResume}
         currentResumeId={currentResumeId}
+        hasUnsavedChanges={hasUnsavedChanges}
         currentResumeName={resumeData.personalInfo.fullName || "Untitled Resume"}
         onResumeNameChange={(name) => {
           setResumeData({

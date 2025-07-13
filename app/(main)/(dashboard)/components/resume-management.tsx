@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -145,10 +146,12 @@ export function ResumeManagement({ resumes, loading, onDeleteResume }: ResumeMan
             <CardTitle className="text-xl font-semibold text-gray-900">Resumes</CardTitle>
             <p className="text-gray-600 mt-1">Manage your professional resumes</p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Plus className="h-4 w-4 mr-2" />
-            Create Resume
-          </Button>
+          <Link href="/resume-builder?new=true">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Resume
+            </Button>
+          </Link>
         </div>
       </CardHeader>
       
@@ -192,10 +195,12 @@ export function ResumeManagement({ resumes, loading, onDeleteResume }: ResumeMan
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 {!searchTerm && statusFilter === 'all' && (
                   <>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Create Resume
-                    </Button>
+                    <Link href="/resume-builder?new=true">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create Resume
+                      </Button>
+                    </Link>
                     <Button 
                       variant="outline" 
                       onClick={handleSeedData}

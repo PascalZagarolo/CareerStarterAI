@@ -326,13 +326,50 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                     if (!Array.isArray(content)) return null;
                     return (content as any[]).map((project, index) => (
                       <div key={index} className="border-l-2 pl-4 bg-gray-50 rounded-lg shadow-sm py-3" style={{ borderColor: colorScheme.accent }}>
-                        <h3 className="text-sm font-bold mb-1" style={{ color: colorScheme.secondary }}>
-                          {project.name}
-                        </h3>
+                        <div className="flex justify-between items-start mb-1">
+                          <h3 className="text-sm font-bold" style={{ color: colorScheme.secondary }}>
+                            {project.name}
+                          </h3>
+                          <div className="flex gap-2 text-xs">
+                            {project.githubLink && (
+                              <a 
+                                href={ensureHttps(project.githubLink)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 hover:underline"
+                                style={{ color: colorScheme.accent }}
+                              >
+                                GitHub
+                                <ExternalLink className="w-1 h-1" />
+                              </a>
+                            )}
+                            {project.liveLink && (
+                              <a 
+                                href={ensureHttps(project.liveLink)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 hover:underline"
+                                style={{ color: colorScheme.accent }}
+                              >
+                                Live
+                                <ExternalLink className="w-1 h-1" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
                         <p className="mb-1 leading-relaxed text-xs" style={{ color: colorScheme.text }}>
                           {project.description}
                         </p>
-                        {project.technologies && (
+                        {project.bulletPoints && project.bulletPoints.length > 0 && (
+                          <ul className="space-y-0.5 mb-1 list-disc list-inside">
+                            {project.bulletPoints.map((bullet: string, idx: number) => (
+                              <li key={idx} className="text-xs" style={{ color: colorScheme.text }}>
+                                {bullet}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {project.technologies && project.technologies.length > 0 && (
                           <div className="flex flex-wrap gap-1">
                             {project.technologies.map((tech: string, idx: number) => (
                               <span

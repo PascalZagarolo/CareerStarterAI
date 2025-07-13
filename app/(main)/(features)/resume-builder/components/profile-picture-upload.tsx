@@ -35,26 +35,28 @@ export default function ProfilePictureUpload({ currentPicture, onPictureChange }
     setIsUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
+      // Convert file to base64 directly in the browser
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        if (result) {
+          onPictureChange(result);
+          toast.success('Profile picture uploaded successfully!');
+        } else {
+          toast.error('Failed to process image');
+        }
+        setIsUploading(false);
+      };
+      
+      reader.onerror = () => {
+        toast.error('Failed to process image. Please try again.');
+        setIsUploading(false);
+      };
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        onPictureChange(result.data.url);
-        toast.success('Profile picture uploaded successfully!');
-      } else {
-        toast.error(result.error || 'Failed to upload image');
-      }
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Failed to upload image. Please try again.');
-    } finally {
+      toast.error('Failed to process image. Please try again.');
       setIsUploading(false);
     }
   }, [onPictureChange]);

@@ -8,7 +8,9 @@ CareerStarter is an AI-powered platform designed to help you discover your ideal
 
 - **Career Path Finder**: Discover careers aligned with your skills, interests, and values
 - **AI Resume Builder**: Create professionally designed resumes tailored to specific job descriptions
+  - **Create New Resume from Scratch**: Start with a clean slate and build your resume from the ground up
   - **Profile Picture Upload**: Add a professional profile picture to your resume with drag-and-drop functionality
+  - **Direct PDF Generation**: Generate and download PDFs directly without file storage overhead
   - **Multiple Templates**: Choose from various professional templates (Classic, Modern, Creative, Executive, Startup)
   - **Custom Color Schemes**: Personalize your resume with different color combinations
 - **Cover Letter Generator**: Generate personalized cover letters in seconds
@@ -50,6 +52,8 @@ npm install
 # or
 yarn install
 ```
+
+
 
 3. Create a `.env.local` file in the root directory with your environment variables:
 

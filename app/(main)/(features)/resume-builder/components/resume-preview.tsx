@@ -81,6 +81,7 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
   const handleDownloadPDF = async () => {
     setIsGeneratingPDF(true);
     try {
+      console.log(resumeData);
       const name = resumeData.personalInfo.fullName || 'Resume';
       const filename = `${name.replace(/[^a-zA-Z0-9]/g, '_')}_Resume.pdf`;
       const params = new URLSearchParams({
@@ -89,6 +90,8 @@ export default function ResumePreview({ resumeData, selectedTemplate, selectedCo
         language: language || 'en',
         data: encodeURIComponent(JSON.stringify(resumeData)),
       });
+      
+      // Direct PDF download
       const downloadUrl = `/api/pdf?${params.toString()}`;
       const link = document.createElement('a');
       link.href = downloadUrl;

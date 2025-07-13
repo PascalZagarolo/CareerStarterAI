@@ -111,7 +111,7 @@ export default async function PreviewPage({
   return (
     <div className='h-screen w-screen'>
       
-      <div className="flex justify-center items-center h-full bg-gray-100">
+      <div className="flex justify-center items-center h-full bg-gray-100 resume-preview-print">
         <ResumeA4Preview
           resumeData={resumeData}
           selectedTemplate={templateId}

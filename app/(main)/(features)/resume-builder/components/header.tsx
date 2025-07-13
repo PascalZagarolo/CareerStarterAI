@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Save, Download, Loader2 } from 'lucide-react';
+import { Save, Download, Loader2, Plus } from 'lucide-react';
 import { SaveDialog } from '../components/save-dialog';
 import { LoadDialog } from '../components/load-dialog';
 import { ResumeData } from './types';
@@ -18,6 +19,7 @@ interface HeaderProps {
   currentResumeId?: string | null;
   onResumeNameChange?: (name: string) => void;
   currentResumeName?: string;
+  hasUnsavedChanges?: boolean;
 }
 
 export default function Header({ 
@@ -27,7 +29,8 @@ export default function Header({
   onLoadResume,
   currentResumeId,
   onResumeNameChange,
-  currentResumeName = "Untitled Resume"
+  currentResumeName = "Untitled Resume",
+  hasUnsavedChanges = false
 }: HeaderProps) {
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [loadDialogOpen, setLoadDialogOpen] = useState(false);
@@ -95,6 +98,16 @@ export default function Header({
     }
   };
 
+  const handleNewResumeClick = (e: React.MouseEvent) => {
+    if (hasUnsavedChanges) {
+      e.preventDefault();
+      const confirmed = confirm('You have unsaved changes. Are you sure you want to create a new resume? Your current changes will be lost.');
+      if (confirmed) {
+        window.location.href = '/resume-builder?new=true';
+      }
+    }
+  };
+
   return (
     <div className="bg-white shadow-sm border-b">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,6 +137,16 @@ export default function Header({
           </div>
           
           <div className="flex items-center gap-3">
+            <Link href="/resume-builder?new=true" onClick={handleNewResumeClick}>
+              <Button
+                variant="outline"
+                className="border-gray-300"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Resume
+              </Button>
+            </Link>
+            
             <Button
               variant="outline"
               onClick={() => setLoadDialogOpen(true)}
