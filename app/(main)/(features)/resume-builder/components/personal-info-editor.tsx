@@ -10,9 +10,10 @@ import ProfilePictureUpload from './profile-picture-upload';
 interface PersonalInfoEditorProps {
   personalInfo: ResumeData['personalInfo'];
   onUpdate: (field: string, value: string) => void;
+  onSaveImageToDatabase?: (imageUrl: string) => Promise<void>;
 }
 
-export default function PersonalInfoEditor({ personalInfo, onUpdate }: PersonalInfoEditorProps) {
+export default function PersonalInfoEditor({ personalInfo, onUpdate, onSaveImageToDatabase }: PersonalInfoEditorProps) {
   const { t } = useLanguage();
   
   const handlePictureChange = (pictureUrl: string | undefined) => {
@@ -29,6 +30,7 @@ export default function PersonalInfoEditor({ personalInfo, onUpdate }: PersonalI
         <ProfilePictureUpload
           currentPicture={personalInfo.profilePicture}
           onPictureChange={handlePictureChange}
+          onSaveToDatabase={onSaveImageToDatabase}
         />
         
         <div className="space-y-4">

@@ -72,6 +72,7 @@ export default function Header({
         templateId: currentTemplateId,
         colorSchemeId: currentColorSchemeId,
         data: currentResumeData,
+        imageUrl: currentResumeData.personalInfo.profilePicture,
         isDefault: false
       });
 

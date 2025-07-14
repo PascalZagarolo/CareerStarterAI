@@ -3,61 +3,90 @@
 import { useState, useRef, useCallback } from 'react';
 import { useLanguage } from './i18n/language-context';
 import { toast } from 'sonner';
+import { validateImageFile } from '@/lib/utils/image-validation';
 
 interface ProfilePictureUploadProps {
   currentPicture?: string;
   onPictureChange: (pictureUrl: string | undefined) => void;
+  onSaveToDatabase?: (imageUrl: string) => Promise<void>;
 }
 
-export default function ProfilePictureUpload({ currentPicture, onPictureChange }: ProfilePictureUploadProps) {
+export default function ProfilePictureUpload({ currentPicture, onPictureChange, onSaveToDatabase }: ProfilePictureUploadProps) {
   const { t } = useLanguage();
   const [isUploading, setIsUploading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = useCallback(async (file: File) => {
     if (!file) return;
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      toast.error('Please upload a JPEG, PNG, or WebP image.');
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      toast.error('File size too large. Please upload an image smaller than 5MB.');
+    // Validate image file using utility function
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      toast.error(validation.error || 'Invalid image file');
       return;
     }
 
     setIsUploading(true);
+    setUploadProgress(0);
+
+    let progressInterval: NodeJS.Timeout | undefined;
 
     try {
-      // Convert file to base64 directly in the browser
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        if (result) {
-          onPictureChange(result);
-          toast.success('Profile picture uploaded successfully!');
-        } else {
-          toast.error('Failed to process image');
-        }
-        setIsUploading(false);
-      };
-      
-      reader.onerror = () => {
-        toast.error('Failed to process image. Please try again.');
-        setIsUploading(false);
-      };
+      // Create FormData for upload
+      const formData = new FormData();
+      formData.append('file', file);
 
-      reader.readAsDataURL(file);
+      // Simulate upload progress
+      progressInterval = setInterval(() => {
+        setUploadProgress(prev => Math.min(prev + 10, 90));
+      }, 200);
+
+      // Upload to ImageKit via our API
+      const response = await fetch('/api/upload/imagekit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadProgress(100);
+        const imageUrl = result.data.url;
+        onPictureChange(imageUrl);
+        
+        // Save to database if callback is provided
+        if (onSaveToDatabase) {
+          try {
+            await onSaveToDatabase(imageUrl);
+          } catch (error) {
+            console.error('Failed to save image URL to database:', error);
+            // Don't show error to user as the upload was successful
+          }
+        }
+        
+        toast.success('Profile picture uploaded successfully!');
+      } else {
+        toast.error(result.error || 'Failed to upload image');
+      }
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Failed to process image. Please try again.');
+      if (error instanceof Error && error.message.includes('HTTP error! status: 500')) {
+        toast.error('Image upload service is currently unavailable. Please try again later.');
+      } else {
+        toast.error('Failed to upload image. Please check your connection and try again.');
+      }
+    } finally {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+      }
       setIsUploading(false);
+      setUploadProgress(0);
     }
   }, [onPictureChange]);
 
@@ -134,7 +163,10 @@ export default function ProfilePictureUpload({ currentPicture, onPictureChange }
                 />
                 {isUploading && (
                   <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="text-center">
+                      <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                      <div className="text-xs text-white">{uploadProgress}%</div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -156,6 +188,12 @@ export default function ProfilePictureUpload({ currentPicture, onPictureChange }
               </p>
               <p className="text-xs text-gray-500">
                 PNG, JPG, WebP up to 5MB
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                Professional headshots work best
+              </p>
+              <p className="text-xs text-gray-400">
+                Square images recommended
               </p>
             </div>
           </div>

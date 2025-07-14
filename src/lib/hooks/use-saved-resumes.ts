@@ -34,12 +34,14 @@ export interface SaveResumeParams {
   templateId: string;
   colorSchemeId: string;
   data: ResumeData;
+  imageUrl?: string;
   isDefault?: boolean;
 }
 
 export interface UpdateResumeParams extends Partial<SaveResumeParams> {
   id: string;
   status?: 'draft' | 'published' | 'archived';
+  imageUrl?: string;
 }
 
 export function useSavedResumes() {

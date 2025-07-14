@@ -261,6 +261,7 @@ export class TemplateService {
     colorSchemeId: string;
     name: string;
     data: string;
+    imageUrl?: string;
     isPublic?: boolean;
   }) {
     try {
@@ -272,6 +273,7 @@ export class TemplateService {
           colorSchemeId: data.colorSchemeId,
           name: data.name,
           data: data.data,
+          imageUrl: data.imageUrl,
           isPublic: data.isPublic || false,
         })
         .returning();
@@ -294,6 +296,7 @@ export class TemplateService {
       templateId: string;
       colorSchemeId: string;
       data: string;
+      imageUrl: string;
       isPublic: boolean;
     }>
   ) {

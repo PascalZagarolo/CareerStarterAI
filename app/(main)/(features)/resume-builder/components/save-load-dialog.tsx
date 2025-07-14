@@ -61,6 +61,7 @@ export function SaveLoadDialog({
       templateId: currentTemplateId,
       colorSchemeId: currentColorSchemeId,
       data: currentData,
+      imageUrl: currentData.personalInfo.profilePicture,
       isDefault
     });
 

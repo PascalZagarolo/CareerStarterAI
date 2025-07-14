@@ -284,6 +284,11 @@ function ResumeBuilderContent() {
           if (resume) {
             const parsedData = parseResumeData(resume.data);
             if (parsedData) {
+              // If the resume has an imageUrl in the database, use it
+              if (resume.imageUrl && !parsedData.personalInfo.profilePicture) {
+                parsedData.personalInfo.profilePicture = resume.imageUrl;
+              }
+              
               setResumeData(parsedData as unknown as ResumeData);
               setTemplateId(resume.templateId);
               setColorSchemeId(resume.colorSchemeId);
@@ -306,6 +311,11 @@ function ResumeBuilderContent() {
           if (defaultResume) {
             const parsedData = parseResumeData(defaultResume.data);
             if (parsedData) {
+              // If the resume has an imageUrl in the database, use it
+              if (defaultResume.imageUrl && !parsedData.personalInfo.profilePicture) {
+                parsedData.personalInfo.profilePicture = defaultResume.imageUrl;
+              }
+              
               setResumeData(parsedData as unknown as ResumeData);
               setTemplateId(defaultResume.templateId);
               setColorSchemeId(defaultResume.colorSchemeId);
@@ -343,6 +353,7 @@ function ResumeBuilderContent() {
           data: resumeData,
           templateId: templateId,
           colorSchemeId: colorSchemeId,
+          imageUrl: resumeData.personalInfo.profilePicture,
         }),
       });
 
@@ -496,6 +507,32 @@ function ResumeBuilderContent() {
     setHasUnsavedChanges(false);
     toast.success(t.ui.resumeLoaded);
   };
+
+  // Handle saving image URL to database
+  const handleSaveImageToDatabase = useCallback(async (imageUrl: string) => {
+    if (!currentResumeId) return;
+
+    try {
+      const response = await fetch(`/api/resumes/${currentResumeId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageUrl: imageUrl,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save image URL to database');
+      }
+
+      console.log('Image URL saved to database successfully');
+    } catch (error) {
+      console.error('Error saving image URL to database:', error);
+      throw error;
+    }
+  }, [currentResumeId]);
 
 
   // Show loading state while fetching templates
@@ -655,6 +692,7 @@ function ResumeBuilderContent() {
                 <PersonalInfoEditor 
                   personalInfo={resumeData.personalInfo}
                   onUpdate={updatePersonalInfo}
+                  onSaveImageToDatabase={handleSaveImageToDatabase}
                 />
                 <SectionManager
                   sections={resumeData.sections}

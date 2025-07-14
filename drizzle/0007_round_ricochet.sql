@@ -1,0 +1,1 @@
+ALTER TABLE "user_resumes" ADD COLUMN "image_url" text;

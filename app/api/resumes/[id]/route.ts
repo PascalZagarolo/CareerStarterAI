@@ -55,7 +55,7 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { name, description, templateId, colorSchemeId, data, status, isDefault = false } = body;
+    const { name, description, templateId, colorSchemeId, data, status, isDefault = false, imageUrl } = body;
 
     // Validate resume data structure if data is provided
     if (data !== undefined && (!data.personalInfo || !data.sections || !Array.isArray(data.sections))) {
@@ -104,6 +104,7 @@ export async function PUT(
     if (data !== undefined) updateData.data = JSON.stringify(data);
     if (status !== undefined) updateData.status = status;
     if (isDefault !== undefined) updateData.isDefault = isDefault;
+    if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
 
     // Increment version if data changed
     if (data !== undefined) {

@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, description, templateId, colorSchemeId, data, isDefault = false } = body;
+    const { name, description, templateId, colorSchemeId, data, isDefault = false, imageUrl } = body;
 
     if (!name || !templateId || !colorSchemeId || !data) {
       return NextResponse.json(
@@ -84,6 +84,7 @@ export async function POST(request: NextRequest) {
         templateId,
         colorSchemeId,
         data: JSON.stringify(data),
+        imageUrl,
         isDefault,
         status: 'draft',
         version: 1,
