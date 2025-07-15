@@ -34,11 +34,7 @@ export const defaultResumeData: ResumeData = {
           startDate: '2022-01',
           endDate: 'Present',
           description: 'Lead development of enterprise applications using React and Node.js',
-          achievements: [
-            'Led a team of 5 developers to deliver a customer portal that increased user engagement by 40%',
-            'Implemented CI/CD pipeline reducing deployment time by 60%',
-            'Mentored junior developers and conducted code reviews'
-          ]
+          achievements: []
         },
         {
           id: 'exp2',
@@ -47,11 +43,7 @@ export const defaultResumeData: ResumeData = {
           startDate: '2020-03',
           endDate: '2021-12',
           description: 'Developed and maintained web applications using modern technologies',
-          achievements: [
-            'Built responsive web applications using React and TypeScript',
-            'Optimized database queries improving performance by 30%',
-            'Collaborated with design team to implement UI/UX improvements'
-          ]
+          achievements: []
         }
       ],
       isVisible: true,

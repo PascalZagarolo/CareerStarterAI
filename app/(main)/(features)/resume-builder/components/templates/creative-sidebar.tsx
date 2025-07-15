@@ -5,6 +5,7 @@ import { Mail, Phone, MapPin, Linkedin, Globe, ExternalLink } from 'lucide-react
 import { formatLinkedInLink, formatPortfolioLink, ensureHttps } from '../utils/link-formatter';
 import { useTranslatedSectionTitle } from '../utils/section-title-translator';
 import { useSectionHover } from '../utils/use-section-hover';
+import { useLanguage } from '../i18n/language-context';
 
 interface CreativeSidebarProps {
   data: ResumeData;
@@ -15,6 +16,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
   const { personalInfo, sections } = data;
   const getTranslatedSectionTitle = useTranslatedSectionTitle;
   const { hoveredSection, handleSectionHover, getSectionInfo } = useSectionHover();
+  const { language } = useLanguage();
 
   return (
     <div 
@@ -49,13 +51,22 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
             <h1 className="text-2xl font-extrabold mb-3 tracking-tight drop-shadow-lg text-white">
               {personalInfo.fullName}
             </h1>
-            <p className="text-xs mb-4 opacity-95 leading-relaxed px-1 text-white">
-              {sections.find(s => s.type === 'summary')?.content[0] || getTranslatedSectionTitle('summary')}
-            </p>
+            {(() => {
+              const summarySection = sections.find(s => s.type === 'summary');
+              const summaryContent = summarySection && Array.isArray(summarySection.content) ? summarySection.content[0] : '';
+              if (typeof summaryContent === 'string' && summaryContent.trim().length > 0) {
+                return (
+                  <p className="text-xs mb-4 opacity-95 leading-relaxed px-1 text-white">
+                    {summaryContent}
+                  </p>
+                );
+              }
+              return null;
+            })()}
           </div>
           {/* Contact Info */}
           <div className="mb-4 px-1">
-            <h2 className="text-sm font-bold mb-2 text-white tracking-wide">Contact</h2>
+            <h2 className="text-sm font-bold mb-2 text-white tracking-wide">{language === 'de' ? 'Kontakt' : 'Contact'}</h2>
                           <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Mail className="w-3 h-3 text-white/90" />
@@ -112,12 +123,14 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
               </div>
           </div>
           {/* Skills */}
-          {sections.find(s => s.type === 'skills') && (() => {
+          {(() => {
             const skillsSection = sections.find(s => s.type === 'skills');
+            if (!skillsSection) return null;
+            const content = skillsSection.content as string[];
+            if (!Array.isArray(content) || content.length === 0 || content.every((s) => typeof s !== 'string' || !s.trim())) return null;
             const isHovered = hoveredSection === skillsSection?.id;
             const sectionInfo = getSectionInfo('skills');
             const IconComponent = sectionInfo.icon;
-            
             return (
               <div 
                 className="mb-4 px-1 relative group cursor-pointer transition-all duration-300 ease-in-out"
@@ -132,27 +145,20 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                       <IconComponent className="w-3 h-3" />
                       {sectionInfo.description}
                     </div>
-                    
                     {/* Subtle glow effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 rounded-lg pointer-events-none"></div>
                   </div>
                 )}
-                
                 <h2 className="text-sm font-bold mb-2 text-white tracking-wide relative z-20">{getTranslatedSectionTitle('skills')}</h2>
                 <div className="flex flex-wrap gap-1 relative z-20">
-                  {(() => {
-                    if (!skillsSection) return null;
-                    const content = skillsSection.content;
-                    if (!Array.isArray(content)) return null;
-                    return (content as string[]).map((skill: string, index: number) => (
-                      <span
-                        key={index}
-                        className="px-2 py-0.5 rounded-full bg-white/25 text-xs font-medium border border-white/40 shadow-sm text-white"
-                      >
-                        {skill}
-                      </span>
-                    ));
-                  })()}
+                  {(content as string[]).map((skill: string, index: number) => (
+                    <span
+                      key={index}
+                      className="px-2 py-0.5 rounded-full bg-white/25 text-xs font-medium border border-white/40 shadow-sm text-white"
+                    >
+                      {skill}
+                    </span>
+                  ))}
                 </div>
               </div>
             );
@@ -268,7 +274,7 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                           {exp.description}
                         </p>
                         {exp.achievements && exp.achievements.length > 0 && (
-                          <ul className="space-y-0.5 list-disc list-inside">
+                          <ul className="space-y-0.5 mb-1 list-disc list-inside">
                             {exp.achievements.map((achievement: string, idx: number) => (
                               <li key={idx} className="text-xs" style={{ color: colorScheme.text }}>
                                 {achievement}

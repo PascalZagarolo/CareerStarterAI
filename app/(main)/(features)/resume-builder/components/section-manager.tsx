@@ -147,7 +147,7 @@ const SectionEditor = ({
                     position: '',
                     startDate: '',
                     endDate: '',
-                    description: '',
+                    description: '', // keep for data compatibility, but not shown in UI
                     achievements: []
                   };
                   onUpdate(section.id, {
@@ -170,6 +170,22 @@ const SectionEditor = ({
                 (section.content as Experience[]).map((exp, index) => (
                   <Card key={exp.id} className="border-gray-200">
                     <CardContent className="p-4 space-y-4">
+                      <div className="flex justify-end mb-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                            newContent.splice(index, 1);
+                            onUpdate(section.id, { content: newContent as Experience[] });
+                          }}
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                          title="Delete Experience"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-2">
                           <Label htmlFor={`company-${exp.id}`} className="text-sm font-medium text-gray-700">Company</Label>
@@ -230,15 +246,67 @@ const SectionEditor = ({
                           />
                         </div>
                       </div>
+                      {/* Bullet Points for Achievements */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Achievements / Responsibilities</Label>
+                        {(exp.achievements || []).map((bullet, bulletIndex) => (
+                          <div key={bulletIndex} className="flex items-center gap-2 mb-1">
+                            <Input
+                              value={bullet}
+                              onChange={e => {
+                                const newContent = Array.isArray(section.content) ? [...(section.content as Experience[])] : [];
+                                const newAchievements = [...(exp.achievements || [])];
+                                newAchievements[bulletIndex] = e.target.value;
+                                newContent[index] = { ...exp, achievements: newAchievements };
+                                onUpdate(section.id, { content: newContent });
+                              }}
+                              placeholder="e.g. Improved system performance by 30%"
+                              className="text-gray-900 placeholder:text-gray-500 flex-1"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newContent = Array.isArray(section.content) ? [...(section.content as Experience[])] : [];
+                                const newAchievements = [...(exp.achievements || [])];
+                                newAchievements.splice(bulletIndex, 1);
+                                newContent[index] = { ...exp, achievements: newAchievements };
+                                onUpdate(section.id, { content: newContent });
+                              }}
+                              className="text-red-600 border-red-200 hover:bg-red-50"
+                              title="Delete Bullet Point"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newContent = Array.isArray(section.content) ? [...(section.content as Experience[])] : [];
+                            const newAchievements = [...(exp.achievements || []), ''];
+                            newContent[index] = { ...exp, achievements: newAchievements };
+                            onUpdate(section.id, { content: newContent });
+                          }}
+                          className="text-green-600 border-green-200 hover:bg-green-50"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Bullet Point
+                        </Button>
+                      </div>
+                      {/* Description Area */}
                       <div className="space-y-2">
                         <Label htmlFor={`description-${exp.id}`} className="text-sm font-medium text-gray-700">Description</Label>
                         <Textarea
                           id={`description-${exp.id}`}
                           value={exp.description}
                           onChange={(e) => {
-                            const newContent = Array.isArray(section.content) ? [...section.content] : [];
+                            const newContent = Array.isArray(section.content) ? [...(section.content as Experience[])] : [];
                             newContent[index] = { ...exp, description: e.target.value };
-                            onUpdate(section.id, { content: newContent as Experience[]});
+                            onUpdate(section.id, { content: newContent });
                           }}
                           placeholder="Describe your role and responsibilities"
                           rows={3}

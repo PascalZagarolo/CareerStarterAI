@@ -95,6 +95,16 @@ export const colorSchemes: Record<string, ColorScheme[]> = {
       background: '#ffffff',
       text: '#1f2937',
       border: '#ede9fe'
+    },
+    {
+      id: 'ocean-blue',
+      name: 'Ocean Blue',
+      primary: '#2563eb',
+      secondary: '#3b82f6',
+      accent: '#60a5fa',
+      background: '#ffffff',
+      text: '#1f2937',
+      border: '#dbeafe'
     }
   ],
   classic: [
