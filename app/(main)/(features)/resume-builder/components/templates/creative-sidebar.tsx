@@ -450,6 +450,50 @@ export default function CreativeSidebar({ data, colorScheme }: CreativeSidebarPr
                       </div>
                     ));
                   })()}
+
+                  {/* Custom Fields */}
+                  {certificationsSection?.customFields && certificationsSection.customFields.length > 0 && (
+                    <div className="space-y-2 mt-3 pt-3 border-t" style={{ borderColor: colorScheme.border }}>
+                      {certificationsSection.customFields
+                        .filter(field => field.isVisible && field.value.trim())
+                        .sort((a, b) => a.order - b.order)
+                        .map((field) => (
+                          <div key={field.id} className="space-y-1">
+                            <h4 className="text-xs font-bold" style={{ color: colorScheme.secondary }}>
+                              {field.label}
+                            </h4>
+                            <div className="text-xs">
+                              {field.type === 'list' ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {field.value.split(',').map((item, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="px-1.5 py-0.5 rounded-full text-xs font-medium bg-white border border-gray-200"
+                                      style={{ color: colorScheme.primary }}
+                                    >
+                                      {item.trim()}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : field.type === 'url' ? (
+                                <a 
+                                  href={field.value.startsWith('http') ? field.value : `https://${field.value}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:underline transition-colors flex items-center gap-1"
+                                  style={{ color: colorScheme.accent }}
+                                >
+                                  {field.value}
+                                  <ExternalLink className="w-1 h-1" />
+                                </a>
+                              ) : (
+                                <p className="leading-relaxed">{field.value}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             );

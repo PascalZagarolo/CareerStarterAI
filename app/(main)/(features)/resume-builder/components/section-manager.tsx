@@ -1,7 +1,7 @@
 'use client';
 
 
-import { ResumeSection, Experience, Education, Project, Certification } from './types';
+import { ResumeSection, Experience, Education, Project, Certification, CustomField } from './types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -11,6 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { ChevronUp, ChevronDown, Eye, EyeOff, Trash2, FileText, Briefcase, GraduationCap, Code, Award, BookOpen, Plus, Sparkles,    } from 'lucide-react';
 import { useLanguage } from './i18n/language-context';
 import TechnologiesInput from './technologies-input';
+import CustomFieldsEditor from './custom-fields-editor';
+import { useTranslatedSectionTitle } from './utils/section-title-translator';
 
 interface SectionManagerProps {
   sections: ResumeSection[];
@@ -51,43 +53,80 @@ const getSectionIcon = (type: ResumeSection['type']) => {
 
 // Helper function to get section preview content
 const getSectionPreview = (section: ResumeSection) => {
+  let basePreview = '';
+  
   switch (section.type) {
     case 'summary':
       const summaryContent = Array.isArray(section.content) ? section.content[0] : '';
-      return typeof summaryContent === 'string' && summaryContent ? summaryContent.slice(0, 100) + (summaryContent.length > 100 ? '...' : '') : 'No summary added';
+      basePreview = typeof summaryContent === 'string' && summaryContent ? summaryContent.slice(0, 100) + (summaryContent.length > 100 ? '...' : '') : 'No summary added';
+      break;
     
     case 'experience':
-      if (!Array.isArray(section.content) || section.content.length === 0) return 'No experience added';
-      const exp = section.content[0] as Experience;
-      return `${exp.position} at ${exp.company}` || 'No experience added';
+      if (!Array.isArray(section.content) || section.content.length === 0) {
+        basePreview = 'No experience added';
+      } else {
+        const exp = section.content[0] as Experience;
+        basePreview = `${exp.position} at ${exp.company}` || 'No experience added';
+      }
+      break;
     
     case 'education':
-      if (!Array.isArray(section.content) || section.content.length === 0) return 'No education added';
-      const edu = section.content[0] as Education;
-      return `${edu.degree} in ${edu.field} from ${edu.institution}` || 'No education added';
+      if (!Array.isArray(section.content) || section.content.length === 0) {
+        basePreview = 'No education added';
+      } else {
+        const edu = section.content[0] as Education;
+        basePreview = `${edu.degree} in ${edu.field} from ${edu.institution}` || 'No education added';
+      }
+      break;
     
     case 'skills':
       if (typeof section.content === 'object' && !Array.isArray(section.content)) {
         const technical = section.content.technical || [];
         const soft = section.content.soft || [];
         const allSkills = [...technical, ...soft];
-        return allSkills.length > 0 ? allSkills.slice(0, 5).join(', ') + (allSkills.length > 5 ? '...' : '') : 'No skills added';
+        basePreview = allSkills.length > 0 ? allSkills.slice(0, 5).join(', ') + (allSkills.length > 5 ? '...' : '') : 'No skills added';
+      } else {
+        basePreview = 'No skills added';
       }
-      return 'No skills added';
+      break;
     
     case 'projects':
-      if (!Array.isArray(section.content) || section.content.length === 0) return 'No projects added';
-      const proj = section.content[0] as Project;
-      return proj.name || 'No projects added';
+      if (!Array.isArray(section.content) || section.content.length === 0) {
+        basePreview = 'No projects added';
+      } else {
+        const proj = section.content[0] as Project;
+        basePreview = proj.name || 'No projects added';
+      }
+      break;
     
     case 'certifications':
-      if (!Array.isArray(section.content) || section.content.length === 0) return 'No certifications added';
-      const cert = section.content[0] as Certification;
-      return `${cert.name} from ${cert.issuer}` || 'No certifications added';
+      if (!Array.isArray(section.content) || section.content.length === 0) {
+        basePreview = 'No certifications added';
+      } else {
+        const cert = section.content[0] as Certification;
+        basePreview = `${cert.name} from ${cert.issuer}` || 'No certifications added';
+      }
+      break;
     
     default:
-      return 'Section content';
+      basePreview = 'Section content';
   }
+
+  // Add custom fields preview if available
+  if (section.customFields && section.customFields.length > 0) {
+    const visibleCustomFields = section.customFields
+      .filter(field => field.isVisible && field.value.trim())
+      .slice(0, 2); // Show max 2 custom fields in preview
+    
+    if (visibleCustomFields.length > 0) {
+      const customFieldsPreview = visibleCustomFields
+        .map(field => `${field.label}: ${field.value.slice(0, 30)}${field.value.length > 30 ? '...' : ''}`)
+        .join(', ');
+      return `${basePreview} • ${customFieldsPreview}`;
+    }
+  }
+
+  return basePreview;
 };
 
 // Section Editor Component
@@ -102,13 +141,15 @@ const SectionEditor = ({
   isGenerating: boolean;
   onGenerateWithAI: (sectionId: string) => void;
 }) => {
+  const { t } = useLanguage();
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
   const renderEditor = () => {
     switch (section.type) {
       case 'summary':
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{getTranslatedSectionTitle(section.type)}</h3>
               <Button
                 onClick={() => onGenerateWithAI(section.id)}
                 disabled={isGenerating}
@@ -138,7 +179,7 @@ const SectionEditor = ({
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{getTranslatedSectionTitle(section.type)}</h3>
               <Button
                 onClick={() => {
                   const newExp: Experience = {
@@ -323,7 +364,7 @@ const SectionEditor = ({
       case 'skills':
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{getTranslatedSectionTitle(section.type)}</h3>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="technical-skills" className="text-sm font-medium text-gray-700">Technical Skills</Label>
@@ -377,7 +418,7 @@ const SectionEditor = ({
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{getTranslatedSectionTitle(section.type)}</h3>
               <Button
                 onClick={() => {
                   const newEdu: Education = {
@@ -510,7 +551,7 @@ const SectionEditor = ({
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{getTranslatedSectionTitle(section.type)}</h3>
               <Button
                 onClick={() => {
                   const newProj: Project = {
@@ -682,7 +723,7 @@ const SectionEditor = ({
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{getTranslatedSectionTitle(section.type)}</h3>
               <Button
                 onClick={() => {
                   const newCert: Certification = {
@@ -770,6 +811,14 @@ const SectionEditor = ({
   return (
     <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
       {renderEditor()}
+      
+      {/* Custom Fields Editor */}
+      <div className="mt-6">
+        <CustomFieldsEditor
+          customFields={section.customFields || []}
+          onUpdate={(customFields) => onUpdate(section.id, { customFields })}
+        />
+      </div>
     </div>
   );
 };
@@ -788,11 +837,12 @@ export default function SectionManager({
   onGenerateWithAI
 }: SectionManagerProps) {
   const { t } = useLanguage();
+  const getTranslatedSectionTitle = useTranslatedSectionTitle;
   
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900">Resume Sections</CardTitle>
+        <CardTitle className="text-lg font-semibold text-gray-900">{t.ui.resumeSections}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Sections List */}
@@ -813,7 +863,7 @@ export default function SectionManager({
                       : 'border-gray-200 bg-gray-50/50 hover:border-gray-300 hover:bg-gray-100/50'
               }`}
               onClick={() => onSectionSelect(section.id)}
-                  title={`Click to edit ${section.title}`}
+                  title={`Click to edit ${getTranslatedSectionTitle(section.type)}`}
             >
                   {/* Active indicator */}
                   {isActive && (
@@ -839,7 +889,7 @@ export default function SectionManager({
                               ? 'text-blue-900' 
                               : 'text-gray-900 group-hover:text-blue-800'
                           }`}>
-                            {section.title}
+                            {getTranslatedSectionTitle(section.type)}
                           </span>
                           {!isVisible && (
                             <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full">

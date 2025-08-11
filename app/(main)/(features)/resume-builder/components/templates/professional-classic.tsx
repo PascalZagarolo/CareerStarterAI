@@ -301,6 +301,54 @@ export default function ProfessionalClassic({ data, colorScheme }: ProfessionalC
                       ))}
                     </div>
                   )}
+
+                  {/* Custom Fields */}
+                  {section.customFields && section.customFields.length > 0 && (
+                    <div className="space-y-2 mt-3 pt-3 border-t" style={{ borderColor: colorScheme.border }}>
+                      {section.customFields
+                        .filter(field => field.isVisible && field.value.trim())
+                        .sort((a, b) => a.order - b.order)
+                        .map((field) => (
+                          <div key={field.id} className="space-y-1">
+                            <h4 className="font-semibold text-xs" style={{ color: colorScheme.secondary }}>
+                              {field.label}
+                            </h4>
+                            <div className="text-xs">
+                              {field.type === 'list' ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {field.value.split(',').map((item, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="px-1.5 py-0.5 rounded text-xs font-medium"
+                                      style={{
+                                        backgroundColor: colorScheme.accent + '20',
+                                        color: colorScheme.primary,
+                                        border: `1px solid ${colorScheme.border}`
+                                      }}
+                                    >
+                                      {item.trim()}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : field.type === 'url' ? (
+                                <a 
+                                  href={field.value.startsWith('http') ? field.value : `https://${field.value}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:underline transition-colors flex items-center gap-1"
+                                  style={{ color: colorScheme.accent }}
+                                >
+                                  {field.value}
+                                  <ExternalLink className="w-1 h-1" />
+                                </a>
+                              ) : (
+                                <p>{field.value}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             );

@@ -51,6 +51,17 @@ export interface Translations {
     resumeLoadError: string;
     pdfGenerated: string;
     pdfError: string;
+    customFields: string;
+    addField: string;
+    fieldLabel: string;
+    fieldValue: string;
+    fieldType: string;
+    collapse: string;
+    expand: string;
+    noCustomFields: string;
+    noCustomFieldsDescription: string;
+    fieldHidden: string;
+    resumeSections: string;
   };
   
   // Placeholders
@@ -131,6 +142,17 @@ export const translations: Record<Language, Translations> = {
       resumeLoadError: 'Failed to load resume',
       pdfGenerated: 'PDF generated successfully!',
       pdfError: 'Failed to generate PDF. Please try again.',
+      customFields: 'Custom Fields',
+      addField: 'Add Field',
+      fieldLabel: 'Field Label',
+      fieldValue: 'Value',
+      fieldType: 'Type',
+      collapse: 'Collapse',
+      expand: 'Expand',
+      noCustomFields: 'No custom fields added yet.',
+      noCustomFieldsDescription: 'Click "Add Field" to get started.',
+      fieldHidden: 'This field is hidden and won\'t appear in the resume preview.',
+      resumeSections: 'Resume Sections',
     },
     placeholders: {
       fullName: 'Enter your full name',
@@ -205,6 +227,17 @@ export const translations: Record<Language, Translations> = {
       resumeLoadError: 'Lebenslauf konnte nicht geladen werden',
       pdfGenerated: 'PDF erfolgreich generiert!',
       pdfError: 'PDF konnte nicht generiert werden. Bitte versuchen Sie es erneut.',
+      customFields: 'Benutzerdefinierte Felder',
+      addField: 'Feld hinzufügen',
+      fieldLabel: 'Feldbezeichnung',
+      fieldValue: 'Wert',
+      fieldType: 'Typ',
+      collapse: 'Einklappen',
+      expand: 'Erweitern',
+      noCustomFields: 'Noch keine benutzerdefinierten Felder hinzugefügt.',
+      noCustomFieldsDescription: 'Klicken Sie auf "Feld hinzufügen" um zu beginnen.',
+      fieldHidden: 'Dieses Feld ist ausgeblendet und wird nicht in der Lebenslauf-Vorschau angezeigt.',
+      resumeSections: 'Lebenslauf-Abschnitte',
     },
     placeholders: {
       fullName: 'Geben Sie Ihren vollständigen Namen ein',

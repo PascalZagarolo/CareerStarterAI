@@ -19,6 +19,7 @@ export const defaultResumeData: ResumeData = {
       content: [
         'Experienced software developer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable solutions and leading cross-functional teams.'
       ],
+      customFields: [],
       isVisible: true,
       order: 0
     },
@@ -46,6 +47,7 @@ export const defaultResumeData: ResumeData = {
           achievements: []
         }
       ],
+      customFields: [],
       isVisible: true,
       order: 1
     },
@@ -64,6 +66,7 @@ export const defaultResumeData: ResumeData = {
           gpa: '3.8/4.0'
         }
       ],
+      customFields: [],
       isVisible: true,
       order: 2
     },
@@ -72,6 +75,7 @@ export const defaultResumeData: ResumeData = {
       type: 'skills',
       title: 'Skills',
       content: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker', 'Leadership', 'Problem Solving', 'Communication', 'Team Collaboration'],
+      customFields: [],
       isVisible: true,
       order: 3
     },
@@ -109,6 +113,7 @@ export const defaultResumeData: ResumeData = {
           liveLink: 'taskmanager-demo.com'
         }
       ],
+      customFields: [],
       isVisible: true,
       order: 4
     },
@@ -130,6 +135,7 @@ export const defaultResumeData: ResumeData = {
           date: '2022-12'
         }
       ],
+      customFields: [],
       isVisible: true,
       order: 5
     }

@@ -383,6 +383,20 @@ function ResumeBuilderContent() {
     };
   }, [hasUnsavedChanges, currentResumeId, autoSave]);
 
+  // Update section titles when language changes
+  useEffect(() => {
+    if (resumeData.sections.length > 0) {
+      const updatedSections = resumeData.sections.map(section => ({
+        ...section,
+        title: t.sections[section.type]
+      }));
+      setResumeData({
+        ...resumeData,
+        sections: updatedSections
+      });
+    }
+  }, [language]); // This will run when language changes
+
   // Mark changes as unsaved
   const markAsUnsaved = useCallback(() => {
     if (currentResumeId) {
@@ -413,8 +427,9 @@ function ResumeBuilderContent() {
     const newSection: ResumeSection = {
       id: `${type}-${Date.now()}`,
       type,
-      title: t.sections[type],
+      title: t.sections[type], // This will be the translated title
       content: type === 'experience' ? [] : type === 'education' ? [] : type === 'skills' ? [] : type === 'projects' ? [] : type === 'certifications' ? [] : [],
+      customFields: [],
       isVisible: true,
       order: resumeData.sections.length
     };
@@ -489,7 +504,9 @@ function ResumeBuilderContent() {
       ...resumeData,
       sections: defaultResumeData.sections.map(section => ({
         ...section,
-        id: `${section.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        id: `${section.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        title: t.sections[section.type], // Use translated title
+        customFields: []
       }))
     });
     markAsUnsaved();

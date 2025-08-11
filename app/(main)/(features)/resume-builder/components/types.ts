@@ -1,9 +1,21 @@
 // Types for Resume Builder
+
+// Custom field interface for dynamic fields
+export interface CustomField {
+  id: string;
+  label: string;
+  value: string;
+  type: 'text' | 'textarea' | 'list' | 'date' | 'url';
+  isVisible: boolean;
+  order: number;
+}
+
 export interface ResumeSection {
   id: string;
   type: 'summary' | 'experience' | 'education' | 'skills' | 'projects' | 'certifications';
   title: string;
   content: string[] | { technical: string[], soft: string[] } | Experience[] | Education[] | Project[] | Certification[];
+  customFields: CustomField[]; // New field for custom fields
   isVisible: boolean;
   order: number;
 }
